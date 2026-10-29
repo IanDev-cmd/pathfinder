@@ -8,7 +8,8 @@
 <meta name="description" content="Pathfinder uses machine learning to generate leads from Google Maps, co-operate world news, business intelligence, go-to-market strategies, and prediction series and simulations." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Montserrat:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <style>
   :root {
     --paper: #fff8f4;
@@ -30,7 +31,7 @@
   body {
     margin: 0;
     color: #fff;
-    background: #ff4e00;
+    background: #c8c8cc url("bg/ribbon.jpg") center / cover no-repeat fixed;
     font-family: var(--sans);
     font-weight: 400;
     overflow-x: hidden;
@@ -41,19 +42,19 @@
   img { max-width: 100%; display: block; }
 
   .wash { display: none; }
-  .bg-1 { background: #ff4e00 url("bg/octave-1.jpg") center / cover no-repeat; }
-  .bg-2 { background: #ff4e00 url("bg/octave-2.jpg") center / cover no-repeat; }
-  .bg-3 { background: #ff4e00 url("bg/octave-3.jpg") center / cover no-repeat; }
-  .bg-4 { background: #ff4e00 url("bg/octave-4.jpg") center / cover no-repeat; }
-  .bg-5 { background: #ff4e00 url("bg/octave-5.jpg") center / cover no-repeat; }
-  .bg-6 { background: #ff4e00 url("bg/octave-6.jpg") center / cover no-repeat; }
+  .bg-1, .bg-2, .bg-3, .bg-4, .bg-5, .bg-6 {
+    background: #c8c8cc url("bg/ribbon.jpg") center / cover no-repeat fixed;
+  }
+  .hero, .section, .page, .film, .hazard, .marquee, footer {
+    box-shadow: inset 0 0 0 100vmax rgba(8, 12, 22, 0.36);
+  }
 
   /* Gate — Kilele landing, Pathfinder words */
   .stage {
     position: fixed;
     inset: 0;
     z-index: 200;
-    background: #ff4e00 url("bg/octave-4.jpg") center / cover no-repeat;
+    background: #ff4e00 url("bg/ribbon.jpg") center / cover no-repeat fixed;
     overflow: hidden;
     isolation: isolate;
     transition: opacity 0.8s ease, visibility 0.8s;
@@ -121,7 +122,7 @@
   .stage.line-in .underline { animation: lineIn 1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.35s forwards; }
   @keyframes lineIn { to { width: clamp(80px, 14vw, 220px); } }
   .gate {
-    position: absolute; inset: 0; z-index: 50; background: #ff4e00 url("bg/octave-1.jpg") center / cover no-repeat; color: #fff;
+    position: absolute; inset: 0; z-index: 50; background: #ff4e00 url("bg/ribbon.jpg") center / cover no-repeat fixed; color: #fff;
     display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;
     transition: opacity 0.8s ease, visibility 0.8s;
   }
@@ -337,7 +338,7 @@
   }
   .wide-art {
     position: absolute; inset: 0;
-    background: #ff4e00 url("bg/octave-5.jpg") center / cover no-repeat;
+    background: #ff4e00 url("bg/ribbon.jpg") center / cover no-repeat fixed;
   }
   .card.wide, .card.wide h4, .card.wide p { color: #fff; }
   .card.wide p { color: rgba(255,255,255,0.88); }
@@ -376,7 +377,7 @@
     min-height: 160px;
     background:
       linear-gradient(90deg, #fff 0%, transparent 36%),
-      #ff4e00 url("bg/octave-2.jpg") center / cover no-repeat;
+      #ff4e00 url("bg/ribbon.jpg") center / cover no-repeat fixed;
   }
 
   .page {
@@ -453,7 +454,7 @@
     height: 100svh;
     min-height: 720px;
     border-top: 1px solid var(--line);
-    background: #ff4e00 url("bg/octave-5.jpg") center / cover no-repeat;
+    background: #ff4e00 url("bg/ribbon.jpg") center / cover no-repeat fixed;
   }
   .hazard iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: transparent; }
 
@@ -540,7 +541,7 @@
     height: 100svh;
     min-height: 720px;
     border-top: 1px solid var(--line);
-    background: #ff4e00 url("bg/octave-6.jpg") center / cover no-repeat;
+    background: #ff4e00 url("bg/ribbon.jpg") center / cover no-repeat fixed;
   }
   .film-slot { width: 100%; height: 100%; }
 
@@ -649,60 +650,393 @@
   .table-wrap th { color: rgba(255, 78, 0, 0.5); }
   .table-wrap td, .table-wrap td.dim { color: #ff4e00; }
   .integ {
-    background: #ff4e00 url("bg/octave-6.jpg") center / cover no-repeat;
+    background: #ff4e00 url("bg/ribbon.jpg") center / cover no-repeat fixed;
     border-color: rgba(255,255,255,0.35);
   }
   .glass { background: rgba(255,255,255,0.94); color: #ff4e00; border-color: #fff; }
   .glass p, .glass span, .code { color: rgba(255, 78, 0, 0.8); }
   .code { background: rgba(255, 78, 0, 0.06); }
   .code i { color: #ff4e00; }
-  .marquee { background: #ff4e00 url("bg/octave-2.jpg") center / cover no-repeat; }
+  .marquee { background: #ff4e00 url("bg/ribbon.jpg") center / cover no-repeat fixed; }
   .mrow span { color: #fff; }
   footer, footer a, .copy { color: rgba(255,255,255,0.82); }
-  footer { background: #ff4e00 url("bg/octave-1.jpg") center / cover no-repeat; border-top-color: rgba(255,255,255,0.28); }
+  footer { background: #ff4e00 url("bg/ribbon.jpg") center / cover no-repeat fixed; border-top-color: rgba(255,255,255,0.28); }
   footer .brand { color: #fff; }
   .join input { background: #fff; color: #ff4e00; border-color: #fff; }
   .join input::placeholder { color: rgba(255, 78, 0, 0.45); }
   .splashes { opacity: 0.55; }
   .mark { border-color: rgba(255,78,0,0.2); color: #ff4e00; background: #fff; }
   .card.wide .mark { background: rgba(255,255,255,0.2); color: #fff; border-color: rgba(255,255,255,0.4); }
+
+  #gate.scene {
+    position: fixed; inset: 0; z-index: 80;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 28px 18px;
+    color: #fff;
+    font-family: Montserrat, "Segoe UI", sans-serif;
+    background: #c8c8cc url("bg/ribbon.jpg") center / cover no-repeat fixed;
+  }
+  #gate[hidden] { display: none !important; }
+  #gate button, #gate a { font-family: inherit; }
+  #gate button { cursor: pointer; }
+  #gate a { color: inherit; text-decoration: none; }
+  #gate .card {
+    position: relative;
+    width: min(1120px, 100%);
+    height: min(640px, calc(100vh - 48px));
+    min-height: 520px;
+    padding: 0;
+    border: 0;
+    border-radius: 28px;
+    overflow: hidden;
+    background: #c8c8cc url("bg/ribbon.jpg") center / cover no-repeat;
+    box-shadow: 0 28px 70px rgba(0, 0, 0, 0.38);
+  }
+  #gate .shade {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(90deg, rgba(5, 16, 24, 0.62) 0%, rgba(5, 16, 24, 0.34) 42%, rgba(5, 16, 24, 0.22) 100%),
+      linear-gradient(180deg, rgba(5, 16, 24, 0.18), rgba(5, 16, 24, 0.42));
+  }
+  #gate .nav, #gate .rail, #gate .copy, #gate .popular, #gate .social, #gate .search-pop { position: absolute; z-index: 2; }
+  #gate .nav {
+    top: 22px; left: 28px; right: 28px;
+    width: auto;
+    display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    color: #fff;
+  }
+  #gate .brand {
+    font-family: Montserrat, "Segoe UI", sans-serif;
+    font-weight: 700; font-size: 22px; letter-spacing: -0.03em;
+    color: #fff; text-transform: none;
+  }
+  #gate .links { display: flex; gap: 28px; }
+  #gate .links button {
+    border: 0; background: transparent; color: rgba(255,255,255,0.92);
+    font-size: 13px; font-weight: 500; padding: 0;
+  }
+  #gate .links button:hover, #gate .links button.on { color: #fff; }
+  #gate .tools { display: flex; justify-content: flex-end; align-items: center; gap: 16px; }
+  #gate .icon-btn {
+    width: 34px; height: 34px; border: 0; border-radius: 50%;
+    background: transparent; color: #fff; display: grid; place-items: center;
+  }
+  #gate .icon-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.7; }
+  #gate .avatar {
+    width: 34px; height: 34px; border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.85);
+    display: grid; place-items: center;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.02em;
+    background: rgba(255,255,255,0.16);
+  }
+  #gate .search-pop {
+    top: 64px; right: 78px;
+    background: rgba(8, 20, 28, 0.72);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 999px; padding: 8px 14px;
+  }
+  #gate .search-pop[hidden] { display: none; }
+  #gate .search-pop input {
+    border: 0; background: transparent; color: #fff; outline: none; width: 180px;
+  }
+  #gate .search-pop input::placeholder { color: rgba(255,255,255,0.7); }
+  #gate .rail {
+    left: 34px; top: 50%; transform: translateY(-42%);
+    height: 210px;
+    display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+  }
+  #gate .rail::before {
+    content: ""; position: absolute; top: 6px; bottom: 6px; width: 1px; background: rgba(255,255,255,0.85);
+  }
+  #gate .rail button {
+    position: relative; width: 10px; height: 10px; border-radius: 50%;
+    border: 0; padding: 0; background: rgba(255,255,255,0.55);
+  }
+  #gate .rail button.on { width: 12px; height: 12px; background: #fff; box-shadow: 0 0 0 4px rgba(255,255,255,0.18); }
+  #gate .copy { left: 108px; top: 46%; transform: translateY(-50%); width: min(340px, 36%); }
+  #gate .copy h1 {
+    margin: 0 0 12px; font-family: Montserrat, "Segoe UI", sans-serif;
+    font-size: clamp(32px, 4vw, 44px); font-weight: 700;
+    letter-spacing: 0.04em; line-height: 1; text-transform: none; color: #fff;
+  }
+  #gate .copy p {
+    margin: 0 0 26px; max-width: 300px; font-size: 11px; line-height: 1.55;
+    font-weight: 500; color: rgba(255,255,255,0.88);
+  }
+  #gate .enter {
+    display: inline-grid; place-items: center; min-width: 118px; height: 36px;
+    padding: 0 22px; border-radius: 999px; border: 1.5px solid rgba(255,255,255,0.9);
+    background: transparent; color: #fff; font-size: 13px; font-weight: 500;
+  }
+  #gate .enter:hover { background: rgba(255,255,255,0.12); }
+  #gate .popular { right: 36px; bottom: 78px; width: min(430px, 46%); }
+  #gate .integrations { margin: 0 0 22px; color: #fff; }
+  #gate .integrations p, #gate .pop-label { margin: 0 0 12px; font-size: 13px; font-weight: 500; letter-spacing: 0.01em; color: #fff; max-width: none; }
+  #gate .int-row { display: flex; gap: 12px; }
+  #gate .int-ico {
+    position: relative; width: 46px; height: 46px; border-radius: 14px;
+    background: rgba(255,255,255,0.94);
+    display: grid; place-items: center;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.16);
+  }
+  #gate .int-ico .int-ring { position: absolute; inset: 0; width: 46px; height: 46px; }
+  #gate .int-ico .int-ring circle {
+    fill: none; stroke: #01aebc; stroke-width: 1.6;
+    stroke-dasharray: 120; stroke-dashoffset: 120;
+  }
+  #gate .int-ico:hover .int-ring circle { animation: ring-draw .6s ease forwards; }
+  #gate .int-ico .int-logo { width: 24px; height: 24px; position: relative; display: block; }
+  @keyframes ring-draw { to { stroke-dashoffset: 0; } }
+  #gate .pop-label { display: flex; align-items: center; gap: 14px; margin: 0 0 12px; font-size: 13px; font-weight: 500; }
+  #gate .pop-label i { flex: 1; height: 1px; background: rgba(255,255,255,0.9); }
+  #gate .thumbs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  #gate .thumbs button {
+    border: 0; padding: 0; border-radius: 12px; overflow: hidden; height: 108px;
+    background: #123; box-shadow: 0 10px 24px rgba(0,0,0,0.25);
+  }
+  #gate .thumbs img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  #gate .thumbs button.on { outline: 2px solid #fff; outline-offset: 2px; }
+  #gate .pager { display: flex; justify-content: center; gap: 8px; margin-top: 14px; }
+  #gate .pager button { width: 7px; height: 7px; border-radius: 50%; border: 0; padding: 0; background: rgba(255,255,255,0.45); }
+  #gate .pager button.on { background: #fff; }
+  #gate .social { left: 28px; bottom: 22px; display: flex; gap: 10px; }
+  #gate .social a {
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.55); display: grid; place-items: center;
+  }
+  #gate .social svg { width: 12px; height: 12px; fill: #fff; }
+  @media (max-width: 860px) {
+    #gate .card { height: auto; min-height: 0; }
+    #gate .nav { position: relative; top: 0; left: 0; right: 0; padding: 18px 16px 0; }
+    #gate .links { display: none; }
+    #gate .rail { display: none; }
+    #gate .copy, #gate .popular, #gate .social { position: relative; left: auto; right: auto; top: auto; bottom: auto; transform: none; width: auto; }
+    #gate .copy { padding: 48px 20px 10px; }
+    #gate .popular { padding: 10px 16px 24px; }
+    #gate .social { padding: 0 16px 18px; }
+    #gate .thumbs button { height: 92px; }
+  }
+
+  /* Page 4 — full-bleed search route */
+  #route.route {
+    margin: 0;
+    padding: 0;
+    height: 100svh;
+    min-height: 0;
+    border: 0;
+    box-shadow: none;
+    background: #fff;
+    color: #1c1c1c;
+    overflow: hidden;
+  }
+  .route-board {
+    display: grid;
+    grid-template-columns: 1.08fr 0.92fr;
+    height: 100%;
+    width: 100%;
+  }
+  .route-left { position: relative; min-height: 0; overflow: hidden; background: #0c4c56; color: #fff; }
+  .route-left img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+  }
+  .route-shade {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(180deg, rgba(0,0,0,0.28) 0%, rgba(0,0,0,0.05) 28%, rgba(0,0,0,0.15) 58%, rgba(0,20,30,0.72) 100%);
+  }
+  .route-search, .route-copy, .route-meta { position: absolute; z-index: 2; }
+  .route-search {
+    top: 22px; left: 22px; right: 22px;
+    display: flex; align-items: center; gap: 10px;
+    max-width: 420px;
+    margin: 0;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: rgba(0,0,0,0.28);
+    border: 1px solid rgba(255,255,255,0.35);
+  }
+  .route-search svg { width: 16px; height: 16px; stroke: #fff; fill: none; stroke-width: 1.8; flex: none; }
+  .route-search input {
+    flex: 1; min-width: 0;
+    border: 0; background: transparent; color: #fff;
+    font: 500 13px/1.2 Montserrat, "Segoe UI", sans-serif;
+    outline: none;
+  }
+  .route-search input::placeholder { color: rgba(255,255,255,0.75); }
+  .route-search button {
+    border: 0; background: #fff; color: #123; cursor: pointer;
+    border-radius: 999px; padding: 6px 12px;
+    font: 600 11px/1 Montserrat, "Segoe UI", sans-serif;
+    letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .route-copy { left: 28px; right: 28px; bottom: 108px; }
+  .route-kicker {
+    margin: 0 0 8px;
+    font: 600 12px/1 Montserrat, "Segoe UI", sans-serif;
+    letter-spacing: 0.28em; text-transform: uppercase;
+  }
+  .route-copy h2 {
+    margin: 0;
+    font-family: Montserrat, "Segoe UI", sans-serif;
+    font-weight: 700;
+    font-size: clamp(42px, 5.4vw, 72px);
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    color: #fff;
+  }
+  .route-stars { margin-top: 12px; color: #f5c518; letter-spacing: 3px; font-size: 14px; }
+  .route-meta {
+    left: 18px; right: 18px; bottom: 16px;
+    display: grid; grid-template-columns: 1fr 1fr auto;
+    gap: 12px; align-items: center;
+    padding: 14px 16px;
+    background: rgba(8, 24, 32, 0.38);
+    border-top: 1px solid rgba(255,255,255,0.28);
+  }
+  .route-meta span {
+    display: block;
+    font: 500 10px/1.2 Montserrat, sans-serif;
+    letter-spacing: 0.04em; color: rgba(255,255,255,0.78);
+  }
+  .route-meta strong {
+    display: block; margin-top: 4px;
+    font: 700 13px/1.2 Montserrat, sans-serif;
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .route-meta button {
+    border: 1px solid rgba(255,255,255,0.8);
+    background: transparent; color: #fff; cursor: pointer;
+    border-radius: 8px; padding: 10px 16px;
+    font: 600 11px/1 Montserrat, sans-serif;
+    letter-spacing: 0.14em; text-transform: uppercase;
+  }
+  .route-right {
+    min-height: 0;
+    display: flex; flex-direction: column;
+    background: #fff; color: #222;
+  }
+  .route-maps {
+    flex: 1; min-height: 0;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+  .route-map { position: relative; min-height: 0; background: #e7eef2; }
+  .route-map .leaflet { position: absolute; inset: 0; }
+  .route-map figcaption {
+    position: absolute; z-index: 4; top: 10px; left: 10px;
+    margin: 0; padding: 4px 8px; border-radius: 999px;
+    background: rgba(255,255,255,0.92); color: #1a1a1a;
+    font: 700 10px/1 Montserrat, sans-serif;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    pointer-events: none;
+  }
+  .route .leaflet-control-container { z-index: 4; }
+  .lead-pin { background: transparent; border: 0; }
+  .lead-pin b {
+    display: grid; place-items: center;
+    width: 26px; height: 26px; border-radius: 50%;
+    background: #2f6cff; color: #fff;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+    font: 700 11px/1 Montserrat, sans-serif;
+  }
+  .route-rec {
+    margin: 0; padding: 14px 18px 8px;
+    font: 500 13px/1.3 Montserrat, sans-serif; color: #444;
+  }
+  .route-cards {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 10px; padding: 0 18px 16px;
+  }
+  .route-cards button {
+    position: relative; height: 132px; padding: 0; border: 0;
+    border-radius: 8px; overflow: hidden; cursor: pointer; background: #d7e3ea;
+  }
+  .route-cards img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .route-cards span {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    padding: 22px 8px 8px;
+    background: linear-gradient(180deg, transparent, rgba(0,0,0,0.72));
+    color: #fff; text-align: left;
+    font: 700 11px/1.25 Montserrat, sans-serif;
+    letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  @media (max-width: 980px) {
+    #route.route { height: auto; min-height: 0; overflow: visible; }
+    .route-board { grid-template-columns: 1fr; }
+    .route-left { min-height: 78svh; }
+    .route-maps { min-height: 420px; }
+    .route-cards { grid-template-columns: repeat(2, 1fr); }
+  }
 </style>
 </head>
 <body class="locked">
   <div class="wash" aria-hidden="true"></div>
 
-  <div class="stage" id="stage" role="dialog" aria-label="Pathfinder intro">
-    <svg class="splashes" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <defs>
-        <linearGradient id="gGreen" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#ffffff" /><stop offset="100%" stop-color="#ffd8c2" />
-        </linearGradient>
-        <linearGradient id="gTeal" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#ffffff" /><stop offset="100%" stop-color="#ffe8dc" />
-        </linearGradient>
-        <linearGradient id="gGreen2" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#fff" /><stop offset="100%" stop-color="#ffc7a8" />
-        </linearGradient>
-      </defs>
-      <g class="shape-a"><path fill="url(#gGreen)" d="M1000,0 L1000,720 L860,790 L760,700 L640,760 L560,640 L430,690 L470,540 L360,470 L510,350 L420,220 L560,150 L520,40 L640,0 Z" /></g>
-      <g class="shape-b"><path fill="url(#gTeal)" d="M1000,560 L1000,1000 L260,1000 L340,880 L460,910 L520,800 L650,830 L700,700 L820,730 L860,610 Z" /></g>
-      <g class="shape-c"><path fill="url(#gGreen2)" d="M0,0 L230,0 L200,90 L260,150 L150,230 L120,140 L0,150 Z" /></g>
-      <g class="shape-d"><path fill="url(#gGreen2)" d="M0,760 L110,700 L160,800 L250,830 L200,940 L260,1000 L0,1000 Z" /></g>
-    </svg>
-    <svg class="grain" aria-hidden="true"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch" /></filter><rect width="100%" height="100%" filter="url(#noise)" /></svg>
-    <button type="button" class="sound-toggle" id="soundBtn" title="Toggle sound" aria-pressed="true">
-      <svg viewBox="0 0 24 24" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5z" /><path d="M15.5 8.5a5 5 0 0 1 0 7" /><path d="M18 6a9 9 0 0 1 0 12" /></svg>
-    </button>
-    <div class="center">
-      <div class="wordwrap"><h1 class="word">pathfinder</h1></div>
-      <div class="subwrap"><div class="sub">intelligence</div></div>
-      <div class="underline"></div>
-    </div>
-    <div class="gate" id="gate">
-      <h2 class="gate-title">pathfinder</h2>
-      <button type="button" class="enter-btn" id="enterBtn" autofocus>Enter</button>
-    </div>
-  </div>
+  <section id="gate" class="scene" aria-label="Sequel Support">
+    <section class="card" id="landCard" aria-label="Sequel Support">
+      <div class="shade" aria-hidden="true"></div>
+      <header class="nav">
+        <div class="brand">Sequel</div>
+        <nav class="links" aria-label="Primary">
+          <button type="button" data-slide="0" class="on">Home</button>
+          <button type="button" data-slide="1">Homes</button>
+          <button type="button" data-slide="2">Fernleigh</button>
+          <button type="button" id="gateExplore">Desk</button>
+        </nav>
+        <div class="tools">
+          <button class="icon-btn" id="landSearchBtn" type="button" aria-label="Search" aria-expanded="false">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M16 16l4 4"/></svg>
+          </button>
+          <span class="avatar" aria-hidden="true">SQ</span>
+        </div>
+      </header>
+      <form class="search-pop" id="landSearchPop" hidden>
+        <input id="landSearchInput" type="search" placeholder="Search the desk" aria-label="Search the desk">
+      </form>
+      <div class="rail" id="landRail" aria-label="Slides"></div>
+      <div class="copy">
+        <h1 id="landTitle">MAYFIELD</h1>
+        <p id="landBlurb"></p>
+        <button type="button" class="enter" id="gateEnter">Enter</button>
+      </div>
+      <section class="popular" aria-label="Homes">
+        <div class="integrations">
+          <p>Enjoy custom integrations</p>
+          <div class="int-row">
+            <span class="int-ico" title="Indeed" aria-label="Indeed"><svg class="int-ring" viewBox="0 0 46 46" aria-hidden="true"><circle cx="23" cy="23" r="19"/></svg><img class="int-logo" src="photos/indeed.svg" alt=""></span>
+            <span class="int-ico" title="Microsoft Teams" aria-label="Microsoft Teams"><svg class="int-ring" viewBox="0 0 46 46" aria-hidden="true"><circle cx="23" cy="23" r="19"/></svg><img class="int-logo" src="photos/microsoftteams.svg" alt=""></span>
+            <span class="int-ico" title="Microsoft Outlook" aria-label="Microsoft Outlook"><svg class="int-ring" viewBox="0 0 46 46" aria-hidden="true"><circle cx="23" cy="23" r="19"/></svg><img class="int-logo" src="photos/microsoftoutlook.svg" alt=""></span>
+            <span class="int-ico" title="Microsoft SharePoint" aria-label="Microsoft SharePoint"><svg class="int-ring" viewBox="0 0 46 46" aria-hidden="true"><circle cx="23" cy="23" r="19"/></svg><img class="int-logo" src="photos/microsoftsharepoint.svg" alt=""></span>
+          </div>
+        </div>
+        <p class="pop-label">Homes <i></i></p>
+        <div class="thumbs" id="landThumbs"></div>
+        <div class="pager" id="landPager"></div>
+      </section>
+      <div class="social">
+        <a href="https://www.sequelsupport.co.uk" aria-label="Facebook" target="_blank" rel="noreferrer">
+          <svg viewBox="0 0 24 24"><path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H8v3h2v7h3v-7h2.6l.4-3H13v-2c0-.6.4-1 1-1z"/></svg>
+        </a>
+        <a href="https://www.sequelsupport.co.uk" aria-label="Twitter" target="_blank" rel="noreferrer">
+          <svg viewBox="0 0 24 24"><path d="M19 7.3c-.6.3-1.2.4-1.9.5.7-.4 1.2-1 1.4-1.8-.6.4-1.3.7-2.1.8A3.2 3.2 0 0 0 12 9.8c0 .3 0 .5.1.8-2.7-.1-5.1-1.4-6.7-3.4-.3.5-.4 1-.4 1.6 0 1.1.6 2.1 1.4 2.7-.5 0-1-.2-1.5-.4v.1c0 1.6 1.1 2.9 2.6 3.2-.3.1-.6.1-.9.1-.2 0-.4 0-.6-.1.4 1.3 1.6 2.2 3 2.3A6.5 6.5 0 0 1 5 17.6 9.1 9.1 0 0 0 10 19c6 0 9.3-5 9.3-9.3v-.4c.6-.5 1.2-1.1 1.7-1.8z"/></svg>
+        </a>
+        <a href="https://www.sequelsupport.co.uk" aria-label="Instagram" target="_blank" rel="noreferrer">
+          <svg viewBox="0 0 24 24"><path d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4zm5 4.5A4.5 4.5 0 1 0 16.5 12 4.5 4.5 0 0 0 12 7.5zm6.2-.9a1.1 1.1 0 1 0 1.1 1.1 1.1 1.1 0 0 0-1.1-1.1zM12 9.2A2.8 2.8 0 1 1 9.2 12 2.8 2.8 0 0 1 12 9.2z"/></svg>
+        </a>
+      </div>
+    </section>
+  </section>
 
   <div class="nav-wrap">
     <div style="width:min(920px,100%)">
@@ -710,6 +1044,7 @@
         <a class="brand" href="#top">pathfinder</a>
         <div class="nav-links">
           <a href="#signals">Signals</a>
+          <a href="#route">Leads</a>
           <a href="#platform">Platform</a>
           <a href="#layers">Layers</a>
           <a href="#hazard">Hazard</a>
@@ -722,6 +1057,7 @@
       </nav>
       <div class="nav-drawer" id="drawer">
         <a href="#signals">Signals</a>
+        <a href="#route">Leads</a>
         <a href="#platform">Platform</a>
         <a href="#layers">Layers</a>
         <a href="#hazard">Hazard</a>
@@ -755,6 +1091,44 @@
         <article class="signal"><div><div class="idx">03</div><h4>Business intelligence</h4><p>Filings, shifts, and market language scored into a list a desk can work.</p></div><div><b>Desk</b><em>Intelligence</em></div></article>
         <article class="signal"><div><div class="idx">04</div><h4>Go to market strategies</h4><p>Who to approach, in which territory, and why now — written from the signal.</p></div><div><b>GTM</b><em>Strategy</em></div></article>
         <article class="signal"><div><div class="idx">05</div><h4>Predictions &amp; simulations</h4><p>A prediction series beside a simulation, so the lead list can be tested before it is spent.</p></div><div><b>Series</b><em>Runs</em></div></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="route" id="route" aria-label="Lead route">
+    <div class="route-board">
+      <div class="route-left">
+        <img id="routeHero" alt="" />
+        <div class="route-shade" aria-hidden="true"></div>
+        <form class="route-search" id="routeSearch">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M16 16l4 4"/></svg>
+          <input id="routeQuery" type="search" value="Greece Cyclades" placeholder="Search places and businesses" aria-label="Search places and businesses" />
+          <button type="submit">Search</button>
+        </form>
+        <div class="route-copy">
+          <p class="route-kicker">Welcome to</p>
+          <h2 id="routeTitle">Greece<br />Cyclades</h2>
+          <div class="route-stars" aria-hidden="true">★★★★★</div>
+        </div>
+        <div class="route-meta">
+          <div><span>Country</span><strong id="routeCountry">—</strong></div>
+          <div><span>Leads</span><strong id="routeCount">Searching</strong></div>
+          <button type="button" id="routeFocus">Route</button>
+        </div>
+      </div>
+      <div class="route-right">
+        <div class="route-maps">
+          <figure class="route-map">
+            <div id="satMap" class="leaflet" role="img" aria-label="Satellite map of leads"></div>
+            <figcaption>Satellite</figcaption>
+          </figure>
+          <figure class="route-map">
+            <div id="streetMap" class="leaflet" role="img" aria-label="Street map of leads"></div>
+            <figcaption>Street</figcaption>
+          </figure>
+        </div>
+        <p class="route-rec" id="routeRec">Image results for this search</p>
+        <div class="route-cards" id="routeCards"></div>
       </div>
     </div>
   </section>
@@ -1068,6 +1442,7 @@
     <span class="brand">pathfinder</span>
     <nav>
       <a href="#signals">Signals</a>
+      <a href="#route">Leads</a>
       <a href="#platform">Platform</a>
       <a href="#layers">Layers</a>
       <a href="#hazard">Hazard</a>
@@ -1078,89 +1453,90 @@
     <div class="copy">© 2026 Pathfinder. Leads from dense information.</div>
   </footer>
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 (function () {
-  const stage = document.getElementById("stage");
+  const GATE_SLIDES = [
+    { title: "MAYFIELD", text: "Mayfield Lodge in Bournemouth. Safer recruitment for the children's home, from Indeed intake through DBS, references, and the manager sign-off." },
+    { title: "RAINBOW", text: "Rainbow Lodge shares the Bournemouth sleep-in. The desk holds the candidate queue, the pre-screen call, and the interview panel in one place." },
+    { title: "FERNLEIGH", text: "Fernleigh House in Cornwall. Sleep-ins are the Cornwall rate. A home manager sees only this house. HR admin sees all three." },
+    { title: "VETTING", text: "Passport, driving licence, proof of address, Level 3, and the DBS Update Service sit in the locker. Every employment gap needs a written explanation." },
+    { title: "PANEL", text: "Two interviewers score 28 scenarios. A safeguarding gap over 2 points, or a panel gap over 10, holds the offer until they agree." },
+    { title: "OFFER", text: "The conditional offer uses the annual base plus the home's sleep-in rate. Bank details are stored as the last four digits only." }
+  ];
+  const GATE_HOMES = [
+    { pos: "18% 42%", alt: "Mayfield Lodge", slide: 0 },
+    { pos: "72% 36%", alt: "Rainbow Lodge", slide: 1 },
+    { pos: "46% 70%", alt: "Fernleigh House", slide: 2 }
+  ];
+  let gateIndex = 0;
   const gate = document.getElementById("gate");
-  const enterBtn = document.getElementById("enterBtn");
-  const soundBtn = document.getElementById("soundBtn");
-  let entered = false;
-  let soundOn = true;
-  let audio = null;
+  const landTitle = document.getElementById("landTitle");
+  const landBlurb = document.getElementById("landBlurb");
+  const landRail = document.getElementById("landRail");
+  const landThumbs = document.getElementById("landThumbs");
+  const landPager = document.getElementById("landPager");
 
-  function finishGate() {
-    document.body.classList.remove("locked");
-    stage.classList.add("landing-out");
-  }
-
-  if (location.hash && location.hash !== "#" && location.hash !== "#top") {
-    stage.style.display = "none";
+  function openSite() {
+    gate.hidden = true;
     document.body.classList.remove("locked");
   }
-
-  function ensureCtx() {
-    const Ctx = window.AudioContext || window.webkitAudioContext;
-    if (!Ctx) return null;
-    if (!audio) {
-      const ctx = new Ctx();
-      const master = ctx.createGain();
-      master.gain.value = soundOn ? 1 : 0;
-      master.connect(ctx.destination);
-      audio = { ctx, master };
-    }
-    if (audio.ctx.state === "suspended") audio.ctx.resume();
-    return audio;
-  }
-  function noiseBuffer(kit, duration) {
-    const sr = kit.ctx.sampleRate;
-    const len = Math.max(1, Math.floor(sr * duration));
-    const buf = kit.ctx.createBuffer(1, len, sr);
-    const data = buf.getChannelData(0);
-    for (let i = 0; i < len; i++) data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 1.3);
-    return buf;
-  }
-  function playWhoosh(delay, vol) {
-    if (!audio) return;
-    const t = audio.ctx.currentTime + delay;
-    const src = audio.ctx.createBufferSource();
-    src.buffer = noiseBuffer(audio, 1.2);
-    const bp = audio.ctx.createBiquadFilter();
-    bp.type = "bandpass";
-    bp.frequency.setValueAtTime(260, t);
-    bp.frequency.exponentialRampToValueAtTime(1800, t + 0.8);
-    const g = audio.ctx.createGain();
-    g.gain.setValueAtTime(0.0001, t);
-    g.gain.exponentialRampToValueAtTime(vol, t + 0.35);
-    g.gain.exponentialRampToValueAtTime(0.0001, t + 1.1);
-    src.connect(bp); bp.connect(g); g.connect(audio.master);
-    src.start(t); src.stop(t + 1.2);
-  }
-  function enter() {
-    if (entered) return;
-    entered = true;
-    try { ensureCtx(); } catch (e) {}
-    gate.classList.add("hide");
-    requestAnimationFrame(function () {
-      stage.classList.add("shapes-in");
-      try { playWhoosh(0, 0.22); playWhoosh(0.18, 0.14); } catch (e) {}
+  function paintGate(next) {
+    gateIndex = (next + GATE_SLIDES.length) % GATE_SLIDES.length;
+    const slide = GATE_SLIDES[gateIndex];
+    landTitle.textContent = slide.title;
+    landBlurb.textContent = slide.text;
+    landRail.querySelectorAll("button").forEach(function (btn, i) { btn.classList.toggle("on", i === gateIndex); });
+    document.querySelectorAll("#gate .links button[data-slide]").forEach(function (btn) {
+      btn.classList.toggle("on", Number(btn.dataset.slide) === gateIndex);
     });
-    setTimeout(function () { stage.classList.add("word-in"); }, 1100);
-    setTimeout(function () { stage.classList.add("sub-in"); }, 1600);
-    setTimeout(function () { stage.classList.add("line-in"); stage.classList.add("text-in"); }, 2000);
-    setTimeout(finishGate, 3600);
+    landThumbs.querySelectorAll("button").forEach(function (btn, i) { btn.classList.toggle("on", i === gateIndex); });
+    landPager.querySelectorAll("button").forEach(function (btn, i) { btn.classList.toggle("on", i === gateIndex); });
   }
-  enterBtn.addEventListener("click", enter);
-  window.addEventListener("keydown", function (event) {
-    if (stage.classList.contains("landing-out") || stage.style.display === "none") return;
-    if (event.key === "Enter" || event.key === " ") {
-      event.preventDefault();
-      enter();
-    }
+
+  if (location.hash && location.hash !== "#" && location.hash !== "#top") openSite();
+
+  landRail.innerHTML = GATE_SLIDES.map(function (_, i) {
+    return '<button type="button" data-i="' + i + '" aria-label="Slide ' + (i + 1) + '"></button>';
+  }).join("");
+  landThumbs.innerHTML = GATE_HOMES.map(function (item) {
+    return '<button type="button" data-slide="' + item.slide + '"><img src="bg/ribbon.jpg" alt="' + item.alt + '" style="object-position:' + item.pos + '"></button>';
+  }).join("");
+  landPager.innerHTML = GATE_HOMES.map(function (_, i) {
+    return '<button type="button" data-pop="' + i + '" aria-label="Home ' + (i + 1) + '"></button>';
+  }).join("");
+  paintGate(0);
+
+  gate.addEventListener("click", function (event) {
+    const railBtn = event.target.closest("#landRail button");
+    if (railBtn) { paintGate(Number(railBtn.dataset.i)); return; }
+    const thumb = event.target.closest("#landThumbs button");
+    if (thumb) { paintGate(Number(thumb.dataset.slide)); return; }
+    const dot = event.target.closest("#landPager button");
+    if (dot) { paintGate(Number(dot.dataset.pop)); return; }
+    const nav = event.target.closest("#gate .links button[data-slide]");
+    if (nav) { paintGate(Number(nav.dataset.slide)); return; }
+    if (event.target.closest("#gateEnter") || event.target.closest("#gateExplore")) openSite();
   });
-  soundBtn.addEventListener("click", function () {
-    soundOn = !soundOn;
-    soundBtn.setAttribute("aria-pressed", soundOn ? "true" : "false");
-    if (audio) audio.master.gain.setTargetAtTime(soundOn ? 1 : 0, audio.ctx.currentTime, 0.05);
+  document.getElementById("landSearchBtn").addEventListener("click", function () {
+    const pop = document.getElementById("landSearchPop");
+    const open = pop.hidden;
+    pop.hidden = !open;
+    document.getElementById("landSearchBtn").setAttribute("aria-expanded", open ? "true" : "false");
+    if (open) document.getElementById("landSearchInput").focus();
+  });
+  document.getElementById("landSearchPop").addEventListener("submit", function (event) {
+    event.preventDefault();
+    const raw = document.getElementById("landSearchInput").value.trim();
+    if (!raw) return;
+    openSite();
+    if (window.pathfinderSearch) window.pathfinderSearch(raw);
+    location.hash = "#route";
+  });
+  window.addEventListener("keydown", function (event) {
+    if (event.key !== "Enter" || gate.hidden) return;
+    if (event.target.closest("input, textarea")) return;
+    openSite();
   });
 
   const menuBtn = document.getElementById("menuBtn");
@@ -1254,6 +1630,236 @@
     e.currentTarget.hidden = true;
     document.getElementById("joined").hidden = false;
   });
+
+  const routeHero = document.getElementById("routeHero");
+  const routeTitle = document.getElementById("routeTitle");
+  const routeCountry = document.getElementById("routeCountry");
+  const routeCount = document.getElementById("routeCount");
+  const routeRec = document.getElementById("routeRec");
+  const routeCards = document.getElementById("routeCards");
+  const routeQuery = document.getElementById("routeQuery");
+  let routePoints = [];
+  let satMap = null;
+  let streetMap = null;
+  let satLeads = null;
+  let streetLeads = null;
+
+  function escapeHtml(value) {
+    return String(value).replace(/[&<>"']/g, function (ch) {
+      return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[ch];
+    });
+  }
+  function paintTitle(query) {
+    const parts = query.trim().split(/\s+/).filter(Boolean);
+    if (!parts.length) return;
+    if (parts.length === 1) routeTitle.textContent = parts[0];
+    else routeTitle.innerHTML = escapeHtml(parts[0]) + "<br>" + escapeHtml(parts.slice(1).join(" "));
+  }
+  function leadIcon(n) {
+    return L.divIcon({
+      className: "lead-pin",
+      html: "<b>" + n + "</b>",
+      iconSize: [26, 26],
+      iconAnchor: [13, 13]
+    });
+  }
+  function ensureMaps() {
+    if (!window.L || satMap) return;
+    satMap = L.map("satMap", { zoomControl: false, attributionControl: true }).setView([37.45, 25.35], 8);
+    streetMap = L.map("streetMap", { zoomControl: false, attributionControl: true }).setView([37.45, 25.35], 12);
+    L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
+      attribution: "Tiles &copy; Esri",
+      maxZoom: 19
+    }).addTo(satMap);
+    L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}", {
+      attribution: "Tiles &copy; Esri",
+      maxZoom: 19
+    }).addTo(streetMap);
+    satLeads = L.layerGroup().addTo(satMap);
+    streetLeads = L.layerGroup().addTo(streetMap);
+    setTimeout(function () {
+      satMap.invalidateSize();
+      streetMap.invalidateSize();
+    }, 200);
+  }
+  function drawLeads(points) {
+    ensureMaps();
+    if (!satMap) return;
+    routePoints = points;
+    satLeads.clearLayers();
+    streetLeads.clearLayers();
+    if (!points.length) return;
+    const latlngs = points.map(function (point) { return [point.lat, point.lon]; });
+    const line = { color: "#2f6cff", weight: 3, opacity: 0.95 };
+    L.polyline(latlngs, line).addTo(satLeads);
+    L.polyline(latlngs, line).addTo(streetLeads);
+    points.forEach(function (point, index) {
+      const icon = leadIcon(index + 1);
+      const popup = "<strong>" + escapeHtml(point.name) + "</strong>";
+      function focus() {
+        streetMap.flyTo([point.lat, point.lon], 18, { duration: 0.6 });
+        satMap.flyTo([point.lat, point.lon], 16, { duration: 0.6 });
+      }
+      L.marker([point.lat, point.lon], { icon: icon }).bindPopup(popup).on("click", focus).addTo(satLeads);
+      L.marker([point.lat, point.lon], { icon: icon }).bindPopup(popup).on("click", focus).addTo(streetLeads);
+    });
+    satMap.fitBounds(latlngs, { padding: [28, 28], maxZoom: 14 });
+    streetMap.fitBounds(latlngs, { padding: [28, 28], maxZoom: 15 });
+  }
+  function paintImages(images, query) {
+    const hero = images[0];
+    if (hero) {
+      routeHero.src = hero.url;
+      routeHero.alt = hero.title || query;
+    }
+    const cards = images.slice(1, 5);
+    routeCards.innerHTML = cards.map(function (image) {
+      return '<button type="button"><img src="' + escapeHtml(image.url) + '" alt="' + escapeHtml(image.title) + '"><span>' + escapeHtml(image.title) + "</span></button>";
+    }).join("");
+    routeRec.textContent = images.length
+      ? "Image results for “" + query + "”"
+      : "No image results for “" + query + "”";
+  }
+  async function commonsImages(query) {
+    const url = "https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch="
+      + encodeURIComponent(query)
+      + "&gsrnamespace=6&gsrlimit=10&prop=imageinfo&iiprop=url|mime&iiurlwidth=1400&format=json&origin=*";
+    const data = await fetch(url).then(function (res) { return res.json(); });
+    const pages = data.query && data.query.pages ? Object.values(data.query.pages) : [];
+    return pages.map(function (page) {
+      const info = page.imageinfo && page.imageinfo[0];
+      const title = String(page.title || "").replace(/^File:/, "").replace(/_/g, " ").replace(/\.[a-z0-9]+$/i, "");
+      if (!info || !info.mime || !isPhoto(title, info.mime, info.thumburl || info.url)) return null;
+      return { url: info.thumburl || info.url, title: title };
+    }).filter(Boolean);
+  }
+  function isPhoto(title, mime, url) {
+    if (!mime || mime.indexOf("image/") !== 0 || mime === "image/svg+xml" || mime === "image/gif") return false;
+    const blob = (String(title) + " " + String(url || "")).toLowerCase();
+    return !/map|carte|locator|diagram|flag|coat of arms|banner|icon|logo|\.svg|nomos|prefecture|satellite/.test(blob);
+  }
+  async function wikiImages(query) {
+    const url = "https://en.wikipedia.org/w/api.php?action=query&generator=search&gsrsearch="
+      + encodeURIComponent(query)
+      + "&gsrlimit=6&prop=pageimages&piprop=thumbnail&pithumbsize=1400&format=json&origin=*";
+    const data = await fetch(url).then(function (res) { return res.json(); });
+    const pages = data.query && data.query.pages ? Object.values(data.query.pages) : [];
+    return pages.map(function (page) {
+      const thumb = page.thumbnail && page.thumbnail.source;
+      if (!thumb || !isPhoto(page.title || query, "image/jpeg", thumb)) return null;
+      return { url: thumb, title: page.title || query };
+    }).filter(Boolean);
+  }
+  async function wikiLead(query) {
+    const search = await fetch("https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=" + encodeURIComponent(query) + "&srlimit=1&format=json&origin=*").then(function (res) { return res.json(); });
+    const hit = search.query && search.query.search && search.query.search[0];
+    if (!hit) return null;
+    const summary = await fetch("https://en.wikipedia.org/api/rest_v1/page/summary/" + encodeURIComponent(hit.title)).then(function (res) { return res.json(); });
+    const url = (summary.originalimage && summary.originalimage.source) || (summary.thumbnail && summary.thumbnail.source);
+    if (!url || !isPhoto(summary.title || query, summary.type === "image" ? "image/jpeg" : "image/jpeg", url)) return null;
+    return { url: url, title: summary.title || query };
+  }
+  async function geocode(query) {
+    const data = await fetch("https://photon.komoot.io/api/?q=" + encodeURIComponent(query) + "&limit=1").then(function (res) { return res.json(); });
+    const feature = data.features && data.features[0];
+    if (!feature) return null;
+    const coords = feature.geometry.coordinates;
+    const props = feature.properties || {};
+    return {
+      lat: coords[1],
+      lon: coords[0],
+      country: props.country || "—",
+      place: props.city || props.state || props.name || query
+    };
+  }
+  async function businessLeads(query, center) {
+    const body = "[out:json][timeout:12];(node[\"name\"][\"shop\"](around:3500," + center.lat + "," + center.lon + ");node[\"name\"][\"amenity\"~\"restaurant|cafe|bar|bank|hotel|fast_food|pharmacy\"](around:3500," + center.lat + "," + center.lon + "););out 10;";
+    try {
+      const ctrl = new AbortController();
+      const timer = setTimeout(function () { ctrl.abort(); }, 8000);
+      const data = await fetch("https://overpass-api.de/api/interpreter", {
+        method: "POST",
+        headers: { "Content-Type": "text/plain" },
+        body: body,
+        signal: ctrl.signal
+      }).then(function (res) { clearTimeout(timer); return res.json(); });
+      const leads = (data.elements || []).filter(function (el) {
+        return el.tags && el.tags.name && el.lat && el.lon;
+      }).slice(0, 8).map(function (el) {
+        return { name: el.tags.name, lat: el.lat, lon: el.lon };
+      });
+      if (leads.length >= 2) return leads;
+    } catch (err) {}
+    const biased = await fetch("https://photon.komoot.io/api/?q=" + encodeURIComponent(query + " restaurant") + "&lat=" + center.lat + "&lon=" + center.lon + "&limit=8").then(function (res) { return res.json(); });
+    return (biased.features || []).map(function (feature) {
+      const coords = feature.geometry.coordinates;
+      const props = feature.properties || {};
+      return { name: props.name || query, lat: coords[1], lon: coords[0] };
+    }).filter(function (point) { return point.name && isFinite(point.lat) && isFinite(point.lon); }).slice(0, 8);
+  }
+  let searchToken = 0;
+  async function runSearch(query) {
+    const q = String(query || "").trim();
+    if (!q) return;
+    const token = ++searchToken;
+    routeQuery.value = q;
+    paintTitle(q);
+    routeCount.textContent = "Searching";
+    routeRec.textContent = "Searching the internet for “" + q + "”";
+    ensureMaps();
+    try {
+      const lead = await wikiLead(q);
+      const images = await commonsImages(q);
+      const extra = images.length >= 4 ? [] : await wikiImages(q);
+      const ready = (lead ? [lead] : []).concat(images).concat(extra);
+      if (token !== searchToken) return;
+      paintImages(ready, q);
+    } catch (err) {
+      if (token === searchToken) routeRec.textContent = "Image search did not respond";
+    }
+    try {
+      const center = await geocode(q);
+      if (token !== searchToken || !center) return;
+      routeCountry.textContent = center.country;
+      const leads = await businessLeads(q, center);
+      if (token !== searchToken) return;
+      drawLeads(leads);
+      routeCount.textContent = leads.length ? String(leads.length) + " places" : center.place;
+    } catch (err) {
+      if (token === searchToken) routeCount.textContent = "No map hit";
+    }
+  }
+  window.pathfinderSearch = runSearch;
+  document.getElementById("routeSearch").addEventListener("submit", function (event) {
+    event.preventDefault();
+    runSearch(routeQuery.value);
+  });
+  routeCards.addEventListener("click", function (event) {
+    const button = event.target.closest("button");
+    if (!button) return;
+    const image = button.querySelector("img");
+    if (image && image.src) {
+      routeHero.src = image.src;
+      routeHero.alt = image.alt;
+    }
+  });
+  document.getElementById("routeFocus").addEventListener("click", function () {
+    if (!satMap || !routePoints.length) return;
+    const latlngs = routePoints.map(function (point) { return [point.lat, point.lon]; });
+    satMap.fitBounds(latlngs, { padding: [28, 28], maxZoom: 14 });
+    streetMap.fitBounds(latlngs, { padding: [28, 28], maxZoom: 15 });
+  });
+  ensureMaps();
+  runSearch("Greece Cyclades");
+  const routeSection = document.getElementById("route");
+  const routeWatch = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting || !satMap) return;
+      satMap.invalidateSize();
+      streetMap.invalidateSize();
+    });
+  }, { threshold: 0.2 });
+  routeWatch.observe(routeSection);
 })();
 </script>
 </body>
