@@ -1468,36 +1468,7 @@
     </div>
   </section>
 
-  <div class="nav-wrap">
-    <div style="width:min(920px,100%)">
-      <nav class="nav" aria-label="Primary">
-        <a class="brand" href="#live">pathfinder</a>
-        <div class="nav-links">
-          <a href="#live">Live</a>
-          <a href="#markets">Leads</a>
-          <a href="#markets">Markets</a>
-          <a href="#layers">Layers</a>
-          <a href="#platform">Platform</a>
-          <a href="#method">Method</a>
-          <a href="#pricing">Pricing</a>
-        </div>
-        <a class="btn ghost" href="#join">Start a desk</a>
-        <button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu"><span></span><span></span><span></span></button>
-      </nav>
-      <div class="nav-drawer" id="drawer">
-        <a href="#live">Live</a>
-        <a href="#markets">Leads</a>
-        <a href="#markets">Markets</a>
-        <a href="#layers">Layers</a>
-        <a href="#platform">Platform</a>
-        <a href="#method">Method</a>
-        <a href="#pricing">Pricing</a>
-        <a href="#join">Start a desk</a>
-      </div>
-    </div>
-  </div>
-
-<section id="board" class="scene" aria-label="Pathfinder">
+  <section id="board" class="scene" aria-label="Pathfinder">
     <section class="card" id="landCard" aria-label="Pathfinder">
       <div class="shade" aria-hidden="true"></div>
       <header class="nav">
@@ -1925,7 +1896,8 @@
   document.addEventListener("click", function (event) {
     if (event.target.closest(".deck-menu")) {
       event.preventDefault();
-      document.getElementById("drawer").classList.toggle("open");
+      const drawer = document.getElementById("drawer");
+      if (drawer) drawer.classList.toggle("open");
       return;
     }
     if (event.target.closest("#gateEnter, .deck-next")) {
@@ -1945,7 +1917,8 @@
     const at = CARDS.indexOf(id);
     if (at < 0) return;
     event.preventDefault();
-    document.getElementById("drawer").classList.remove("open");
+    const drawer = document.getElementById("drawer");
+    if (drawer) drawer.classList.remove("open");
     deckGo(at);
   });
 
@@ -1965,14 +1938,6 @@
       event.preventDefault();
       deckGo(Math.max(0, deckIndex - 1));
     }
-  });
-
-
-  const menuBtn = document.getElementById("menuBtn");
-  const drawer = document.getElementById("drawer");
-  menuBtn.addEventListener("click", function () { drawer.classList.toggle("open"); });
-  drawer.querySelectorAll("a").forEach(function (a) {
-    a.addEventListener("click", function () { drawer.classList.remove("open"); });
   });
 
 
