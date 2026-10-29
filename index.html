@@ -799,15 +799,16 @@
   #gate .ico-ai { color: #7c3aed; }
   #gate .ico-news { color: #ea4335; }
   #gate .ico-pred { color: #0f9d58; }
+  #gate .ico-maps, #gate .ico-ai { transform-box: fill-box; transform-origin: center; }
   #gate .int-ico:hover .ico-maps { animation: pin-drop .55s ease; }
   #gate .int-ico:hover .ico-ai { animation: spark-spin .7s ease; }
-  #gate .ico-news path, #gate .ico-news rect { stroke-dasharray: 46; }
+  #gate .ico-news path, #gate .ico-news rect,
+  #gate .ico-pred .trend { stroke-dasharray: 160; stroke-dashoffset: 0; }
   #gate .int-ico:hover .ico-news path,
-  #gate .int-ico:hover .ico-news rect { animation: stroke-draw .65s ease; }
-  #gate .ico-pred .bar { transform-box: fill-box; transform-origin: center bottom; }
-  #gate .ico-pred .trend { stroke-dasharray: 48; }
-  #gate .int-ico:hover .ico-pred .bar { animation: bar-grow .5s ease; }
+  #gate .int-ico:hover .ico-news rect,
   #gate .int-ico:hover .ico-pred .trend { animation: stroke-draw .7s ease; }
+  #gate .ico-pred .bar { transform-box: fill-box; transform-origin: center bottom; }
+  #gate .int-ico:hover .ico-pred .bar { animation: bar-grow .5s ease; }
   @keyframes pin-drop {
     0% { transform: translateY(-7px); }
     55% { transform: translateY(2px); }
@@ -818,7 +819,7 @@
     55% { transform: rotate(10deg) scale(1.14); }
     100% { transform: rotate(0) scale(1); }
   }
-  @keyframes stroke-draw { from { stroke-dashoffset: 48; } to { stroke-dashoffset: 0; } }
+  @keyframes stroke-draw { from { stroke-dashoffset: 160; } to { stroke-dashoffset: 0; } }
   @keyframes bar-grow { from { transform: scaleY(.15); } to { transform: scaleY(1); } }
   @keyframes ring-draw { to { stroke-dashoffset: 0; } }
   #gate .pop-label { display: flex; align-items: center; gap: 14px; margin: 0 0 12px; font-size: 13px; font-weight: 500; }
