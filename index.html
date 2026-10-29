@@ -668,7 +668,7 @@
   .mark { border-color: rgba(255,78,0,0.2); color: #ff4e00; background: #fff; }
   .card.wide .mark { background: rgba(255,255,255,0.2); color: #fff; border-color: rgba(255,255,255,0.4); }
 
-  #gate.scene {
+  #gate.scene ,  #board.scene {
     position: fixed; inset: 0; z-index: 80;
     min-height: 100vh;
     display: grid;
@@ -678,11 +678,11 @@
     font-family: Montserrat, "Segoe UI", sans-serif;
     background: #c8c8cc url("bg/ribbon.jpg") center / cover no-repeat fixed;
   }
-  #gate[hidden] { display: none !important; }
-  #gate button, #gate a { font-family: inherit; }
-  #gate button { cursor: pointer; }
-  #gate a { color: inherit; text-decoration: none; }
-  #gate .card {
+  #gate[hidden] ,  #board[hidden] { display: none !important; }
+  #gate button,  #board button, #gate a , #board a { font-family: inherit; }
+  #gate button ,  #board button { cursor: pointer; }
+  #gate a ,  #board a { color: inherit; text-decoration: none; }
+  #gate .card ,  #board .card {
     position: relative;
     width: min(1120px, 100%);
     height: min(640px, calc(100vh - 48px));
@@ -694,14 +694,14 @@
     background: #c8c8cc url("bg/ribbon.jpg") center / cover no-repeat;
     box-shadow: 0 28px 70px rgba(0, 0, 0, 0.38);
   }
-  #gate .shade {
+  #gate .shade ,  #board .shade {
     position: absolute; inset: 0;
     background:
       linear-gradient(90deg, rgba(5, 16, 24, 0.62) 0%, rgba(5, 16, 24, 0.34) 42%, rgba(5, 16, 24, 0.22) 100%),
       linear-gradient(180deg, rgba(5, 16, 24, 0.18), rgba(5, 16, 24, 0.42));
   }
-  #gate .nav, #gate .rail, #gate .copy, #gate .popular, #gate .social, #gate .search-pop { position: absolute; z-index: 2; }
-  #gate .nav {
+  #gate .nav,  #board .nav, #gate .rail, #board .rail, #gate .copy, #board .copy, #gate .popular, #board .popular, #gate .social, #board .social, #gate .search-pop , #board .search-pop { position: absolute; z-index: 2; }
+  #gate .nav ,  #board .nav {
     top: 22px; left: 28px; right: 28px;
     width: auto;
     display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
@@ -712,103 +712,103 @@
     box-shadow: none;
     color: #fff;
   }
-  #gate .brand {
+  #gate .brand ,  #board .brand {
     font-family: Montserrat, "Segoe UI", sans-serif;
     font-weight: 700; font-size: 22px; letter-spacing: -0.03em;
     color: #fff; text-transform: none;
   }
-  #gate .links { display: flex; gap: 28px; }
-  #gate .links button {
+  #gate .links ,  #board .links { display: flex; gap: 28px; }
+  #gate .links button ,  #board .links button {
     border: 0; background: transparent; color: rgba(255,255,255,0.92);
     font-size: 13px; font-weight: 500; padding: 0;
   }
-  #gate .links button:hover, #gate .links button.on { color: #fff; }
-  #gate .tools { display: flex; justify-content: flex-end; align-items: center; gap: 16px; }
-  #gate .icon-btn {
+  #gate .links button:hover,  #board .links button:hover, #gate .links button.on , #board .links button.on { color: #fff; }
+  #gate .tools ,  #board .tools { display: flex; justify-content: flex-end; align-items: center; gap: 16px; }
+  #gate .icon-btn ,  #board .icon-btn {
     width: 34px; height: 34px; border: 0; border-radius: 50%;
     background: transparent; color: #fff; display: grid; place-items: center;
   }
-  #gate .icon-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.7; }
-  #gate .avatar {
+  #gate .icon-btn svg ,  #board .icon-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.7; }
+  #gate .avatar ,  #board .avatar {
     width: 34px; height: 34px; border-radius: 50%;
     border: 2px solid rgba(255,255,255,0.85);
     display: grid; place-items: center;
     font-size: 11px; font-weight: 700; letter-spacing: 0.02em;
     background: rgba(255,255,255,0.16);
   }
-  #gate .search-pop {
+  #gate .search-pop ,  #board .search-pop {
     top: 64px; right: 78px;
     background: rgba(8, 20, 28, 0.72);
     border: 1px solid rgba(255,255,255,0.2);
     border-radius: 999px; padding: 8px 14px;
   }
-  #gate .search-pop[hidden] { display: none; }
-  #gate .search-pop input {
+  #gate .search-pop[hidden] ,  #board .search-pop[hidden] { display: none; }
+  #gate .search-pop input ,  #board .search-pop input {
     border: 0; background: transparent; color: #fff; outline: none; width: 180px;
   }
-  #gate .search-pop input::placeholder { color: rgba(255,255,255,0.7); }
-  #gate .rail {
+  #gate .search-pop input::placeholder ,  #board .search-pop input::placeholder { color: rgba(255,255,255,0.7); }
+  #gate .rail ,  #board .rail {
     left: 34px; top: 50%; transform: translateY(-42%);
     height: 210px;
     display: flex; flex-direction: column; align-items: center; justify-content: space-between;
   }
-  #gate .rail::before {
+  #gate .rail::before ,  #board .rail::before {
     content: ""; position: absolute; top: 6px; bottom: 6px; width: 1px; background: rgba(255,255,255,0.85);
   }
-  #gate .rail button {
+  #gate .rail button ,  #board .rail button {
     position: relative; width: 10px; height: 10px; border-radius: 50%;
     border: 0; padding: 0; background: rgba(255,255,255,0.55);
   }
-  #gate .rail button.on { width: 12px; height: 12px; background: #fff; box-shadow: 0 0 0 4px rgba(255,255,255,0.18); }
-  #gate .copy { left: 108px; top: 46%; transform: translateY(-50%); width: min(440px, 48%); }
-  #gate .copy h1 {
+  #gate .rail button.on ,  #board .rail button.on { width: 12px; height: 12px; background: #fff; box-shadow: 0 0 0 4px rgba(255,255,255,0.18); }
+  #gate .copy ,  #board .copy { left: 108px; top: 46%; transform: translateY(-50%); width: min(440px, 48%); }
+  #gate .copy h1 ,  #board .copy h1 {
     margin: 0 0 12px; font-family: Montserrat, "Segoe UI", sans-serif;
     font-size: clamp(32px, 4vw, 44px); font-weight: 700;
     letter-spacing: 0.04em; line-height: 1; text-transform: none; color: #fff;
   }
-  #gate .copy p {
+  #gate .copy p ,  #board .copy p {
     margin: 0 0 26px; max-width: 420px; font-size: 13px; line-height: 1.45;
     font-weight: 500; color: rgba(255,255,255,0.92);
   }
-  #gate .int-ico span { font-size: 9px; font-weight: 700; letter-spacing: 0.02em; color: #123; text-align: center; line-height: 1.1; }
-  #gate .enter {
+  #gate .int-ico span ,  #board .int-ico span { font-size: 9px; font-weight: 700; letter-spacing: 0.02em; color: #123; text-align: center; line-height: 1.1; }
+  #gate .enter ,  #board .enter {
     display: inline-grid; place-items: center; min-width: 118px; height: 36px;
     padding: 0 22px; border-radius: 999px; border: 1.5px solid rgba(255,255,255,0.9);
     background: transparent; color: #fff; font-size: 13px; font-weight: 500;
   }
-  #gate .enter:hover { background: rgba(255,255,255,0.12); }
-  #gate .popular { right: 36px; bottom: 78px; width: min(430px, 46%); }
-  #gate .integrations { margin: 0 0 22px; color: #fff; }
-  #gate .integrations p, #gate .pop-label { margin: 0 0 12px; font-size: 13px; font-weight: 500; letter-spacing: 0.01em; color: #fff; max-width: none; }
-  #gate .int-row { display: flex; gap: 12px; }
-  #gate .int-ico {
+  #gate .enter:hover ,  #board .enter:hover { background: rgba(255,255,255,0.12); }
+  #gate .popular ,  #board .popular { right: 36px; bottom: 78px; width: min(430px, 46%); }
+  #gate .integrations ,  #board .integrations { margin: 0 0 22px; color: #fff; }
+  #gate .integrations p,  #board .integrations p, #gate .pop-label , #board .pop-label { margin: 0 0 12px; font-size: 13px; font-weight: 500; letter-spacing: 0.01em; color: #fff; max-width: none; }
+  #gate .int-row ,  #board .int-row { display: flex; gap: 12px; }
+  #gate .int-ico ,  #board .int-ico {
     position: relative; width: 46px; height: 46px; border-radius: 14px;
     background: rgba(255,255,255,0.94);
     display: grid; place-items: center;
     box-shadow: 0 8px 18px rgba(0,0,0,0.16);
   }
-  #gate .int-ico .int-ring { position: absolute; inset: 0; width: 46px; height: 46px; }
-  #gate .int-ico .int-ring circle {
+  #gate .int-ico .int-ring ,  #board .int-ico .int-ring { position: absolute; inset: 0; width: 46px; height: 46px; }
+  #gate .int-ico .int-ring circle ,  #board .int-ico .int-ring circle {
     fill: none; stroke: #01aebc; stroke-width: 1.6;
     stroke-dasharray: 120; stroke-dashoffset: 120;
   }
-  #gate .int-ico:hover .int-ring circle { animation: ring-draw .6s ease forwards; }
-  #gate .int-ico .int-logo { width: 22px; height: 22px; position: relative; display: block; }
-  #gate .ico-maps { fill: #4285F4; }
-  #gate .ico-ai, #gate .ico-news, #gate .ico-pred { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-  #gate .ico-ai { color: #7c3aed; }
-  #gate .ico-news { color: #ea4335; }
-  #gate .ico-pred { color: #0f9d58; }
-  #gate .ico-maps, #gate .ico-ai { transform-box: fill-box; transform-origin: center; }
-  #gate .int-ico:hover .ico-maps { animation: pin-drop .55s ease; }
-  #gate .int-ico:hover .ico-ai { animation: spark-spin .7s ease; }
-  #gate .ico-news path, #gate .ico-news rect,
-  #gate .ico-pred .trend { stroke-dasharray: 160; stroke-dashoffset: 0; }
-  #gate .int-ico:hover .ico-news path,
-  #gate .int-ico:hover .ico-news rect,
-  #gate .int-ico:hover .ico-pred .trend { animation: stroke-draw .7s ease; }
-  #gate .ico-pred .bar { transform-box: fill-box; transform-origin: center bottom; }
-  #gate .int-ico:hover .ico-pred .bar { animation: bar-grow .5s ease; }
+  #gate .int-ico:hover .int-ring circle ,  #board .int-ico:hover .int-ring circle { animation: ring-draw .6s ease forwards; }
+  #gate .int-ico .int-logo ,  #board .int-ico .int-logo { width: 22px; height: 22px; position: relative; display: block; }
+  #gate .ico-maps ,  #board .ico-maps { fill: #4285F4; }
+  #gate .ico-ai,  #board .ico-ai, #gate .ico-news, #board .ico-news, #gate .ico-pred , #board .ico-pred { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  #gate .ico-ai ,  #board .ico-ai { color: #7c3aed; }
+  #gate .ico-news ,  #board .ico-news { color: #ea4335; }
+  #gate .ico-pred ,  #board .ico-pred { color: #0f9d58; }
+  #gate .ico-maps,  #board .ico-maps, #gate .ico-ai , #board .ico-ai { transform-box: fill-box; transform-origin: center; }
+  #gate .int-ico:hover .ico-maps ,  #board .int-ico:hover .ico-maps { animation: pin-drop .55s ease; }
+  #gate .int-ico:hover .ico-ai ,  #board .int-ico:hover .ico-ai { animation: spark-spin .7s ease; }
+  #gate .ico-news path,  #board .ico-news path, #gate .ico-news rect, #board .ico-news rect,
+  #gate .ico-pred .trend ,  #board .ico-pred .trend { stroke-dasharray: 160; stroke-dashoffset: 0; }
+  #gate .int-ico:hover .ico-news path,  #board .int-ico:hover .ico-news path,
+  #gate .int-ico:hover .ico-news rect,  #board .int-ico:hover .ico-news rect,
+  #gate .int-ico:hover .ico-pred .trend ,  #board .int-ico:hover .ico-pred .trend { animation: stroke-draw .7s ease; }
+  #gate .ico-pred .bar ,  #board .ico-pred .bar { transform-box: fill-box; transform-origin: center bottom; }
+  #gate .int-ico:hover .ico-pred .bar ,  #board .int-ico:hover .ico-pred .bar { animation: bar-grow .5s ease; }
   @keyframes pin-drop {
     0% { transform: translateY(-7px); }
     55% { transform: translateY(2px); }
@@ -822,34 +822,34 @@
   @keyframes stroke-draw { from { stroke-dashoffset: 160; } to { stroke-dashoffset: 0; } }
   @keyframes bar-grow { from { transform: scaleY(.15); } to { transform: scaleY(1); } }
   @keyframes ring-draw { to { stroke-dashoffset: 0; } }
-  #gate .pop-label { display: flex; align-items: center; gap: 14px; margin: 0 0 12px; font-size: 13px; font-weight: 500; }
-  #gate .pop-label i { flex: 1; height: 1px; background: rgba(255,255,255,0.9); }
-  #gate .thumbs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-  #gate .thumbs button {
+  #gate .pop-label ,  #board .pop-label { display: flex; align-items: center; gap: 14px; margin: 0 0 12px; font-size: 13px; font-weight: 500; }
+  #gate .pop-label i ,  #board .pop-label i { flex: 1; height: 1px; background: rgba(255,255,255,0.9); }
+  #gate .thumbs ,  #board .thumbs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  #gate .thumbs button ,  #board .thumbs button {
     border: 0; padding: 0; border-radius: 12px; overflow: hidden; height: 108px;
     background: #123; box-shadow: 0 10px 24px rgba(0,0,0,0.25);
   }
-  #gate .thumbs img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  #gate .thumbs button.on { outline: 2px solid #fff; outline-offset: 2px; }
-  #gate .pager { display: flex; justify-content: center; gap: 8px; margin-top: 14px; }
-  #gate .pager button { width: 7px; height: 7px; border-radius: 50%; border: 0; padding: 0; background: rgba(255,255,255,0.45); }
-  #gate .pager button.on { background: #fff; }
-  #gate .social { left: 28px; bottom: 22px; display: flex; gap: 10px; }
-  #gate .social a {
+  #gate .thumbs img ,  #board .thumbs img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  #gate .thumbs button.on ,  #board .thumbs button.on { outline: 2px solid #fff; outline-offset: 2px; }
+  #gate .pager ,  #board .pager { display: flex; justify-content: center; gap: 8px; margin-top: 14px; }
+  #gate .pager button ,  #board .pager button { width: 7px; height: 7px; border-radius: 50%; border: 0; padding: 0; background: rgba(255,255,255,0.45); }
+  #gate .pager button.on ,  #board .pager button.on { background: #fff; }
+  #gate .social ,  #board .social { left: 28px; bottom: 22px; display: flex; gap: 10px; }
+  #gate .social a ,  #board .social a {
     width: 26px; height: 26px; border-radius: 50%;
     border: 1px solid rgba(255,255,255,0.55); display: grid; place-items: center;
   }
-  #gate .social svg { width: 12px; height: 12px; fill: #fff; }
+  #gate .social svg ,  #board .social svg { width: 12px; height: 12px; fill: #fff; }
   @media (max-width: 860px) {
-    #gate .card { height: auto; min-height: 0; }
-    #gate .nav { position: relative; top: 0; left: 0; right: 0; padding: 18px 16px 0; }
-    #gate .links { display: none; }
-    #gate .rail { display: none; }
-    #gate .copy, #gate .popular, #gate .social { position: relative; left: auto; right: auto; top: auto; bottom: auto; transform: none; width: auto; }
-    #gate .copy { padding: 48px 20px 10px; }
-    #gate .popular { padding: 10px 16px 24px; }
-    #gate .social { padding: 0 16px 18px; }
-    #gate .thumbs button { height: 92px; }
+    #gate .card ,    #board .card { height: auto; min-height: 0; }
+    #gate .nav ,    #board .nav { position: relative; top: 0; left: 0; right: 0; padding: 18px 16px 0; }
+    #gate .links ,    #board .links { display: none; }
+    #gate .rail ,    #board .rail { display: none; }
+    #gate .copy,    #board .copy, #gate .popular, #board .popular, #gate .social , #board .social { position: relative; left: auto; right: auto; top: auto; bottom: auto; transform: none; width: auto; }
+    #gate .copy ,    #board .copy { padding: 48px 20px 10px; }
+    #gate .popular ,    #board .popular { padding: 10px 16px 24px; }
+    #gate .social ,    #board .social { padding: 0 16px 18px; }
+    #gate .thumbs button ,    #board .thumbs button { height: 92px; }
   }
 
   /* Page 4 — full-bleed search route */
@@ -1013,11 +1013,12 @@
   /* Deck — one card at a time. Layers still scrolls inside its card. */
   html:has(body.deck), body.deck { height: 100%; overflow: hidden; }
   body.deck #gate,
-  body.deck #route,
+  body.deck #board,
   body.deck #live,
   body.deck #layers,
   body.deck #platform,
   body.deck #method,
+  body.deck #markets,
   body.deck #pricing,
   body.deck #join {
     position: fixed;
@@ -1037,11 +1038,12 @@
     place-items: stretch;
   }
   body.deck #gate.is-on,
-  body.deck #route.is-on,
+  body.deck #board.is-on,
   body.deck #live.is-on,
   body.deck #layers.is-on,
   body.deck #platform.is-on,
   body.deck #method.is-on,
+  body.deck #markets.is-on,
   body.deck #pricing.is-on,
   body.deck #join.is-on {
     opacity: 1;
@@ -1060,8 +1062,10 @@
     justify-content: center;
   }
   body.deck[data-card="gate"] .nav-wrap,
+  body.deck[data-card="board"] .nav-wrap,
   body.deck[data-card="platform"] .nav,
-  body.deck[data-card="method"] .nav { visibility: hidden; pointer-events: none; }
+  body.deck[data-card="method"] .nav,
+  body.deck[data-card="markets"] .nav { visibility: hidden; pointer-events: none; }
   .nav-drawer.open { display: block; pointer-events: auto; }
   body.deck footer {
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 4;
@@ -1129,9 +1133,9 @@
     left: 0; right: 0; top: calc(39% + 11vh - 0.55em);
     margin: 0; text-align: center;
     font-weight: 600;
-    font-size: clamp(36px, 6.4vw, 84px);
-    letter-spacing: 0.34em;
-    text-indent: 0.34em;
+    font-size: clamp(28px, 4.6vw, 64px);
+    letter-spacing: 0.16em;
+    text-indent: 0.16em;
     line-height: 1;
   }
   #gate .grad-sub {
@@ -1207,14 +1211,14 @@
     line-height: 1;
   }
   .beach-copy p { margin: 0 0 22px; max-width: 420px; font-size: 12px; line-height: 1.55; color: rgba(255,255,255,0.9); }
-  .beach-go, #gate .enter {
+  .beach-go, #gate .enter , #board .enter {
     display: inline-grid; place-items: center;
     min-width: 132px; height: 36px; padding: 0 22px;
     border-radius: 999px; border: 1.5px solid rgba(255,255,255,0.92);
     background: transparent; color: #fff;
     letter-spacing: 0.18em; font-size: 12px; cursor: pointer;
   }
-  .beach-go:hover, #gate .enter:hover { background: rgba(255,255,255,0.12); }
+  .beach-go:hover, #gate .enter:hover , #board .enter:hover { background: rgba(255,255,255,0.12); }
   .beach-place { right: 28px; bottom: 18px; margin: 0; font-size: 12px; letter-spacing: 0.04em; }
 
   /* Method — white geometric card, ribbon in the window */
@@ -1254,6 +1258,146 @@
     .ship-copy { width: min(280px, 70%); }
     .ship-links { display: none; }
   }
+
+  /* Markets — white split card on the ribbon */
+  #markets.markets {
+    background: #c8c8cc url("bg/ribbon.jpg") center / cover no-repeat;
+    color: #173028;
+    font-family: Montserrat, "Segoe UI", sans-serif;
+    display: grid;
+    place-items: center;
+    padding: 3.5vh 3vw;
+    isolation: isolate;
+  }
+  .mk-card {
+    width: min(1180px, 100%);
+    height: min(780px, 100%);
+    background: #fff;
+    border-radius: 28px;
+    display: grid;
+    grid-template-columns: minmax(320px, 0.9fr) 1.1fr;
+    box-shadow: 0 28px 70px rgba(0, 0, 0, 0.22);
+    overflow: hidden;
+  }
+  .mk-left {
+    display: flex; flex-direction: column; min-height: 0;
+    padding: 22px 26px 18px;
+  }
+  .mk-top { display: flex; align-items: center; gap: 14px; }
+  .mk-brand {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; color: #1c7a45;
+  }
+  .mk-brand i {
+    width: 18px; height: 18px; border-radius: 50%;
+    background: #1f8a4c; display: grid; place-items: center;
+  }
+  .mk-brand svg { width: 11px; height: 11px; fill: #fff; }
+  .mk-links { display: flex; gap: 14px; margin-left: auto; }
+  .mk-links a { font-size: 13px; color: #607069; text-decoration: none; }
+  .mk-links a:hover { color: #173028; }
+  .mk-burger { color: #173028; }
+  .mk-search {
+    margin: 16px 0 12px;
+    display: flex; align-items: center; gap: 8px;
+    border: 1px solid #e3ece7; border-radius: 999px;
+    padding: 8px 12px 8px 14px; background: #f7faf8;
+  }
+  .mk-search svg { width: 16px; height: 16px; stroke: #1f8a4c; fill: none; stroke-width: 1.8; flex: none; }
+  .mk-search input {
+    flex: 1; border: 0; background: transparent; outline: none;
+    font: inherit; font-size: 13px; color: #173028;
+  }
+  .mk-search button {
+    border: 0; background: #1f8a4c; color: #fff;
+    border-radius: 999px; padding: 6px 12px; font-size: 12px; cursor: pointer;
+  }
+  .mk-scroll { flex: 1; min-height: 0; overflow: auto; display: flex; flex-direction: column; gap: 10px; }
+  .mk-cats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .mk-cat, .mk-lead {
+    display: flex; align-items: center; gap: 8px;
+    border: 1px solid #e5eeea; background: #fff;
+    border-radius: 14px; padding: 8px 10px;
+    text-align: left; cursor: pointer; color: #173028; font: inherit;
+  }
+  .mk-cat svg, .mk-lead svg { width: 18px; height: 18px; flex: none; stroke: #1f8a4c; fill: none; stroke-width: 1.7; }
+  .mk-cat span { font-size: 12px; font-weight: 600; line-height: 1.25; }
+  .mk-cat.on { background: #eef8f1; border-color: #1f8a4c; }
+  .mk-leads { display: flex; flex-direction: column; gap: 8px; }
+  .mk-lead { border-radius: 16px; align-items: flex-start; }
+  .mk-lead strong, .mk-lead em, .mk-lead small { display: block; font-style: normal; }
+  .mk-lead strong { font-size: 13px; }
+  .mk-lead em { font-size: 12px; color: #1f8a4c; }
+  .mk-lead small { font-size: 11px; color: #607069; }
+  .mk-note { margin: 0; font-size: 12px; color: #607069; }
+  .mk-contact {
+    margin-top: 12px; align-self: flex-start;
+    color: #173028; text-decoration: none; font-size: 14px; font-weight: 600;
+  }
+  .mk-right {
+    position: relative; margin: 14px 14px 14px 0;
+    border-radius: 22px; overflow: hidden; background: #123;
+    min-height: 0;
+  }
+  .mk-photo, #mkMap { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .mk-photo { object-fit: cover; display: block; }
+  #mkMap { z-index: 1; }
+  #markets .leaflet-container { z-index: 1; background: #123; }
+  .mk-right:not(.is-map) #mkMap { opacity: 0; pointer-events: none; }
+  .mk-right.is-map .mk-photo,
+  .mk-right.is-map .mk-float { visibility: hidden; }
+  .mk-toggle {
+    position: absolute; z-index: 5; top: 14px; right: 14px;
+    display: flex; gap: 2px; padding: 4px;
+    background: #fff; border-radius: 999px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+  }
+  .mk-toggle button {
+    border: 0; background: transparent; border-radius: 999px;
+    padding: 6px 10px; font-size: 12px; cursor: pointer; color: #173028;
+  }
+  .mk-toggle button.on { background: #1f8a4c; color: #fff; }
+  .mk-float {
+    position: absolute; z-index: 4;
+    display: flex; align-items: center; gap: 8px;
+    background: #fff; color: #173028;
+    border-radius: 999px; padding: 6px 10px 6px 6px;
+    font-size: 12px; font-weight: 600;
+    box-shadow: 0 10px 24px rgba(0,0,0,0.16);
+  }
+  .mk-float b {
+    width: 16px; height: 16px; border-radius: 50%; background: #1f8a4c; flex: none;
+    box-shadow: 0 0 0 4px rgba(31,138,76,0.2);
+  }
+  .mk-float.a { top: 18%; left: 10%; }
+  .mk-float.b { top: 58%; left: 22%; }
+  .mk-float[hidden] { display: none; }
+  .mk-social {
+    position: absolute; z-index: 5; right: 0; bottom: 0;
+    background: #fff; border-radius: 18px 0 0 0;
+    display: flex; gap: 8px; padding: 12px 14px 10px 16px;
+  }
+  .mk-social a {
+    width: 28px; height: 28px; border-radius: 50%;
+    display: grid; place-items: center; color: #173028;
+  }
+  .mk-social svg { width: 14px; height: 14px; fill: currentColor; }
+  .mk-marker { background: transparent; border: 0; }
+  .mk-marker span {
+    display: block; width: 16px; height: 16px; border-radius: 50%;
+    background: #fff; box-shadow: 0 0 0 4px rgba(255,255,255,0.45);
+    position: relative;
+  }
+  .mk-marker span::after {
+    content: ""; position: absolute; inset: 4px; border-radius: 50%; background: #1f8a4c;
+  }
+  @media (max-width: 860px) {
+    .mk-card { grid-template-columns: 1fr; height: 100%; border-radius: 0; }
+    .mk-right { margin: 0; min-height: 42vh; border-radius: 0; }
+    .mk-links { display: none; }
+    .mk-cats { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body class="deck locked" data-card="gate">
@@ -1266,7 +1410,7 @@
     <p class="grad-side right">4 Layers</p>
     <div class="grad-square" aria-label="Series"><b>S</b><b>E</b><b>R</b><b>I</b><b>E</b><b>S</b></div>
     <div class="grad-bar" aria-hidden="true"></div>
-    <h1 class="grad-word">STRATEGY</h1>
+    <h1 class="grad-word">PATHFINDER</h1>
     <p class="grad-sub">FORECAST</p>
     <div class="grad-enter">
       <button type="button" class="enter" id="gateEnter">Enter</button>
@@ -1280,7 +1424,8 @@
         <a class="brand" href="#live">pathfinder</a>
         <div class="nav-links">
           <a href="#live">Live</a>
-          <a href="#route">Leads</a>
+          <a href="#markets">Leads</a>
+          <a href="#markets">Markets</a>
           <a href="#layers">Layers</a>
           <a href="#platform">Platform</a>
           <a href="#method">Method</a>
@@ -1291,7 +1436,8 @@
       </nav>
       <div class="nav-drawer" id="drawer">
         <a href="#live">Live</a>
-        <a href="#route">Leads</a>
+        <a href="#markets">Leads</a>
+        <a href="#markets">Markets</a>
         <a href="#layers">Layers</a>
         <a href="#platform">Platform</a>
         <a href="#method">Method</a>
@@ -1301,44 +1447,62 @@
     </div>
   </div>
 
-  <section class="route" id="route" aria-label="Lead route">
-    <div class="route-board">
-      <div class="route-left">
-        <img id="routeHero" alt="" />
-        <div class="route-shade" aria-hidden="true"></div>
-        <form class="route-search" id="routeSearch">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M16 16l4 4"/></svg>
-          <input id="routeQuery" type="search" value="Greece Cyclades" placeholder="Search places and businesses" aria-label="Search places and businesses" />
-          <button type="submit">Search</button>
-        </form>
-        <div class="route-copy">
-          <p class="route-kicker">Welcome to</p>
-          <h2 id="routeTitle">Greece<br />Cyclades</h2>
-          <div class="route-stars" aria-hidden="true">★★★★★</div>
+<section id="board" class="scene" aria-label="Pathfinder">
+    <section class="card" id="landCard" aria-label="Pathfinder">
+      <div class="shade" aria-hidden="true"></div>
+      <header class="nav">
+        <div class="brand">pathfinder</div>
+        <nav class="links" aria-label="Primary">
+          <button type="button" data-slide="1" class="on">Geospatial</button>
+          <button type="button" data-slide="2">News</button>
+          <button type="button" data-slide="4">Strategies</button>
+          <button type="button" id="gateExplore" data-deck="markets">Leads</button>
+        </nav>
+        <div class="tools">
+          <button class="icon-btn" id="landSearchBtn" type="button" aria-label="Search" aria-expanded="false">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M16 16l4 4"/></svg>
+          </button>
+          <span class="avatar" aria-hidden="true">PF</span>
         </div>
-        <div class="route-meta">
-          <div><span>Country</span><strong id="routeCountry">—</strong></div>
-          <div><span>Leads</span><strong id="routeCount">Searching</strong></div>
-          <button type="button" id="routeFocus">Route</button>
-        </div>
+      </header>
+      <form class="search-pop" id="landSearchPop" hidden>
+        <input id="landSearchInput" type="search" placeholder="Search Pathfinder" aria-label="Search Pathfinder">
+      </form>
+      <div class="rail" id="landRail" aria-label="Slides"></div>
+      <div class="copy">
+        <h1 id="landTitle">PATHFINDER</h1>
+        <p id="landBlurb">Pathfinder is an AI startup that uses machine learning algorithms to generate leads from dense information on the internet, such as Google Maps for geospatial intelligence and co-operate world news, to create business intelligence, go to market strategies, and render prediction series and simulations.</p>
+        <button type="button" id="boardEnter" class="enter deck-next">Enter</button>
       </div>
-      <div class="route-right">
-        <div class="route-maps">
-          <figure class="route-map">
-            <div id="satMap" class="leaflet" role="img" aria-label="Satellite map of leads"></div>
-            <figcaption>Satellite</figcaption>
-          </figure>
-          <figure class="route-map">
-            <div id="streetMap" class="leaflet" role="img" aria-label="Street map of leads"></div>
-            <figcaption>Street</figcaption>
-          </figure>
+      <section class="popular" aria-label="Sources">
+        <div class="integrations">
+          <p>Dense information</p>
+          <div class="int-row">
+            <span class="int-ico" title="Google Maps" aria-label="Google Maps"><svg class="int-ring" viewBox="0 0 46 46" aria-hidden="true"><circle cx="23" cy="23" r="19"/></svg><svg class="int-logo ico-maps" viewBox="0 0 24 24" aria-hidden="true"><path d="M19.527 4.799c1.212 2.608.937 5.678-.405 8.173-1.101 2.047-2.744 3.74-4.098 5.614-.619.858-1.244 1.75-1.669 2.727-.141.325-.263.658-.383.992-.121.333-.224.673-.34 1.008-.109.314-.236.684-.627.687h-.007c-.466-.001-.579-.53-.695-.887-.284-.874-.581-1.713-1.019-2.525-.51-.944-1.145-1.817-1.79-2.671L19.527 4.799zM8.545 7.705l-3.959 4.707c.724 1.54 1.821 2.863 2.871 4.18.247.31.494.622.737.936l4.984-5.925-.029.01c-1.741.601-3.691-.291-4.392-1.987a3.377 3.377 0 0 1-.209-.716c-.063-.437-.077-.761-.004-1.198l.001-.007zM5.492 3.149l-.003.004c-1.947 2.466-2.281 5.88-1.117 8.77l4.785-5.689-.058-.05-3.607-3.035zM14.661.436l-3.838 4.563a.295.295 0 0 1 .027-.01c1.6-.551 3.403.15 4.22 1.626.176.319.323.683.377 1.045.068.446.085.773.012 1.22l-.003.016 3.836-4.561A8.382 8.382 0 0 0 14.67.439l-.009-.003zM9.466 5.868L14.162.285l-.047-.012A8.31 8.31 0 0 0 11.986 0a8.439 8.439 0 0 0-6.169 2.766l-.016.018 3.665 3.084z"/></svg></span>
+            <span class="int-ico" title="AI" aria-label="AI"><svg class="int-ring" viewBox="0 0 46 46" aria-hidden="true"><circle cx="23" cy="23" r="19"/></svg><svg class="int-logo ico-ai" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></svg></span>
+            <span class="int-ico" title="News" aria-label="News"><svg class="int-ring" viewBox="0 0 46 46" aria-hidden="true"><circle cx="23" cy="23" r="19"/></svg><svg class="int-logo ico-news" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18h-5"/><path d="M18 14h-8"/><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-4 0v-9a2 2 0 0 1 2-2h2"/><rect width="8" height="4" x="10" y="6" rx="1"/></svg></span>
+            <span class="int-ico" title="Predictions" aria-label="Predictions"><svg class="int-ring" viewBox="0 0 46 46" aria-hidden="true"><circle cx="23" cy="23" r="19"/></svg><svg class="int-logo ico-pred" viewBox="0 0 24 24" aria-hidden="true"><path class="bar" d="M12 16v5"/><path class="bar" d="M16 14v7"/><path class="bar" d="M20 10v11"/><path class="trend" d="m22 3-8.646 8.646a.5.5 0 0 1-.708 0L9.354 8.354a.5.5 0 0 0-.707 0L2 15"/><path class="bar" d="M4 18v3"/><path class="bar" d="M8 14v7"/></svg></span>
+          </div>
         </div>
-        <p class="route-rec" id="routeRec">Image results for this search</p>
-        <div class="route-cards" id="routeCards"></div>
+        <p class="pop-label">Sources <i></i></p>
+        <div class="thumbs" id="landThumbs"></div>
+        <div class="pager" id="landPager"></div>
+      </section>
+      <div class="social">
+        <a href="#join" aria-label="Pathfinder">
+          <svg viewBox="0 0 24 24"><path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H8v3h2v7h3v-7h2.6l.4-3H13v-2c0-.6.4-1 1-1z"/></svg>
+        </a>
+        <a href="#join" aria-label="Leads">
+          <svg viewBox="0 0 24 24"><path d="M19 7.3c-.6.3-1.2.4-1.9.5.7-.4 1.2-1 1.4-1.8-.6.4-1.3.7-2.1.8A3.2 3.2 0 0 0 12 9.8c0 .3 0 .5.1.8-2.7-.1-5.1-1.4-6.7-3.4-.3.5-.4 1-.4 1.6 0 1.1.6 2.1 1.4 2.7-.5 0-1-.2-1.5-.4v.1c0 1.6 1.1 2.9 2.6 3.2-.3.1-.6.1-.9.1-.2 0-.4 0-.6-.1.4 1.3 1.6 2.2 3 2.3A6.5 6.5 0 0 1 5 17.6 9.1 9.1 0 0 0 10 19c6 0 9.3-5 9.3-9.3v-.4c.6-.5 1.2-1.1 1.7-1.8z"/></svg>
+        </a>
+        <a href="#join" aria-label="Pricing">
+          <svg viewBox="0 0 24 24"><path d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4zm5 4.5A4.5 4.5 0 1 0 16.5 12 4.5 4.5 0 0 0 12 7.5zm6.2-.9a1.1 1.1 0 1 0 1.1 1.1 1.1 1.1 0 0 0-1.1-1.1zM12 9.2A2.8 2.8 0 1 1 9.2 12 2.8 2.8 0 0 1 12 9.2z"/></svg>
+        </a>
       </div>
-    </div>
+    </section>
   </section>
 
+  
   <section class="section bg-4" id="live">
     <div class="wrap">
       <div class="eyebrow"><i></i> Live</div>
@@ -1426,14 +1590,14 @@
       <div class="beach-brand">P.A.T.H.F.I.N.D.E.R</div>
       <div class="beach-links">
         <a href="#live">Live</a>
-        <a href="#route">Leads</a>
+        <a href="#markets">Leads</a>
         <button type="button" data-deck="route" aria-label="Search">
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M16 16l4 4"/></svg>
         </button>
       </div>
     </header>
     <nav class="beach-icons" aria-label="Sources">
-      <a href="#route" aria-label="Maps"><svg viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.2"/></svg></a>
+      <a href="#markets" aria-label="Maps"><svg viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.2"/></svg></a>
       <a href="#live" aria-label="News"><svg viewBox="0 0 24 24"><path d="M4 5h12v14H4z"/><path d="M16 8h4v11H8"/><path d="M7 9h6M7 13h6"/></svg></a>
       <a href="#method" aria-label="Strategies"><svg viewBox="0 0 24 24"><path d="M4 16l5-5 3 3 8-8"/><path d="M14 6h6v6"/></svg></a>
       <a href="#join" aria-label="Start a desk"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-9a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 4.6-7 9-7 9z"/></svg></a>
@@ -1517,6 +1681,50 @@
     </div>
   </section>
 
+  <section class="markets" id="markets" aria-label="Markets">
+    <div class="mk-card">
+      <div class="mk-left">
+        <header class="mk-top">
+          <div class="mk-brand"><i aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l2.2 6.2H21l-5.2 3.8 2 6.2L12 16.8 6.2 19.2l2-6.2L3 9.2h6.8z"/></svg></i>pathfinder</div>
+          <nav class="mk-links" aria-label="Markets">
+            <a href="#markets">Leads</a>
+            <a href="#layers">Layers</a>
+            <a href="#platform">Platform</a>
+            <a href="#method">Method</a>
+          </nav>
+          <button type="button" class="beach-burger mk-burger deck-menu" aria-label="Open menu"><span></span><span></span><span></span></button>
+        </header>
+        <form class="mk-search" id="mkSearch">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M16 16l4 4"/></svg>
+          <input id="mkQuery" type="search" placeholder="Search a city or a category" aria-label="Search a city or a category">
+          <button type="submit">Search</button>
+        </form>
+        <div class="mk-scroll">
+          <div class="mk-cats" id="mkCats"></div>
+          <p class="mk-note" id="mkNote">Choose a category. Leads show the public email and phone on the map.</p>
+          <div class="mk-leads" id="mkLeads"></div>
+        </div>
+        <a class="mk-contact" href="#join">Contact us →</a>
+      </div>
+      <div class="mk-right" id="mkRight">
+        <img class="mk-photo" id="mkPhoto" alt="" src="bg/ribbon.jpg">
+        <div id="mkMap"></div>
+        <div class="mk-toggle" id="mkToggle">
+          <button type="button" data-view="photo" class="on">Photo</button>
+          <button type="button" data-view="sat">Satellite</button>
+          <button type="button" data-view="street">Street</button>
+        </div>
+        <div class="mk-float a" id="mkPinA" hidden><b></b><span></span></div>
+        <div class="mk-float b" id="mkPinB" hidden><b></b><span></span></div>
+        <div class="mk-social">
+          <a href="#join" aria-label="Pathfinder"><svg viewBox="0 0 24 24"><path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H8v3h2v7h3v-7h2.6l.4-3H13v-2c0-.6.4-1 1-1z"/></svg></a>
+          <a href="#join" aria-label="Leads"><svg viewBox="0 0 24 24"><path d="M4 4h16v12H5.2L4 17.2z"/></svg></a>
+          <a href="#join" aria-label="Desk"><svg viewBox="0 0 24 24"><path d="M6 9h12v10H6zM9 9V6h6v3"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="cta bg-1" id="join">
     <div class="bg" aria-hidden="true"></div>
     <h3 class="display">Start a desk on dense information.</h3>
@@ -1532,7 +1740,8 @@
     <span class="brand">pathfinder</span>
     <nav>
       <a href="#live">Live</a>
-      <a href="#route">Leads</a>
+      <a href="#markets">Leads</a>
+      <a href="#markets">Markets</a>
       <a href="#layers">Layers</a>
       <a href="#platform">Platform</a>
       <a href="#method">Method</a>
@@ -1544,7 +1753,7 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 (function () {
-  const CARDS = ["gate", "route", "live", "layers", "platform", "method", "pricing", "join"];
+  const CARDS = ["gate", "board", "live", "layers", "platform", "method", "markets", "pricing", "join"];
   let deckIndex = 0;
   let deckBusy = false;
   const wipe = document.getElementById("cardWipe");
@@ -1564,6 +1773,9 @@
     if (CARDS[index] === "route" && window.__pfMaps) {
       window.__pfMaps.sat.invalidateSize();
       window.__pfMaps.street.invalidateSize();
+    }
+    if (CARDS[index] === "markets" && window.__pfMarket) {
+      setTimeout(function () { window.__pfMarket.invalidateSize(); }, 80);
     }
     if (CARDS[index] === "layers") measure();
   }
@@ -1682,6 +1894,7 @@
     document.getElementById("joined").hidden = false;
   });
 
+  if (document.getElementById("routeHero")) {
   const routeHero = document.getElementById("routeHero");
   const routeTitle = document.getElementById("routeTitle");
   const routeCountry = document.getElementById("routeCountry");
@@ -1912,6 +2125,308 @@
     });
   }, { threshold: 0.2 });
   routeWatch.observe(routeSection);
+  }
+
+  const MK = [
+    { id: "agritech", name: "Agritech", lat: 51.97, lon: 5.67, icon: "M12 21V11M12 11c2-4 6-4 6-8-4 0-6 2-6 8zM12 11c-2-4-6-4-6-8 4 0 6 2 6 8z" },
+    { id: "cleantech", name: "CleanTech & Renewable Energy", lat: 55.676, lon: 12.568, icon: "M12 3v2M12 19v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M3 12h2M19 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z" },
+    { id: "fintech", name: "Fintech & Insurtech", lat: 51.507, lon: -0.128, icon: "M3 10h18M5 10V7l7-3 7 3v3M6 10v8M10 10v8M14 10v8M18 10v8M4 18h16" },
+    { id: "logistics", name: "Logistics & Supply Chain", lat: 51.922, lon: 4.479, icon: "M3 7h11v8H3zM14 10h4l3 3v2h-7zM7 18a1.5 1.5 0 1 0 0.01 0zM17 18a1.5 1.5 0 1 0 0.01 0z" },
+    { id: "edtech", name: "Edtech", lat: 42.36, lon: -71.06, icon: "M4 6l8-3 8 3-8 3zM6 8v5c0 2 2.5 3.5 6 3.5S18 15 18 13V8" },
+    { id: "healthtech", name: "Healthtech", lat: 52.52, lon: 13.405, icon: "M12 21s-7-4.4-7-9a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 4.6-7 9-7 9z" },
+    { id: "commerce", name: "E-Commerce & Retail Tech", lat: 52.367, lon: 4.904, icon: "M6 8h12l-1 12H7zM9 8V6a3 3 0 0 1 6 0v2" },
+    { id: "proptech", name: "Real Estate & PropTech", lat: 25.204, lon: 55.27, icon: "M4 20V10l8-6 8 6v10M10 20v-6h4v6" }
+  ];
+  const mkCats = document.getElementById("mkCats");
+  const mkLeads = document.getElementById("mkLeads");
+  const mkNote = document.getElementById("mkNote");
+  const mkPhoto = document.getElementById("mkPhoto");
+  const mkRight = document.getElementById("mkRight");
+  const mkPinA = document.getElementById("mkPinA");
+  const mkPinB = document.getElementById("mkPinB");
+  let mkActive = MK[0];
+  let mkCenter = { lat: MK[0].lat, lon: MK[0].lon };
+  let mkPoints = [];
+  let mkMap = null;
+  let mkSat = null;
+  let mkStreet = null;
+  let mkPins = null;
+  let mkView = "photo";
+  let mkToken = 0;
+
+  function mkIcon(d) {
+    return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="' + d + '"/></svg>';
+  }
+  mkCats.innerHTML = MK.map(function (cat, i) {
+    return '<button type="button" class="mk-cat' + (i === 0 ? " on" : "") + '" data-id="' + cat.id + '">' + mkIcon(cat.icon) + "<span>" + escapeHtml(cat.name) + "</span></button>";
+  }).join("");
+
+  function ensureMarketMap() {
+    if (mkMap || !window.L) return;
+    mkMap = L.map("mkMap", { zoomControl: false, attributionControl: true }).setView([mkCenter.lat, mkCenter.lon], 13);
+    mkSat = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
+      attribution: "Tiles &copy; Esri", maxZoom: 19
+    });
+    mkStreet = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}", {
+      attribution: "Tiles &copy; Esri", maxZoom: 19
+    });
+    mkSat.addTo(mkMap);
+    mkPins = L.layerGroup().addTo(mkMap);
+    window.__pfMarket = mkMap;
+  }
+  function setMarketView(view) {
+    mkView = view;
+    mkRight.classList.toggle("is-map", view !== "photo");
+    mkRight.querySelectorAll(".mk-toggle button").forEach(function (btn) {
+      btn.classList.toggle("on", btn.dataset.view === view);
+    });
+    if (view === "photo") return;
+    ensureMarketMap();
+    if (!mkMap) return;
+    if (view === "sat") {
+      if (mkMap.hasLayer(mkStreet)) mkMap.removeLayer(mkStreet);
+      if (!mkMap.hasLayer(mkSat)) mkSat.addTo(mkMap);
+    } else {
+      if (mkMap.hasLayer(mkSat)) mkMap.removeLayer(mkSat);
+      if (!mkMap.hasLayer(mkStreet)) mkStreet.addTo(mkMap);
+    }
+    setTimeout(function () {
+      mkMap.invalidateSize();
+      paintMarketPins();
+    }, 60);
+  }
+  function paintMarketPins() {
+    const a = mkPoints[0];
+    const b = mkPoints[1];
+    mkPinA.hidden = !a;
+    mkPinB.hidden = !b;
+    if (a) mkPinA.querySelector("span").textContent = a.name;
+    if (b) mkPinB.querySelector("span").textContent = b.name;
+    if (!mkPins) return;
+    mkPins.clearLayers();
+    mkPoints.forEach(function (point) {
+      const icon = L.divIcon({ className: "mk-marker", html: "<span></span>", iconSize: [16, 16], iconAnchor: [8, 8] });
+      const bits = [point.email, point.phone, point.web].filter(Boolean).map(escapeHtml);
+      L.marker([point.lat, point.lon], { icon: icon })
+        .bindPopup("<strong>" + escapeHtml(point.name) + "</strong><br>" + bits.join("<br>"))
+        .addTo(mkPins);
+    });
+    if (mkMap && mkPoints.length) mkMap.fitBounds(mkPoints.map(function (p) { return [p.lat, p.lon]; }), { padding: [28, 28], maxZoom: 14 });
+  }
+  function paintMarketPhoto(cat) {
+    const next = "photos/markets/" + cat.id + ".jpg";
+    const probe = new Image();
+    probe.onload = function () {
+      mkPhoto.src = next;
+      mkPhoto.alt = cat.name;
+      document.getElementById("markets").style.backgroundImage = "url(\"" + next + "\")";
+    };
+    probe.onerror = function () {
+      mkPhoto.src = "bg/ribbon.jpg";
+      mkPhoto.alt = cat.name;
+      document.getElementById("markets").style.backgroundImage = "";
+    };
+    probe.src = next;
+  }
+  function paintMarketList() {
+    if (!mkPoints.length) {
+      mkLeads.innerHTML = "";
+      mkNote.textContent = "No public email or phone in this radius.";
+      return;
+    }
+    mkNote.textContent = mkPoints.length + " leads · " + (mkActive ? mkActive.name : "");
+    mkLeads.innerHTML = mkPoints.map(function (point, index) {
+      const contact = point.email || point.web || "No public email";
+      const phone = point.phone || "No public phone";
+      return '<button type="button" class="mk-lead" data-i="' + index + '">' + mkIcon(mkActive.icon) +
+        "<span><strong>" + escapeHtml(point.name) + "</strong><em>" + escapeHtml(contact) + "</em><small>" + escapeHtml(phone) + "</small></span></button>";
+    }).join("");
+  }
+  async function loadMarket(cat, center) {
+    mkActive = cat;
+    mkCenter = center || { lat: cat.lat, lon: cat.lon };
+    const token = ++mkToken;
+    mkNote.textContent = "Reading public contacts…";
+    mkLeads.innerHTML = "";
+    paintMarketPhoto(cat);
+    mkCats.querySelectorAll(".mk-cat").forEach(function (btn) {
+      btn.classList.toggle("on", btn.dataset.id === cat.id);
+    });
+    const body = "[out:json][timeout:12];(node[\"name\"][\"email\"](around:8000," + mkCenter.lat + "," + mkCenter.lon + ");node[\"name\"][\"contact:email\"](around:8000," + mkCenter.lat + "," + mkCenter.lon + ");node[\"name\"][\"phone\"](around:4500," + mkCenter.lat + "," + mkCenter.lon + "););out 24;";
+    let points = [];
+    try {
+      const ctrl = new AbortController();
+      const timer = setTimeout(function () { ctrl.abort(); }, 9000);
+      const data = await fetch("https://overpass-api.de/api/interpreter", {
+        method: "POST",
+        headers: { "Content-Type": "text/plain" },
+        body: body,
+        signal: ctrl.signal
+      }).then(function (res) { clearTimeout(timer); return res.json(); });
+      const seen = {};
+      points = (data.elements || []).map(function (el) {
+        const tags = el.tags || {};
+        if (!tags.name || !el.lat || !el.lon) return null;
+        const email = tags.email || tags["contact:email"] || "";
+        const phone = tags.phone || tags["contact:phone"] || tags["contact:mobile"] || "";
+        const web = tags.website || tags["contact:website"] || "";
+        if (!email && !phone) return null;
+        const key = tags.name + "|" + el.lat.toFixed(4);
+        if (seen[key]) return null;
+        seen[key] = true;
+        return { name: tags.name, lat: el.lat, lon: el.lon, email: email, phone: phone, web: web };
+      }).filter(Boolean);
+      points.sort(function (a, b) { return (b.email ? 1 : 0) - (a.email ? 1 : 0); });
+      points = points.slice(0, 8);
+    } catch (err) {
+      points = [];
+    }
+    if (points.length < 2) {
+      try {
+        const around = "(around:3500," + mkCenter.lat + "," + mkCenter.lon + ")";
+        const qn = '"name"';
+        const body2 = "[out:json][timeout:12];(node[" + qn + "][" + '"shop"' + "]" + around + ";node[" + qn + "][" + '"amenity"' + "~" + '"restaurant|cafe|bar|bank|hotel|fast_food|pharmacy"' + "]" + around + ";);out 12;";
+        const ctrl2 = new AbortController();
+        const timer2 = setTimeout(function () { ctrl2.abort(); }, 8000);
+        const data2 = await fetch("https://overpass-api.de/api/interpreter", {
+          method: "POST",
+          headers: { "Content-Type": "text/plain" },
+          body: body2,
+          signal: ctrl2.signal
+        }).then(function (res) { clearTimeout(timer2); return res.json(); });
+        const seen2 = {};
+        points = (data2.elements || []).map(function (el) {
+          const tags = el.tags || {};
+          if (!tags.name || !el.lat || !el.lon || seen2[tags.name]) return null;
+          seen2[tags.name] = true;
+          return {
+            name: tags.name,
+            lat: el.lat,
+            lon: el.lon,
+            email: tags.email || tags["contact:email"] || "",
+            phone: tags.phone || tags["contact:phone"] || "",
+            web: tags.website || tags["contact:website"] || ""
+          };
+        }).filter(Boolean).slice(0, 8);
+      } catch (err2) {}
+    }
+    if (token !== mkToken) return;
+    mkPoints = points;
+    paintMarketList();
+    paintMarketPins();
+  }
+  mkCats.addEventListener("click", function (event) {
+    const btn = event.target.closest(".mk-cat");
+    if (!btn) return;
+    const cat = MK.filter(function (item) { return item.id === btn.dataset.id; })[0];
+    if (cat) loadMarket(cat);
+  });
+  mkLeads.addEventListener("click", function (event) {
+    const btn = event.target.closest(".mk-lead");
+    if (!btn || !mkMap) return;
+    const point = mkPoints[Number(btn.dataset.i)];
+    if (!point) return;
+    setMarketView(mkView === "photo" ? "sat" : mkView);
+    mkMap.flyTo([point.lat, point.lon], 16, { duration: 0.6 });
+  });
+  document.getElementById("mkToggle").addEventListener("click", function (event) {
+    const btn = event.target.closest("button");
+    if (!btn) return;
+    setMarketView(btn.dataset.view);
+    if (btn.dataset.view !== "photo") paintMarketPins();
+  });
+  document.getElementById("mkSearch").addEventListener("submit", async function (event) {
+    event.preventDefault();
+    const raw = document.getElementById("mkQuery").value.trim();
+    if (!raw) return;
+    const q = raw.toLowerCase();
+    const hits = MK.filter(function (cat) { return cat.name.toLowerCase().indexOf(q) !== -1; });
+    if (hits.length === 1 && (hits[0].name.toLowerCase() === q || hits[0].name.toLowerCase().indexOf(q) === 0)) {
+      loadMarket(hits[0]);
+      return;
+    }
+    mkNote.textContent = "Finding " + raw + "…";
+    const center = await geocode(raw);
+    if (!center) { mkNote.textContent = "No place match for " + raw; return; }
+    loadMarket(hits[0] || mkActive, { lat: center.lat, lon: center.lon });
+  });
+  document.getElementById("mkQuery").addEventListener("input", function () {
+    const q = this.value.trim().toLowerCase();
+    mkCats.querySelectorAll(".mk-cat").forEach(function (btn) {
+      const cat = MK.filter(function (item) { return item.id === btn.dataset.id; })[0];
+      btn.hidden = !!q && cat.name.toLowerCase().indexOf(q) === -1;
+    });
+  });
+
+  const BOARD_SLIDES = [
+    { title: "PATHFINDER", text: "Pathfinder is an AI startup that uses machine learning algorithms to generate leads from dense information on the internet, such as Google Maps for geospatial intelligence and co-operate world news, to create business intelligence, go to market strategies, and render prediction series and simulations." },
+    { title: "GEOSPATIAL", text: "Google Maps for geospatial intelligence. Dense place information is where a lead starts." },
+    { title: "NEWS", text: "Co-operate world news, read from the internet and turned into the lead list." },
+    { title: "INTELLIGENCE", text: "Business intelligence built from Google Maps and co-operate world news." },
+    { title: "STRATEGIES", text: "Go to market strategies written from that business intelligence." },
+    { title: "SERIES", text: "Prediction series and simulations rendered from the same dense information." }
+  ];
+  const BOARD_HOMES = [
+    { pos: "18% 42%", alt: "Geospatial intelligence", slide: 1 },
+    { pos: "72% 36%", alt: "Co-operate world news", slide: 2 },
+    { pos: "46% 70%", alt: "Go to market strategies", slide: 4 }
+  ];
+  let boardIndex = 0;
+  const boardTitle = document.getElementById("landTitle");
+  const boardBlurb = document.getElementById("landBlurb");
+  const boardRail = document.getElementById("landRail");
+  const boardThumbs = document.getElementById("landThumbs");
+  const boardPager = document.getElementById("landPager");
+  function paintBoard(next) {
+    boardIndex = (next + BOARD_SLIDES.length) % BOARD_SLIDES.length;
+    const slide = BOARD_SLIDES[boardIndex];
+    boardTitle.textContent = slide.title;
+    boardBlurb.textContent = slide.text;
+    boardRail.querySelectorAll("button").forEach(function (btn, i) { btn.classList.toggle("on", i === boardIndex); });
+    document.querySelectorAll("#board .links button[data-slide]").forEach(function (btn) {
+      btn.classList.toggle("on", Number(btn.dataset.slide) === boardIndex);
+    });
+    boardThumbs.querySelectorAll("button").forEach(function (btn) { btn.classList.toggle("on", Number(btn.dataset.slide) === boardIndex); });
+    boardPager.querySelectorAll("button").forEach(function (btn) { btn.classList.toggle("on", Number(btn.dataset.pop) === boardIndex); });
+  }
+  boardRail.innerHTML = BOARD_SLIDES.map(function (_, i) {
+    return '<button type="button" data-i="' + i + '" aria-label="Slide ' + (i + 1) + '"></button>';
+  }).join("");
+  boardThumbs.innerHTML = BOARD_HOMES.map(function (item) {
+    return '<button type="button" data-slide="' + item.slide + '"><img src="bg/ribbon.jpg" alt="' + item.alt + '" style="object-position:' + item.pos + '"></button>';
+  }).join("");
+  boardPager.innerHTML = BOARD_HOMES.map(function (item, i) {
+    return '<button type="button" data-pop="' + item.slide + '" aria-label="Source ' + (i + 1) + '"></button>';
+  }).join("");
+  paintBoard(0);
+  document.getElementById("board").addEventListener("click", function (event) {
+    const railBtn = event.target.closest("#landRail button");
+    if (railBtn) { paintBoard(Number(railBtn.dataset.i)); return; }
+    const thumb = event.target.closest("#landThumbs button");
+    if (thumb) { paintBoard(Number(thumb.dataset.slide)); return; }
+    const dot = event.target.closest("#landPager button");
+    if (dot) { paintBoard(Number(dot.dataset.pop)); return; }
+    const nav = event.target.closest("#board .links button[data-slide]");
+    if (nav) { paintBoard(Number(nav.dataset.slide)); return; }
+  });
+  document.getElementById("landSearchBtn").addEventListener("click", function () {
+    const pop = document.getElementById("landSearchPop");
+    const open = pop.hidden;
+    pop.hidden = !open;
+    this.setAttribute("aria-expanded", open ? "true" : "false");
+    if (open) document.getElementById("landSearchInput").focus();
+  });
+  document.getElementById("landSearchPop").addEventListener("submit", function (event) {
+    event.preventDefault();
+    const raw = document.getElementById("landSearchInput").value.trim();
+    deckGo(CARDS.indexOf("markets"));
+    if (!raw) return;
+    document.getElementById("mkQuery").value = raw;
+    document.getElementById("mkSearch").requestSubmit();
+  });
+
+  paintMarketPhoto(MK[0]);
+  loadMarket(MK[0]);
 })();
 </script>
 </body>
