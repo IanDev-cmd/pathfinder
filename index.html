@@ -1010,64 +1010,268 @@
     .route-maps { min-height: 420px; }
     .route-cards { grid-template-columns: repeat(2, 1fr); }
   }
+  /* Deck — one card at a time. Layers still scrolls inside its card. */
+  html:has(body.deck), body.deck { height: 100%; overflow: hidden; }
+  body.deck #gate,
+  body.deck #route,
+  body.deck #live,
+  body.deck #layers,
+  body.deck #platform,
+  body.deck #method,
+  body.deck #pricing,
+  body.deck #join {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100svh;
+    margin: 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  body.deck #gate.scene {
+    z-index: auto;
+    display: block;
+    min-height: 0;
+    padding: 0;
+    place-items: stretch;
+  }
+  body.deck #gate.is-on,
+  body.deck #route.is-on,
+  body.deck #live.is-on,
+  body.deck #layers.is-on,
+  body.deck #platform.is-on,
+  body.deck #method.is-on,
+  body.deck #pricing.is-on,
+  body.deck #join.is-on {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    z-index: 3;
+  }
+  body.deck #route { isolation: isolate; background: #fff; }
+  body.deck #layers.is-on { overflow: auto; }
+  body.deck #live.is-on,
+  body.deck #pricing.is-on,
+  body.deck #join.is-on {
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  body.deck[data-card="gate"] .nav-wrap,
+  body.deck[data-card="platform"] .nav,
+  body.deck[data-card="method"] .nav { visibility: hidden; pointer-events: none; }
+  .nav-drawer.open { display: block; pointer-events: auto; }
+  body.deck footer {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 4;
+    transform: translateY(110%);
+  }
+  body.deck[data-card="join"] footer { transform: none; }
+  .card-wipe {
+    position: fixed; inset: 0; z-index: 90;
+    background: #fff;
+    pointer-events: none;
+    transform: translateX(110%);
+  }
+  .card-wipe.x-f-in { animation: wipeInX .46s cubic-bezier(.76, 0, .18, 1) forwards; }
+  .card-wipe.x-f-out { animation: wipeOutX .5s cubic-bezier(.76, 0, .18, 1) forwards; }
+  .card-wipe.x-b-in { animation: wipeInXBack .46s cubic-bezier(.76, 0, .18, 1) forwards; }
+  .card-wipe.x-b-out { animation: wipeOutXBack .5s cubic-bezier(.76, 0, .18, 1) forwards; }
+  .card-wipe.y-f-in { animation: wipeInY .46s cubic-bezier(.76, 0, .18, 1) forwards; }
+  .card-wipe.y-f-out { animation: wipeOutY .5s cubic-bezier(.76, 0, .18, 1) forwards; }
+  .card-wipe.y-b-in { animation: wipeInYBack .46s cubic-bezier(.76, 0, .18, 1) forwards; }
+  .card-wipe.y-b-out { animation: wipeOutYBack .5s cubic-bezier(.76, 0, .18, 1) forwards; }
+  @keyframes wipeInX { from { transform: translateX(110%); } to { transform: translateX(0); } }
+  @keyframes wipeOutX { from { transform: translateX(0); } to { transform: translateX(-110%); } }
+  @keyframes wipeInXBack { from { transform: translateX(-110%); } to { transform: translateX(0); } }
+  @keyframes wipeOutXBack { from { transform: translateX(0); } to { transform: translateX(110%); } }
+  @keyframes wipeInY { from { transform: translateY(110%); } to { transform: translateY(0); } }
+  @keyframes wipeOutY { from { transform: translateY(0); } to { transform: translateY(-110%); } }
+  @keyframes wipeInYBack { from { transform: translateY(-110%); } to { transform: translateY(0); } }
+  @keyframes wipeOutYBack { from { transform: translateY(0); } to { transform: translateY(110%); } }
+  @media (prefers-reduced-motion: reduce) {
+    .card-wipe { animation: none !important; }
+  }
+
+  /* Landing — gradient poster, lines only, ribbon behind */
+  #gate.grad { color: #fff; font-family: Montserrat, "Segoe UI", sans-serif; }
+  #gate .grad-shade { position: absolute; inset: 0; background: rgba(8, 12, 22, 0.34); }
+  #gate .grad-side {
+    position: absolute; top: 50%; z-index: 2; margin: 0;
+    writing-mode: vertical-rl;
+    letter-spacing: 0.62em;
+    font-size: 12px; font-weight: 600;
+    text-transform: uppercase;
+  }
+  #gate .grad-side.left { left: 22px; transform: translateY(-50%); }
+  #gate .grad-side.right { right: 22px; transform: translateY(-50%) rotate(180deg); }
+  #gate .grad-square {
+    position: absolute; z-index: 3;
+    left: 50%; top: 15%;
+    transform: translateX(-50%);
+    width: 132px; height: 132px;
+    border: 1.5px solid rgba(255,255,255,0.92);
+    display: grid; grid-template-columns: 1fr 1fr;
+    place-items: center;
+    padding: 22px 18px 18px 26px;
+    font-size: 18px; font-weight: 600; letter-spacing: 0.18em;
+  }
+  #gate .grad-bar {
+    position: absolute; z-index: 1;
+    left: 8%; right: 8%; top: 39%;
+    height: 22vh; min-height: 118px;
+    border: 1.5px solid rgba(255,255,255,0.88);
+    background: rgba(255,255,255,0.06);
+  }
+  #gate .grad-word {
+    position: absolute; z-index: 2;
+    left: 0; right: 0; top: calc(39% + 11vh - 0.55em);
+    margin: 0; text-align: center;
+    font-weight: 600;
+    font-size: clamp(36px, 6.4vw, 84px);
+    letter-spacing: 0.34em;
+    text-indent: 0.34em;
+    line-height: 1;
+  }
+  #gate .grad-sub {
+    position: absolute; z-index: 2;
+    left: 0; right: 0; top: calc(39% + 22vh + 28px);
+    margin: 0; text-align: center;
+    letter-spacing: 0.72em; text-indent: 0.72em;
+    font-size: 12px; font-weight: 600;
+  }
+  #gate .grad-enter {
+    position: absolute; z-index: 2;
+    left: 50%; top: calc(39% + 22vh + 64px);
+    transform: translateX(-50%);
+  }
+  #gate .grad-enter .enter { position: static; }
+  #gate .grad-hint {
+    display: block; margin-top: 10px;
+    text-align: center; font-size: 10px; letter-spacing: 0.22em;
+    color: rgba(255,255,255,0.72); text-transform: uppercase;
+  }
+
+  /* Platform — beach curve, lines only */
+  body.deck #platform.beach-page { padding: 0; box-shadow: none; color: #fff; font-family: Montserrat, "Segoe UI", sans-serif; }
+  .beach-shade { position: absolute; inset: 0; background: rgba(8, 12, 22, 0.38); }
+  .beach-top, .beach-icons, .beach-arc, .beach-stops, .beach-copy, .beach-place { position: absolute; z-index: 2; }
+  .beach-top {
+    top: 22px; left: 28px; right: 28px;
+    display: grid; grid-template-columns: 48px 1fr auto;
+    align-items: center; gap: 12px;
+  }
+  .beach-burger, .ship-burger {
+    width: 36px; height: 36px; border: 0; background: transparent; color: inherit;
+    display: grid; gap: 5px; align-content: center; justify-items: center; cursor: pointer;
+  }
+  .beach-burger span, .ship-burger span { display: block; width: 18px; height: 1.5px; background: currentColor; }
+  .beach-brand {
+    text-align: center; letter-spacing: 0.42em; text-indent: 0.42em;
+    font-size: 13px; font-weight: 600;
+  }
+  .beach-links { display: flex; align-items: center; gap: 18px; font-size: 12px; letter-spacing: 0.16em; }
+  .beach-links a, .beach-links button { color: #fff; background: none; border: 0; cursor: pointer; letter-spacing: 0.16em; font-size: 12px; }
+  .beach-links svg { width: 16px; height: 16px; fill: none; stroke: #fff; stroke-width: 1.6; }
+  .beach-icons {
+    left: 34px; top: 18%; bottom: 10%;
+    display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+    width: 28px;
+  }
+  .beach-icons::before {
+    content: ""; position: absolute; top: 0; bottom: 0; left: 50%;
+    width: 1px; background: rgba(255,255,255,0.85);
+  }
+  .beach-icons a {
+    position: relative; width: 28px; height: 28px;
+    display: grid; place-items: center; color: #fff;
+  }
+  .beach-icons svg { width: 16px; height: 16px; fill: none; stroke: #fff; stroke-width: 1.6; }
+  .beach-arc { left: 0; top: 0; width: min(46vw, 520px); height: 100%; }
+  .beach-stops { left: 0; top: 0; width: 100%; height: 100%; }
+  .beach-stops span, .beach-stops i { position: absolute; }
+  .beach-stops span { font-size: 14px; font-weight: 500; transform: translateY(-50%); }
+  .beach-stops i {
+    width: 14px; height: 14px; margin-left: -7px; margin-top: -7px;
+    border-radius: 50%; background: #fff;
+    box-shadow: 0 0 0 6px rgba(255,255,255,0.18);
+  }
+  .beach-copy { right: 7%; top: 46%; width: min(460px, 42%); transform: translateY(-40%); }
+  .beach-copy h2 {
+    margin: 0 0 16px;
+    font-weight: 500;
+    font-size: clamp(32px, 4.6vw, 64px);
+    letter-spacing: 0.22em;
+    color: #ffc9c4;
+    line-height: 1;
+  }
+  .beach-copy p { margin: 0 0 22px; max-width: 420px; font-size: 12px; line-height: 1.55; color: rgba(255,255,255,0.9); }
+  .beach-go, #gate .enter {
+    display: inline-grid; place-items: center;
+    min-width: 132px; height: 36px; padding: 0 22px;
+    border-radius: 999px; border: 1.5px solid rgba(255,255,255,0.92);
+    background: transparent; color: #fff;
+    letter-spacing: 0.18em; font-size: 12px; cursor: pointer;
+  }
+  .beach-go:hover, #gate .enter:hover { background: rgba(255,255,255,0.12); }
+  .beach-place { right: 28px; bottom: 18px; margin: 0; font-size: 12px; letter-spacing: 0.04em; }
+
+  /* Method — white geometric card, ribbon in the window */
+  body.deck #method.ship-page { padding: 0; box-shadow: none; background: #c8c8cc url("bg/ribbon.jpg") center / cover no-repeat fixed; }
+  .ship-sheet { position: absolute; inset: 5vh 4vw; width: calc(100% - 8vw); height: calc(100% - 10vh); }
+  .ship-ui { position: absolute; inset: 5vh 4vw; width: calc(100% - 8vw); height: calc(100% - 10vh); color: #16343c; font-family: Montserrat, "Segoe UI", sans-serif; }
+  .ship-logo {
+    position: absolute; left: 6%; top: 7%;
+    font-weight: 700; letter-spacing: 0.18em; font-size: 14px; color: #1d4c56;
+  }
+  .ship-logo i { font-style: normal; color: #2f8f86; }
+  .ship-burger { position: absolute; right: 5%; top: 6%; color: #6d8b84; }
+  .ship-copy { position: absolute; left: 6%; top: 24%; width: min(380px, 38%); }
+  .ship-copy .kicker { margin: 0; color: #1f6f86; font-size: 15px; font-weight: 600; line-height: 1.35; }
+  .ship-copy h2 { margin: 8px 0 14px; font-size: clamp(28px, 3vw, 40px); line-height: 1.15; font-weight: 600; color: #102a30; letter-spacing: -0.02em; }
+  .ship-copy p { margin: 0; color: #5d7378; font-size: 13px; line-height: 1.55; max-width: 340px; }
+  .ship-steps, .ship-links { position: absolute; bottom: 12%; display: grid; gap: 10px; }
+  .ship-steps { left: 6%; }
+  .ship-links { right: 8%; text-align: right; }
+  .ship-steps b, .ship-links b {
+    font-size: 11px; letter-spacing: 0.2em; font-weight: 600; color: #1f6f86;
+  }
+  .ship-steps button, .ship-links button {
+    border: 0; background: none; padding: 0; text-align: inherit;
+    color: #1a3c44; font-size: 13px; letter-spacing: 0.08em; cursor: pointer; font-weight: 600;
+  }
+  .ship-steps button:hover, .ship-links button:hover { color: #0f9d8a; }
+  .ship-legal { position: absolute; right: 6%; bottom: 4%; margin: 0; font-size: 11px; color: #8aa0a4; }
+  @media (max-width: 860px) {
+    #gate .grad-side { display: none; }
+    #gate .grad-word { letter-spacing: 0.12em; text-indent: 0.12em; font-size: 28px; }
+    #gate .grad-bar { left: 16px; right: 16px; }
+    .beach-arc, .beach-stops, .beach-icons { display: none; }
+    .beach-brand { letter-spacing: 0.16em; text-indent: 0; font-size: 11px; }
+    .beach-copy { left: 20px; right: 20px; width: auto; top: auto; bottom: 64px; transform: none; }
+    .beach-copy h2 { letter-spacing: 0.08em; font-size: 28px; }
+    .ship-copy { width: min(280px, 70%); }
+    .ship-links { display: none; }
+  }
 </style>
 </head>
-<body class="locked">
+<body class="deck locked" data-card="gate">
+<div class="card-wipe" id="cardWipe" aria-hidden="true"></div>
   <div class="wash" aria-hidden="true"></div>
 
-  <section id="gate" class="scene" aria-label="Pathfinder">
-    <section class="card" id="landCard" aria-label="Pathfinder">
-      <div class="shade" aria-hidden="true"></div>
-      <header class="nav">
-        <div class="brand">pathfinder</div>
-        <nav class="links" aria-label="Primary">
-          <button type="button" data-slide="1" class="on">Geospatial</button>
-          <button type="button" data-slide="2">News</button>
-          <button type="button" data-slide="4">Strategies</button>
-          <button type="button" id="gateExplore">Leads</button>
-        </nav>
-        <div class="tools">
-          <button class="icon-btn" id="landSearchBtn" type="button" aria-label="Search" aria-expanded="false">
-            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M16 16l4 4"/></svg>
-          </button>
-          <span class="avatar" aria-hidden="true">PF</span>
-        </div>
-      </header>
-      <form class="search-pop" id="landSearchPop" hidden>
-        <input id="landSearchInput" type="search" placeholder="Search Pathfinder" aria-label="Search Pathfinder">
-      </form>
-      <div class="rail" id="landRail" aria-label="Slides"></div>
-      <div class="copy">
-        <h1 id="landTitle">PATHFINDER</h1>
-        <p id="landBlurb"></p>
-        <button type="button" class="enter" id="gateEnter">Enter</button>
-      </div>
-      <section class="popular" aria-label="Sources">
-        <div class="integrations">
-          <p>Dense information</p>
-          <div class="int-row">
-            <span class="int-ico" title="Google Maps" aria-label="Google Maps"><svg class="int-ring" viewBox="0 0 46 46" aria-hidden="true"><circle cx="23" cy="23" r="19"/></svg><svg class="int-logo ico-maps" viewBox="0 0 24 24" aria-hidden="true"><path d="M19.527 4.799c1.212 2.608.937 5.678-.405 8.173-1.101 2.047-2.744 3.74-4.098 5.614-.619.858-1.244 1.75-1.669 2.727-.141.325-.263.658-.383.992-.121.333-.224.673-.34 1.008-.109.314-.236.684-.627.687h-.007c-.466-.001-.579-.53-.695-.887-.284-.874-.581-1.713-1.019-2.525-.51-.944-1.145-1.817-1.79-2.671L19.527 4.799zM8.545 7.705l-3.959 4.707c.724 1.54 1.821 2.863 2.871 4.18.247.31.494.622.737.936l4.984-5.925-.029.01c-1.741.601-3.691-.291-4.392-1.987a3.377 3.377 0 0 1-.209-.716c-.063-.437-.077-.761-.004-1.198l.001-.007zM5.492 3.149l-.003.004c-1.947 2.466-2.281 5.88-1.117 8.77l4.785-5.689-.058-.05-3.607-3.035zM14.661.436l-3.838 4.563a.295.295 0 0 1 .027-.01c1.6-.551 3.403.15 4.22 1.626.176.319.323.683.377 1.045.068.446.085.773.012 1.22l-.003.016 3.836-4.561A8.382 8.382 0 0 0 14.67.439l-.009-.003zM9.466 5.868L14.162.285l-.047-.012A8.31 8.31 0 0 0 11.986 0a8.439 8.439 0 0 0-6.169 2.766l-.016.018 3.665 3.084z"/></svg></span>
-            <span class="int-ico" title="AI" aria-label="AI"><svg class="int-ring" viewBox="0 0 46 46" aria-hidden="true"><circle cx="23" cy="23" r="19"/></svg><svg class="int-logo ico-ai" viewBox="0 0 24 24" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></svg></span>
-            <span class="int-ico" title="News" aria-label="News"><svg class="int-ring" viewBox="0 0 46 46" aria-hidden="true"><circle cx="23" cy="23" r="19"/></svg><svg class="int-logo ico-news" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18h-5"/><path d="M18 14h-8"/><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-4 0v-9a2 2 0 0 1 2-2h2"/><rect width="8" height="4" x="10" y="6" rx="1"/></svg></span>
-            <span class="int-ico" title="Predictions" aria-label="Predictions"><svg class="int-ring" viewBox="0 0 46 46" aria-hidden="true"><circle cx="23" cy="23" r="19"/></svg><svg class="int-logo ico-pred" viewBox="0 0 24 24" aria-hidden="true"><path class="bar" d="M12 16v5"/><path class="bar" d="M16 14v7"/><path class="bar" d="M20 10v11"/><path class="trend" d="m22 3-8.646 8.646a.5.5 0 0 1-.708 0L9.354 8.354a.5.5 0 0 0-.707 0L2 15"/><path class="bar" d="M4 18v3"/><path class="bar" d="M8 14v7"/></svg></span>
-          </div>
-        </div>
-        <p class="pop-label">Sources <i></i></p>
-        <div class="thumbs" id="landThumbs"></div>
-        <div class="pager" id="landPager"></div>
-      </section>
-      <div class="social">
-        <a href="#join" aria-label="Pathfinder">
-          <svg viewBox="0 0 24 24"><path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H8v3h2v7h3v-7h2.6l.4-3H13v-2c0-.6.4-1 1-1z"/></svg>
-        </a>
-        <a href="#join" aria-label="Leads">
-          <svg viewBox="0 0 24 24"><path d="M19 7.3c-.6.3-1.2.4-1.9.5.7-.4 1.2-1 1.4-1.8-.6.4-1.3.7-2.1.8A3.2 3.2 0 0 0 12 9.8c0 .3 0 .5.1.8-2.7-.1-5.1-1.4-6.7-3.4-.3.5-.4 1-.4 1.6 0 1.1.6 2.1 1.4 2.7-.5 0-1-.2-1.5-.4v.1c0 1.6 1.1 2.9 2.6 3.2-.3.1-.6.1-.9.1-.2 0-.4 0-.6-.1.4 1.3 1.6 2.2 3 2.3A6.5 6.5 0 0 1 5 17.6 9.1 9.1 0 0 0 10 19c6 0 9.3-5 9.3-9.3v-.4c.6-.5 1.2-1.1 1.7-1.8z"/></svg>
-        </a>
-        <a href="#join" aria-label="Pricing">
-          <svg viewBox="0 0 24 24"><path d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4zm5 4.5A4.5 4.5 0 1 0 16.5 12 4.5 4.5 0 0 0 12 7.5zm6.2-.9a1.1 1.1 0 1 0 1.1 1.1 1.1 1.1 0 0 0-1.1-1.1zM12 9.2A2.8 2.8 0 1 1 9.2 12 2.8 2.8 0 0 1 12 9.2z"/></svg>
-        </a>
-      </div>
-    </section>
+  <section id="gate" class="scene grad is-on" aria-label="Pathfinder">
+    <div class="grad-shade" aria-hidden="true"></div>
+    <p class="grad-side left">Dense</p>
+    <p class="grad-side right">4 Layers</p>
+    <div class="grad-square" aria-label="Series"><b>S</b><b>E</b><b>R</b><b>I</b><b>E</b><b>S</b></div>
+    <div class="grad-bar" aria-hidden="true"></div>
+    <h1 class="grad-word">STRATEGY</h1>
+    <p class="grad-sub">FORECAST</p>
+    <div class="grad-enter">
+      <button type="button" class="enter" id="gateEnter">Enter</button>
+      <span class="grad-hint">or press space</span>
+    </div>
   </section>
 
   <div class="nav-wrap">
@@ -1215,64 +1419,69 @@
     </div>
   </section>
 
-  <section class="section bg-5" id="platform">
-    <div class="wrap">
-      <div class="split">
-        <div>
-          <div class="eyebrow">Platform</div>
-          <h3 class="display">Everything the model<br />needs to find a lead.</h3>
-        </div>
+  <section class="section bg-5 beach-page" id="platform" aria-label="Platform">
+    <div class="beach-shade" aria-hidden="true"></div>
+    <header class="beach-top">
+      <button type="button" class="beach-burger deck-menu" aria-label="Open menu"><span></span><span></span><span></span></button>
+      <div class="beach-brand">P.A.T.H.F.I.N.D.E.R</div>
+      <div class="beach-links">
+        <a href="#live">Live</a>
+        <a href="#route">Leads</a>
+        <button type="button" data-deck="route" aria-label="Search">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M16 16l4 4"/></svg>
+        </button>
       </div>
-      <div class="bento">
-        <article class="card wide">
-          <div class="wide-art" aria-hidden="true"></div>
-          <div class="wide-copy">
-            <div class="mark" aria-hidden="true">◎</div>
-            <h4>Generate leads from dense information</h4>
-            <p>Pathfinder is an AI startup. Machine learning reads the crowded internet — maps, news, and the trails between them — and returns leads a go-to-market team can use.</p>
-          </div>
-        </article>
-        <article class="card">
-          <div class="mark">⌖</div>
-          <h4>Geospatial intelligence</h4>
-          <p>Google Maps as a source, not a backdrop. Territory, access, and concentration become part of the lead.</p>
-        </article>
-        <article class="card">
-          <div class="mark">☰</div>
-          <h4>Co-operate world news</h4>
-          <p>World news is scored into business intelligence on the same desk, so a headline can move an account up the list.</p>
-        </article>
-        <article class="card">
-          <div class="mark">↗</div>
-          <h4>Go-to-market</h4>
-          <p>Strategies written from the evidence: which market, which motion, which week.</p>
-        </article>
-        <article class="card">
-          <div class="mark">∿</div>
-          <h4>Series and simulations</h4>
-          <p>Prediction series and scenario runs rendered side by side, so the plan can be tested before it is spent.</p>
-        </article>
-      </div>
+    </header>
+    <nav class="beach-icons" aria-label="Sources">
+      <a href="#route" aria-label="Maps"><svg viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.2"/></svg></a>
+      <a href="#live" aria-label="News"><svg viewBox="0 0 24 24"><path d="M4 5h12v14H4z"/><path d="M16 8h4v11H8"/><path d="M7 9h6M7 13h6"/></svg></a>
+      <a href="#method" aria-label="Strategies"><svg viewBox="0 0 24 24"><path d="M4 16l5-5 3 3 8-8"/><path d="M14 6h6v6"/></svg></a>
+      <a href="#join" aria-label="Start a desk"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-9a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 4.6-7 9-7 9z"/></svg></a>
+    </nav>
+    <svg class="beach-arc" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M36 0 C 44 8, 48 14, 50 22 C 56 36, 78 40, 78 48 C 78 58, 46 66, 44 76 C 42 88, 34 94, 30 100" fill="none" stroke="#fff" stroke-width="1.6" vector-effect="non-scaling-stroke"/>
+    </svg>
+    <div class="beach-stops">
+      <i style="top:22%;left:18%"></i><span style="top:22%;left:calc(18% + 18px)">Geospatial</span>
+      <i style="top:48%;left:28.1%"></i><span style="top:48%;left:calc(28.1% + 18px)">News</span>
+      <i style="top:76%;left:15.9%"></i><span style="top:76%;left:calc(15.9% + 18px)">Strategies</span>
     </div>
+    <div class="beach-copy">
+      <h2>PATHFINDER</h2>
+      <p>Pathfinder is an AI startup that uses machine learning algorithms to generate leads from dense information on the internet, such as Google Maps for geospatial intelligence and co-operate world news, to create business intelligence, go to market strategies, and render prediction series and simulations.</p>
+      <button type="button" class="beach-go deck-next">Enter</button>
+    </div>
+    <p class="beach-place">Dense information</p>
   </section>
 
-  <section class="section bg-6" id="method">
-    <div class="wrap">
-      <div class="split">
-        <div>
-          <div class="eyebrow">Method</div>
-          <h3 class="display">From the internet<br />to a series.</h3>
-        </div>
+  <section class="section bg-6 ship-page" id="method" aria-label="Method">
+    <svg class="ship-sheet" viewBox="0 0 1200 760" preserveAspectRatio="none" aria-hidden="true">
+      <path fill="#fff" fill-rule="evenodd" d="M0 0 H1200 V760 H0 Z M640 70 C 980 20, 1160 160, 1100 300 C 1040 440, 760 390, 820 520 C 890 660, 1140 600, 1040 720 C 980 780, 700 680, 620 540 C 520 360, 430 150, 640 70 Z"/>
+    </svg>
+    <div class="ship-ui">
+      <div class="ship-logo">path<i>finder</i></div>
+      <button type="button" class="ship-burger deck-menu" aria-label="Open menu"><span></span><span></span><span></span></button>
+      <div class="ship-copy">
+        <p class="kicker">We read dense information<br>for every lead as if it were</p>
+        <h2>our only source.</h2>
+        <p>From the internet to a series. Google Maps becomes geospatial intelligence, co-operate world news becomes business intelligence, and the desk renders go-to-market strategies, prediction series, and simulations.</p>
       </div>
-      <div class="steps">
-        <article class="step"><span class="n">01</span><h4>Ingest</h4><p>Pull dense place data, including Google Maps, into geospatial intelligence.</p></article>
-        <article class="step"><span class="n">02</span><h4>Read</h4><p>Read co-operate world news until it becomes business intelligence on a named account.</p></article>
-        <article class="step"><span class="n">03</span><h4>Position</h4><p>Write the go-to-market strategy from the evidence, not from a template.</p></article>
-        <article class="step"><span class="n">04</span><h4>Render</h4><p>Render prediction series and simulations the desk can compare.</p></article>
-      </div>
+      <nav class="ship-steps" aria-label="Steps">
+        <b>STEPS</b>
+        <button type="button" data-deck="live">Ingest</button>
+        <button type="button" data-deck="layers">Read</button>
+        <button type="button" data-deck="platform">Position</button>
+        <button type="button" data-deck="pricing">Render</button>
+      </nav>
+      <nav class="ship-links" aria-label="Sources">
+        <b>SOURCES</b>
+        <button type="button" data-deck="route">Maps</button>
+        <button type="button" data-deck="live">News</button>
+        <button type="button" data-deck="platform">Strategies</button>
+      </nav>
+      <p class="ship-legal">Pathfinder · leads from dense information</p>
     </div>
   </section>
-
 
   <section class="section bg-2" id="pricing">
     <div class="wrap">
@@ -1335,88 +1544,112 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 (function () {
-  const GATE_SLIDES = [
-    { title: "PATHFINDER", text: "Pathfinder is an AI startup that uses machine learning algorithms to generate leads from dense information on the internet, such as Google Maps for geospatial intelligence and co-operate world news, to create business intelligence, go to market strategies, and render prediction series and simulations." },
-    { title: "GEOSPATIAL", text: "Google Maps for geospatial intelligence. Dense place information is where a lead starts." },
-    { title: "NEWS", text: "Co-operate world news, read from the internet and turned into the lead list." },
-    { title: "INTELLIGENCE", text: "Business intelligence built from Google Maps and co-operate world news." },
-    { title: "STRATEGIES", text: "Go to market strategies written from that business intelligence." },
-    { title: "SERIES", text: "Prediction series and simulations rendered from the same dense information." }
-  ];
-  const GATE_HOMES = [
-    { pos: "18% 42%", alt: "Geospatial intelligence", slide: 1 },
-    { pos: "72% 36%", alt: "Co-operate world news", slide: 2 },
-    { pos: "46% 70%", alt: "Go to market strategies", slide: 4 }
-  ];
-  let gateIndex = 0;
-  const gate = document.getElementById("gate");
-  const landTitle = document.getElementById("landTitle");
-  const landBlurb = document.getElementById("landBlurb");
-  const landRail = document.getElementById("landRail");
-  const landThumbs = document.getElementById("landThumbs");
-  const landPager = document.getElementById("landPager");
+  const CARDS = ["gate", "route", "live", "layers", "platform", "method", "pricing", "join"];
+  let deckIndex = 0;
+  let deckBusy = false;
+  const wipe = document.getElementById("cardWipe");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  function openSite() {
-    gate.hidden = true;
-    document.body.classList.remove("locked");
-  }
-  function paintGate(next) {
-    gateIndex = (next + GATE_SLIDES.length) % GATE_SLIDES.length;
-    const slide = GATE_SLIDES[gateIndex];
-    landTitle.textContent = slide.title;
-    landBlurb.textContent = slide.text;
-    landRail.querySelectorAll("button").forEach(function (btn, i) { btn.classList.toggle("on", i === gateIndex); });
-    document.querySelectorAll("#gate .links button[data-slide]").forEach(function (btn) {
-      btn.classList.toggle("on", Number(btn.dataset.slide) === gateIndex);
+  function cardEl(i) { return document.getElementById(CARDS[i]); }
+
+  function applyCard(index) {
+    CARDS.forEach(function (id, i) {
+      const el = document.getElementById(id);
+      if (el) el.classList.toggle("is-on", i === index);
     });
-    landThumbs.querySelectorAll("button").forEach(function (btn) { btn.classList.toggle("on", Number(btn.dataset.slide) === gateIndex); });
-    landPager.querySelectorAll("button").forEach(function (btn) { btn.classList.toggle("on", Number(btn.dataset.pop) === gateIndex); });
+    deckIndex = index;
+    document.body.dataset.card = CARDS[index];
+    const hash = index === 0 ? "#gate" : "#" + CARDS[index];
+    if (location.hash !== hash) history.replaceState(null, "", hash);
+    if (CARDS[index] === "route" && window.__pfMaps) {
+      window.__pfMaps.sat.invalidateSize();
+      window.__pfMaps.street.invalidateSize();
+    }
+    if (CARDS[index] === "layers") measure();
   }
 
-  if (location.hash && location.hash !== "#" && location.hash !== "#top") openSite();
+  function playWipe(name) {
+    return new Promise(function (resolve) {
+      if (reduceMotion) { resolve(); return; }
+      let settled = false;
+      function done() {
+        if (settled) return;
+        settled = true;
+        wipe.removeEventListener("animationend", done);
+        resolve();
+      }
+      wipe.addEventListener("animationend", done);
+      wipe.className = "card-wipe " + name;
+      setTimeout(done, 700);
+    });
+  }
 
-  landRail.innerHTML = GATE_SLIDES.map(function (_, i) {
-    return '<button type="button" data-i="' + i + '" aria-label="Slide ' + (i + 1) + '"></button>';
-  }).join("");
-  landThumbs.innerHTML = GATE_HOMES.map(function (item) {
-    return '<button type="button" data-slide="' + item.slide + '"><img src="bg/ribbon.jpg" alt="' + item.alt + '" style="object-position:' + item.pos + '"></button>';
-  }).join("");
-  landPager.innerHTML = GATE_HOMES.map(function (item, i) {
-    return '<button type="button" data-pop="' + item.slide + '" aria-label="Source ' + (i + 1) + '"></button>';
-  }).join("");
-  paintGate(0);
+  function deckGo(next) {
+    if (deckBusy || next < 0 || next >= CARDS.length || next === deckIndex) return;
+    const from = deckIndex;
+    const forward = next > from;
+    const horizontal = from === 0 || next === 0;
+    const axis = horizontal ? "x" : "y";
+    const way = forward ? "f" : "b";
+    deckBusy = true;
+    playWipe(axis + "-" + way + "-in").then(function () {
+      applyCard(next);
+      return playWipe(axis + "-" + way + "-out");
+    }).then(function () {
+      wipe.className = "card-wipe";
+      deckBusy = false;
+    });
+  }
+  window.deckGo = deckGo;
 
-  gate.addEventListener("click", function (event) {
-    const railBtn = event.target.closest("#landRail button");
-    if (railBtn) { paintGate(Number(railBtn.dataset.i)); return; }
-    const thumb = event.target.closest("#landThumbs button");
-    if (thumb) { paintGate(Number(thumb.dataset.slide)); return; }
-    const dot = event.target.closest("#landPager button");
-    if (dot) { paintGate(Number(dot.dataset.pop)); return; }
-    const nav = event.target.closest("#gate .links button[data-slide]");
-    if (nav) { paintGate(Number(nav.dataset.slide)); return; }
-    if (event.target.closest("#gateEnter") || event.target.closest("#gateExplore") || event.target.closest("#gate .social a")) openSite();
-  });
-  document.getElementById("landSearchBtn").addEventListener("click", function () {
-    const pop = document.getElementById("landSearchPop");
-    const open = pop.hidden;
-    pop.hidden = !open;
-    document.getElementById("landSearchBtn").setAttribute("aria-expanded", open ? "true" : "false");
-    if (open) document.getElementById("landSearchInput").focus();
-  });
-  document.getElementById("landSearchPop").addEventListener("submit", function (event) {
+  (function bootDeck() {
+    const hash = (location.hash || "").replace("#", "");
+    const found = CARDS.indexOf(hash);
+    applyCard(found >= 0 ? found : 0);
+  })();
+
+  document.addEventListener("click", function (event) {
+    if (event.target.closest(".deck-menu")) {
+      event.preventDefault();
+      document.getElementById("drawer").classList.toggle("open");
+      return;
+    }
+    if (event.target.closest("#gateEnter, .deck-next")) {
+      event.preventDefault();
+      deckGo(deckIndex + 1);
+      return;
+    }
+    const jump = event.target.closest("[data-deck]");
+    if (jump) {
+      event.preventDefault();
+      deckGo(CARDS.indexOf(jump.dataset.deck));
+      return;
+    }
+    const link = event.target.closest("a[href^='#']");
+    if (!link) return;
+    const id = link.getAttribute("href").slice(1);
+    const at = CARDS.indexOf(id);
+    if (at < 0) return;
     event.preventDefault();
-    const raw = document.getElementById("landSearchInput").value.trim();
-    if (!raw) return;
-    openSite();
-    if (window.pathfinderSearch) window.pathfinderSearch(raw);
-    location.hash = "#route";
+    document.getElementById("drawer").classList.remove("open");
+    deckGo(at);
   });
+
   window.addEventListener("keydown", function (event) {
-    if (event.key !== "Enter" || gate.hidden) return;
-    if (event.target.closest("input, textarea")) return;
-    openSite();
+    if (event.target.closest("input, textarea, select")) return;
+    if ((event.key === "Enter" || event.code === "Space") && event.target.closest("button, a")) return;
+    if (event.key === "Enter" || event.code === "Space") {
+      event.preventDefault();
+      deckGo(deckIndex + 1);
+    } else if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+      event.preventDefault();
+      deckGo(deckIndex + 1);
+    } else if (event.key === "ArrowLeft" || event.key === "ArrowUp" || event.key === "Backspace") {
+      event.preventDefault();
+      deckGo(deckIndex - 1);
+    }
   });
+
 
   const menuBtn = document.getElementById("menuBtn");
   const drawer = document.getElementById("drawer");
@@ -1438,6 +1671,7 @@
       inner.style.transform = "scale(" + (1 - t * 0.045) + ")";
     });
   }
+  document.getElementById("layers").addEventListener("scroll", measure, { passive: true });
   window.addEventListener("scroll", measure, { passive: true });
   measure();
 
@@ -1494,6 +1728,7 @@
     }).addTo(streetMap);
     satLeads = L.layerGroup().addTo(satMap);
     streetLeads = L.layerGroup().addTo(streetMap);
+    window.__pfMaps = { sat: satMap, street: streetMap };
     setTimeout(function () {
       satMap.invalidateSize();
       streetMap.invalidateSize();
