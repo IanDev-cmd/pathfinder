@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#173028" />
+<title>Pathfinder remote</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet" />
+<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100%; }
+  body {
+    font-family: Montserrat, "Segoe UI", sans-serif;
+    color: #173028;
+    background: #c8c8cc url("bg/ribbon.jpg") center / cover no-repeat fixed;
+  }
+  main {
+    width: min(520px, 100%);
+    margin: 0 auto;
+    padding: 18px 14px calc(22px + env(safe-area-inset-bottom));
+  }
+  .sheet {
+    background: #fff;
+    border-radius: 28px;
+    padding: 18px 14px 16px;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.22);
+  }
+  h1 {
+    margin: 0;
+    font-size: 13px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #1f8a4c;
+  }
+  p.lead { margin: 8px 0 14px; font-size: 13px; line-height: 1.4; color: #607069; }
+  form { display: flex; gap: 8px; }
+  input {
+    flex: 1; min-width: 0;
+    border: 1px solid #e3ece7; background: #f7faf8;
+    border-radius: 999px; padding: 14px 16px;
+    font: inherit; font-size: 18px; letter-spacing: 0.28em;
+    text-transform: uppercase; color: #173028;
+  }
+  button { font: inherit; cursor: pointer; }
+  .go, .key, .page, .mini {
+    border: 0; border-radius: 16px; color: #173028; background: #f4f7f5;
+  }
+  .go {
+    background: #1f8a4c; color: #fff; border-radius: 999px;
+    padding: 0 16px; font-weight: 700; letter-spacing: 0.06em;
+  }
+  #status { min-height: 18px; margin: 10px 2px 0; font-size: 12px; color: #1f8a4c; }
+  .pad { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .key {
+    min-height: 72px; font-size: 16px; font-weight: 700;
+  }
+  .key.wide { grid-column: 1 / -1; background: #173028; color: #fff; }
+  .label {
+    margin: 16px 2px 8px; font-size: 11px; letter-spacing: 0.18em;
+    text-transform: uppercase; color: #607069;
+  }
+  .pages, .mins { display: grid; gap: 8px; }
+  .pages { grid-template-columns: 1fr 1fr; }
+  .page, .mini { min-height: 48px; font-size: 13px; font-weight: 600; }
+  .mins { grid-template-columns: 1fr 1fr 1fr; }
+  button:active { transform: scale(0.98); }
+  button[disabled] { opacity: 0.45; }
+</style>
+</head>
+<body>
+<main>
+  <section class="sheet">
+    <h1>Pathfinder</h1>
+    <p class="lead">Type the remote code from the corner of the desk. This page stays off the site scroll.</p>
+    <form id="pair">
+      <input id="code" inputmode="text" autocomplete="off" maxlength="6" placeholder="CODE" aria-label="Remote code">
+      <button class="go" type="submit">Link</button>
+    </form>
+    <p id="status">Not linked</p>
+    <div class="pad">
+      <button class="key" type="button" data-send='{"t":"scroll","dy":-640}'>Scroll up</button>
+      <button class="key" type="button" data-send='{"t":"scroll","dy":640}'>Scroll down</button>
+      <button class="key" type="button" data-send='{"t":"back"}'>Previous</button>
+      <button class="key" type="button" data-send='{"t":"enter"}'>Next</button>
+      <button class="key wide" type="button" data-send='{"t":"enter"}'>Enter</button>
+    </div>
+    <p class="label">Pages</p>
+    <div class="pages" id="pages"></div>
+    <p class="label">Markets</p>
+    <div class="mins">
+      <button class="mini" type="button" data-send='{"t":"view","id":"photo"}'>Photo</button>
+      <button class="mini" type="button" data-send='{"t":"view","id":"sat"}'>Satellite</button>
+      <button class="mini" type="button" data-send='{"t":"view","id":"street"}'>Street</button>
+      <button class="mini" type="button" data-send='{"t":"focus"}'>Search</button>
+    </div>
+    <div class="pages" id="cats" style="margin-top:8px"></div>
+  </section>
+</main>
+<script>
+(function () {
+  const pages = [
+    ["gate", "Landing"],
+    ["board", "Pathfinder"],
+    ["live", "Live"],
+    ["layers", "Layers"],
+    ["platform", "Platform"],
+    ["method", "Method"],
+    ["markets", "Markets"],
+    ["pricing", "Pricing"],
+    ["join", "Start"]
+  ];
+  const cats = [
+    ["agritech", "Agritech"],
+    ["cleantech", "CleanTech"],
+    ["fintech", "Fintech"],
+    ["logistics", "Logistics"],
+    ["edtech", "Edtech"],
+    ["healthtech", "Health"],
+    ["commerce", "Commerce"],
+    ["proptech", "PropTech"]
+  ];
+  const pagesEl = document.getElementById("pages");
+  const catsEl = document.getElementById("cats");
+  pages.forEach(function (item) {
+    const btn = document.createElement("button");
+    btn.className = "page";
+    btn.type = "button";
+    btn.textContent = item[1];
+    btn.dataset.send = JSON.stringify({ t: "page", id: item[0] });
+    pagesEl.appendChild(btn);
+  });
+  cats.forEach(function (item) {
+    const btn = document.createElement("button");
+    btn.className = "mini";
+    btn.type = "button";
+    btn.textContent = item[1];
+    btn.dataset.send = JSON.stringify({ t: "market", id: item[0] });
+    catsEl.appendChild(btn);
+  });
+
+  const status = document.getElementById("status");
+  const codeInput = document.getElementById("code");
+  let conn = null;
+  const saved = (location.hash || "").replace("#", "").toUpperCase();
+  if (saved) codeInput.value = saved;
+
+  function setStatus(text) { status.textContent = text; }
+  function send(msg) {
+    if (!conn || !conn.open) { setStatus("Link the code first"); return; }
+    conn.send(msg);
+  }
+  document.body.addEventListener("click", function (event) {
+    const btn = event.target.closest("[data-send]");
+    if (!btn) return;
+    send(JSON.parse(btn.dataset.send));
+  });
+  document.getElementById("pair").addEventListener("submit", function (event) {
+    event.preventDefault();
+    const code = codeInput.value.trim().toLowerCase();
+    if (!code || !window.Peer) { setStatus("Enter the code on the desk"); return; }
+    setStatus("Linking…");
+    if (conn) { try { conn.close(); } catch (err) {} }
+    const peer = new Peer();
+    peer.on("open", function () {
+      conn = peer.connect("pf" + code);
+      conn.on("open", function () {
+        setStatus("Linked to " + code.toUpperCase());
+        location.hash = code.toUpperCase();
+      });
+      conn.on("close", function () { setStatus("Desk closed the link"); });
+      conn.on("error", function () { setStatus("Could not reach that code"); });
+    });
+    peer.on("error", function () { setStatus("Could not reach that code"); });
+  });
+})();
+</script>
+</body>
+</html>
