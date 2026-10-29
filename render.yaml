@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: pathfinder
+    runtime: static
+    branch: main
+    buildCommand: echo "Publish the static Pathfinder site"
+    staticPublishPath: .

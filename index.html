@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#ff4e00" />
+<title>Pathfinder — Generate leads from dense information</title>
+<meta name="description" content="Pathfinder uses machine learning to generate leads from Google Maps, co-operate world news, business intelligence, go-to-market strategies, and prediction series and simulations." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --paper: #fff8f4;
+    --ink: #ff4e00;
+    --orange: #ff4e00;
+    --muted: rgba(255, 255, 255, 0.82);
+    --faint: rgba(255, 255, 255, 0.68);
+    --line: rgba(255, 255, 255, 0.28);
+    --lime: #ffffff;
+    --cyan: #fff3ea;
+    --green: #ff4e00;
+    --display: "Fredoka", "Nunito", system-ui, sans-serif;
+    --sans: "Nunito", system-ui, sans-serif;
+    --mono: "Nunito", system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    color: #fff;
+    background: #ff4e00;
+    font-family: var(--sans);
+    font-weight: 400;
+    overflow-x: hidden;
+  }
+  body.locked { overflow: hidden; }
+  a { color: inherit; }
+  button, input { font-family: inherit; }
+  img { max-width: 100%; display: block; }
+
+  .wash { display: none; }
+  .bg-1 { background: #ff4e00 url("bg/octave-1.jpg") center / cover no-repeat; }
+  .bg-2 { background: #ff4e00 url("bg/octave-2.jpg") center / cover no-repeat; }
+  .bg-3 { background: #ff4e00 url("bg/octave-3.jpg") center / cover no-repeat; }
+  .bg-4 { background: #ff4e00 url("bg/octave-4.jpg") center / cover no-repeat; }
+  .bg-5 { background: #ff4e00 url("bg/octave-5.jpg") center / cover no-repeat; }
+  .bg-6 { background: #ff4e00 url("bg/octave-6.jpg") center / cover no-repeat; }
+
+  /* Gate — Kilele landing, Pathfinder words */
+  .stage {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: #ff4e00 url("bg/octave-4.jpg") center / cover no-repeat;
+    overflow: hidden;
+    isolation: isolate;
+    transition: opacity 0.8s ease, visibility 0.8s;
+  }
+  .stage.landing-out { opacity: 0; visibility: hidden; pointer-events: none; }
+  .splashes { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+  .splashes g {
+    transform-box: fill-box;
+    transform-origin: 50% 50%;
+    opacity: 0;
+  }
+  .shape-a { transform: translate(14%, -12%) scale(1.22) rotate(4deg); }
+  .shape-b { transform: translate(14%, 14%) scale(1.24) rotate(-3deg); }
+  .shape-c { transform: translate(-16%, -14%) scale(1.28); }
+  .shape-d { transform: translate(-16%, 14%) scale(1.28); }
+  .stage.shapes-in .shape-a { animation: splashIn 1.35s cubic-bezier(0.16, 0.85, 0.18, 1) forwards; }
+  .stage.shapes-in .shape-b { animation: splashIn 1.35s cubic-bezier(0.16, 0.85, 0.18, 1) 0.12s forwards; }
+  .stage.shapes-in .shape-c { animation: splashIn 1.15s cubic-bezier(0.16, 0.85, 0.18, 1) 0.28s forwards; }
+  .stage.shapes-in .shape-d { animation: splashIn 1.15s cubic-bezier(0.16, 0.85, 0.18, 1) 0.38s forwards; }
+  @keyframes splashIn { to { opacity: 1; transform: none; } }
+  .grain { position: absolute; inset: 0; z-index: 5; width: 100%; height: 100%; pointer-events: none; opacity: 0.045; mix-blend-mode: multiply; }
+  .sound-toggle {
+    position: absolute; top: 24px; right: 24px; z-index: 20;
+    width: 40px; height: 40px; border-radius: 50%;
+    border: 1px solid rgba(11, 15, 12, 0.18);
+    background: rgba(244, 246, 242, 0.55);
+    display: grid; place-items: center; cursor: pointer;
+    opacity: 0; pointer-events: none;
+  }
+  .stage.text-in .sound-toggle { opacity: 1; pointer-events: auto; }
+  .sound-toggle svg { width: 17px; height: 17px; stroke: var(--ink); fill: none; }
+  .center {
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+    z-index: 7; text-align: center; width: 100%; padding: 0 24px;
+  }
+  .wordwrap, .subwrap { overflow: hidden; }
+  h1.word {
+    margin: 0;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(40px, 8.4vw, 128px);
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+    transform: translateY(115%);
+    filter: blur(14px);
+    opacity: 0;
+  }
+  .stage.word-in h1.word { animation: wordIn 1.25s cubic-bezier(0.16, 0.9, 0.2, 1) forwards; }
+  @keyframes wordIn { to { transform: none; filter: blur(0); opacity: 1; } }
+  .sub {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(18px, 3.4vw, 42px);
+    letter-spacing: 0.14em;
+    color: #fff;
+    -webkit-text-stroke: 0;
+    text-transform: none;
+    letter-spacing: -0.03em;
+    transform: translateY(105%);
+  }
+  .stage.sub-in .sub { animation: subIn 1.05s cubic-bezier(0.16, 0.9, 0.2, 1) 0.2s forwards; }
+  @keyframes subIn { to { transform: none; } }
+  .underline { width: 0; height: 3px; background: var(--ink); margin: 18px auto 0; }
+  .stage.line-in .underline { animation: lineIn 1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.35s forwards; }
+  @keyframes lineIn { to { width: clamp(80px, 14vw, 220px); } }
+  .gate {
+    position: absolute; inset: 0; z-index: 50; background: #ff4e00 url("bg/octave-1.jpg") center / cover no-repeat; color: #fff;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;
+    transition: opacity 0.8s ease, visibility 0.8s;
+  }
+  .gate.hide { opacity: 0; visibility: hidden; pointer-events: none; }
+  .gate-title {
+    margin: 0;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(30px, 5.6vw, 50px);
+    letter-spacing: -0.03em;
+  }
+  .enter-btn {
+    position: relative;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #fff;
+    background: transparent;
+    border: 1.5px solid #fff;
+    padding: 16px 42px;
+    border-radius: 999px;
+    cursor: pointer;
+    overflow: hidden;
+    z-index: 1;
+  }
+  .enter-btn::before {
+    content: "";
+    position: absolute; inset: 0;
+    background: #fff;
+    transform: translateX(-100%);
+    transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+    z-index: -1;
+  }
+  .enter-btn:hover { border-color: transparent; color: #ff4e00; }
+  h1.word, .gate-title, .underline { color: #fff; }
+  .underline { background: #fff; }
+  .sound-toggle { border-color: rgba(255,255,255,0.45); background: rgba(255,255,255,0.16); }
+  .sound-toggle svg { stroke: #fff; }
+  .enter-btn:hover::before { transform: none; }
+
+  /* Nav */
+  .nav-wrap {
+    position: fixed; inset: 16px 16px auto 16px; z-index: 40;
+    display: flex; justify-content: center; pointer-events: none;
+  }
+  .nav {
+    pointer-events: auto;
+    width: min(920px, 100%);
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px;
+    padding: 12px 18px;
+    border-radius: 18px;
+    border: 1px solid rgba(10, 10, 10, 0.12);
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 8px 24px rgba(10, 10, 10, 0.08);
+  }
+  .brand {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-decoration: none;
+  }
+  .nav-links { display: flex; align-items: center; gap: 16px; }
+  .nav-links a {
+    text-decoration: none;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: rgba(10, 10, 10, 0.55);
+  }
+  .nav-links a:hover { color: var(--ink); }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    padding: 10px 16px;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    cursor: pointer;
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .btn.ghost {
+    background: transparent;
+    color: var(--ink);
+    border-color: rgba(10, 10, 10, 0.18);
+  }
+  .btn.glass {
+    background: rgba(255, 255, 255, 0.72);
+    color: var(--ink);
+    border-color: rgba(10, 10, 10, 0.12);
+  }
+  .menu-btn {
+    display: none;
+    width: 36px; height: 36px; border: 0; background: transparent; cursor: pointer;
+  }
+  .menu-btn span { display: block; height: 1px; width: 18px; margin: 5px auto; background: var(--ink); }
+  .nav-drawer {
+    display: none;
+    margin-top: 8px;
+    border-radius: 18px;
+    border: 1px solid rgba(10, 10, 10, 0.12);
+    background: #fff;
+    padding: 8px;
+  }
+  .nav-drawer a { display: block; padding: 12px 14px; text-decoration: none; color: rgba(10, 10, 10, 0.7); }
+
+  /* Page 1 — the Pathfinder board */
+  .hero {
+    position: relative;
+    height: 100svh;
+    min-height: 640px;
+    margin: 0;
+    padding: 72px 32px 48px;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    color: #fff;
+  }
+  .hero h2 {
+    margin: 0;
+    font-family: "Fredoka", sans-serif;
+    font-weight: 700;
+    font-size: clamp(72px, 14vw, 188px);
+    line-height: 0.86;
+    letter-spacing: -0.045em;
+    color: #fff;
+  }
+  .hero p {
+    margin: 22px auto 0;
+    max-width: 720px;
+    font-family: "Fredoka", sans-serif;
+    font-weight: 500;
+    font-size: clamp(18px, 2.4vw, 32px);
+    line-height: 1.25;
+    letter-spacing: -0.03em;
+    color: #fff;
+  }
+
+  .section { padding: 120px 48px; border-top: 1px solid var(--line); }
+  .wrap { max-width: 1120px; margin: 0 auto; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    margin-bottom: 16px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(10, 10, 10, 0.06);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(10, 10, 10, 0.62);
+  }
+  .eyebrow i { width: 6px; height: 6px; border-radius: 50%; background: var(--lime); display: block; }
+  h3.display {
+    margin: 0;
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: clamp(36px, 5vw, 64px);
+    line-height: 1.02;
+    letter-spacing: -0.04em;
+  }
+  .lede { max-width: 420px; color: var(--muted); font-size: 14px; line-height: 1.6; }
+  .split { display: flex; justify-content: space-between; gap: 32px; align-items: end; margin-bottom: 48px; }
+
+  /* Signal deck */
+  .scroller {
+    display: flex; gap: 14px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 8px;
+    cursor: grab;
+    scrollbar-width: none;
+  }
+  .scroller::-webkit-scrollbar { display: none; }
+  .scroller:active { cursor: grabbing; }
+  .signal {
+    flex: 0 0 min(78vw, 380px);
+    scroll-snap-align: start;
+    min-height: 460px;
+    padding: 28px;
+    border-radius: 24px;
+    border: 1px solid rgba(10, 10, 10, 0.12);
+    background: rgba(255, 255, 255, 0.72);
+    display: flex; flex-direction: column; justify-content: space-between;
+    backdrop-filter: blur(10px);
+  }
+  .signal .idx { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; color: var(--faint); }
+  .signal h4 { margin: 12px 0 8px; font-family: var(--display); font-weight: 500; font-size: 32px; letter-spacing: -0.04em; }
+  .signal p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.55; }
+  .signal b { font-family: var(--display); font-weight: 500; font-size: 28px; letter-spacing: -0.04em; }
+  .signal em { font-style: normal; display: block; margin-top: 4px; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); }
+
+  .bento { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 12px; }
+  .card {
+    border-radius: 22px;
+    border: 1px solid rgba(10, 10, 10, 0.12);
+    background: rgba(255, 255, 255, 0.78);
+    padding: 28px;
+    min-height: 220px;
+  }
+  .card.wide { grid-column: 1 / -1; min-height: 280px; position: relative; overflow: hidden; }
+  .card h4 { margin: 12px 0 8px; font-size: 22px; font-weight: 500; letter-spacing: -0.03em; font-family: var(--display); }
+  .card p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.55; max-width: 460px; }
+  .mark {
+    width: 40px; height: 40px; border-radius: 12px;
+    border: 1px solid rgba(10, 10, 10, 0.12);
+    display: grid; place-items: center;
+    background: rgba(255, 255, 255, 0.7);
+  }
+  .wide-art {
+    position: absolute; inset: 0;
+    background: #ff4e00 url("bg/octave-5.jpg") center / cover no-repeat;
+  }
+  .card.wide, .card.wide h4, .card.wide p { color: #fff; }
+  .card.wide p { color: rgba(255,255,255,0.88); }
+  .wide-copy { position: relative; z-index: 1; max-width: 560px; }
+
+  .stack { display: flex; flex-direction: column; }
+  .stack-card { position: sticky; margin-bottom: 16px; }
+  .stack-inner {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    min-height: 300px;
+    border-radius: 22px;
+    overflow: hidden;
+    border: 1px solid rgba(10, 10, 10, 0.12);
+    background: #fff;
+    transform-origin: top center;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .stack-copy { padding: 32px; }
+  .pill {
+    display: inline-flex;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(10, 10, 10, 0.06);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(10, 10, 10, 0.6);
+  }
+  .stack-copy h4 { margin: 18px 0 10px; font-family: var(--display); font-weight: 500; font-size: 28px; letter-spacing: -0.03em; }
+  .stack-copy p { margin: 0 0 28px; color: var(--muted); font-size: 14px; line-height: 1.6; max-width: 460px; }
+  .pair { display: flex; gap: 28px; border-top: 1px solid var(--line); padding-top: 18px; }
+  .pair b { display: block; font-family: var(--display); font-weight: 500; font-size: 26px; letter-spacing: -0.04em; }
+  .pair span { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); }
+  .stack-art {
+    min-height: 160px;
+    background:
+      linear-gradient(90deg, #fff 0%, transparent 36%),
+      #ff4e00 url("bg/octave-2.jpg") center / cover no-repeat;
+  }
+
+  .page {
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    padding: 120px 48px 72px;
+    border-top: 1px solid var(--line);
+  }
+  .catalog-num {
+    margin: 8px 0 0;
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: clamp(64px, 8vw, 104px);
+    letter-spacing: -0.05em;
+    line-height: 0.9;
+  }
+  .note { max-width: 460px; color: var(--muted); font-size: 14px; line-height: 1.55; }
+  .pills { display: flex; gap: 22px; margin-top: 28px; flex-wrap: wrap; }
+  .hpill { display: flex; gap: 12px; align-items: center; }
+  .sq {
+    width: 46px; height: 46px; border-radius: 14px;
+    display: grid; place-items: center; color: var(--green); background: #e7f8ee;
+    font-size: 18px;
+  }
+  .sq.alt { background: #e5fff6; color: #0f9d8a; }
+  .hpill small { display: block; color: var(--muted); font-size: 12px; }
+  .hpill b { font-family: var(--display); font-size: 18px; }
+
+  .scale-grid { display: grid; grid-template-columns: 220px 260px 280px; gap: 14px; align-items: end; }
+  .float {
+    background: #fff;
+    border-radius: 18px;
+    padding: 16px;
+    box-shadow: 0 8px 24px rgba(32, 33, 36, 0.08);
+  }
+  .float small { color: var(--muted); font-size: 12px; }
+  .float strong { display: block; margin-top: 4px; font-family: var(--display); font-size: 28px; letter-spacing: -0.04em; }
+  .float em { color: #137333; font-style: normal; font-weight: 600; font-size: 12px; }
+  .bars { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+  .bars p { margin: 0; display: grid; grid-template-columns: 64px 1fr; gap: 8px; align-items: center; font-size: 12px; color: var(--muted); }
+  .bars i { display: block; height: 6px; border-radius: 99px; background: #f1f3f4; position: relative; overflow: hidden; }
+  .bars i b { position: absolute; inset: 0 auto 0 0; border-radius: 99px; }
+  .cols { height: 74px; margin-top: 12px; display: flex; align-items: flex-end; gap: 5px; }
+  .cols i { flex: 1; display: block; border-radius: 4px 4px 2px 2px; background: var(--green); min-height: 4px; }
+
+  .layer-layout { display: grid; grid-template-columns: 1fr 320px; gap: 48px; align-items: center; width: min(1120px, 100%); }
+  .rows { display: flex; flex-direction: column; }
+  .row {
+    all: unset;
+    cursor: pointer;
+    display: grid;
+    grid-template-columns: 1fr auto auto 14px;
+    gap: 10px;
+    align-items: center;
+    padding: 8px 4px;
+    border-radius: 8px;
+    font-size: 14px;
+  }
+  .row:hover { background: rgba(255, 255, 255, 0.55); }
+  .row b { font-size: 12px; }
+  .row em { font-style: normal; color: var(--muted); font-size: 12px; min-width: 52px; text-align: right; }
+  .arr { width: 0; height: 0; border-left: 4px solid transparent; border-right: 4px solid transparent; border-bottom: 6px solid var(--green); }
+  .row.off { opacity: 0.45; }
+  .row.off .arr { border-bottom: 0; border-top: 6px solid #d4534a; }
+  .donuts { display: flex; flex-direction: column; gap: 14px; margin-top: 18px; }
+  .donut { display: flex; gap: 12px; align-items: center; }
+  .donut svg { width: 64px; height: 64px; }
+  .donut b { display: block; font-family: var(--display); }
+  .donut span { color: var(--muted); font-size: 12px; }
+
+  .hazard {
+    position: relative;
+    height: 100svh;
+    min-height: 720px;
+    border-top: 1px solid var(--line);
+    background: #ff4e00 url("bg/octave-5.jpg") center / cover no-repeat;
+  }
+  .hazard iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: transparent; }
+
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .step {
+    min-height: 320px;
+    padding: 22px;
+    border-radius: 22px;
+    border: 1px solid rgba(10, 10, 10, 0.12);
+    background:
+      linear-gradient(to top, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.78) 46%, rgba(255, 255, 255, 0.2) 100%),
+      var(--wash);
+    display: flex; flex-direction: column;
+  }
+  .step .n { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; color: var(--faint); }
+  .step h4 { margin: auto 0 10px; font-family: var(--display); font-weight: 500; font-size: 28px; letter-spacing: -0.03em; }
+  .step p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.55; }
+
+  .integ {
+    position: relative;
+    min-height: 480px;
+    border-radius: 24px;
+    overflow: hidden;
+    border: 1px solid rgba(10, 10, 10, 0.12);
+    background:
+      linear-gradient(100deg, rgba(10, 20, 14, 0.2), rgba(10, 20, 14, 0.45)),
+      var(--wash);
+  }
+  .glass-stack {
+    position: absolute; right: 16px; bottom: 16px; width: min(320px, calc(100% - 32px));
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .glass {
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    background: rgba(10, 10, 10, 0.72);
+    color: #fff;
+    padding: 22px;
+    backdrop-filter: blur(18px);
+  }
+  .glass p, .glass span { color: rgba(255, 255, 255, 0.75); }
+  .glass h4 { margin: 10px 0; font-weight: 500; }
+  .code {
+    margin-top: 12px;
+    padding: 12px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.35);
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.86);
+  }
+  .code i { color: var(--lime); font-style: normal; }
+
+  .marquee { border-top: 1px solid var(--line); overflow: hidden; background: rgba(255, 255, 255, 0.4); }
+  .mrow { display: flex; width: max-content; border-bottom: 1px solid var(--line); }
+  .mrow span {
+    display: flex; align-items: center; gap: 16px;
+    padding: 18px 28px;
+    border-right: 1px solid var(--line);
+    white-space: nowrap;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .mrow i { width: 6px; height: 6px; border-radius: 50%; background: var(--lime); display: block; }
+  .left { animation: slideLeft 32s linear infinite; }
+  .right { animation: slideRight 36s linear infinite; }
+  @keyframes slideLeft { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @keyframes slideRight { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+
+  table { width: 100%; border-collapse: collapse; min-width: 680px; }
+  .table-wrap {
+    overflow-x: auto;
+    border-radius: 18px;
+    border: 1px solid rgba(10, 10, 10, 0.12);
+    background: rgba(255, 255, 255, 0.72);
+  }
+  th, td { text-align: left; padding: 14px 18px; border-bottom: 1px solid var(--line); font-size: 14px; }
+  th { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--faint); font-weight: 500; }
+  td.dim { color: var(--muted); }
+  .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 8px; }
+
+  .film {
+    height: 100svh;
+    min-height: 720px;
+    border-top: 1px solid var(--line);
+    background: #ff4e00 url("bg/octave-6.jpg") center / cover no-repeat;
+  }
+  .film-slot { width: 100%; height: 100%; }
+
+  .plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .plan {
+    border-radius: 22px;
+    border: 1px solid rgba(10, 10, 10, 0.12);
+    background: rgba(255, 255, 255, 0.8);
+    padding: 28px;
+    display: flex; flex-direction: column;
+  }
+  .plan.featured { background: var(--lime); }
+  .plan .name { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); }
+  .plan.featured .name, .plan.featured .quiet { color: rgba(0, 0, 0, 0.55); }
+  .price { font-family: var(--display); font-size: 42px; letter-spacing: -0.04em; margin: 10px 0 4px; }
+  .quiet { color: var(--faint); font-size: 13px; }
+  .plan ul { list-style: none; padding: 0; margin: 24px 0 28px; flex: 1; }
+  .plan li { display: flex; gap: 10px; align-items: center; margin: 10px 0; font-size: 14px; }
+  .plan li::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--lime); }
+  .plan.featured li::before { background: #0a0a0a; }
+  .plan .btn { width: 100%; }
+  .plan.featured .btn { background: #0a0a0a; color: var(--lime); }
+
+  .cta { position: relative; text-align: center; padding: 120px 24px; border-top: 1px solid var(--line); overflow: hidden; }
+  .cta .bg { display: none; }
+  .cta h3 { margin: 0 auto 16px; max-width: 760px; }
+  .join { display: flex; gap: 8px; justify-content: center; max-width: 460px; margin: 28px auto 0; }
+  .join input {
+    flex: 1;
+    border-radius: 999px;
+    border: 1px solid rgba(10, 10, 10, 0.14);
+    background: rgba(255, 255, 255, 0.8);
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+  footer {
+    display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap;
+    padding: 28px 48px 36px;
+    border-top: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.7);
+    font-size: 12px;
+    color: var(--faint);
+  }
+  footer nav { display: flex; gap: 18px; flex-wrap: wrap; }
+  footer a { color: var(--faint); text-decoration: none; letter-spacing: 0.08em; text-transform: uppercase; font-size: 11px; }
+  .copy { width: 100%; }
+
+  @media (max-width: 980px) {
+    .nav-links, .nav .btn { display: none; }
+    .menu-btn { display: block; }
+    .nav-drawer.open { display: block; }
+    .section, .page { padding-left: 20px; padding-right: 20px; }
+    .hero { padding: 0; }
+    .bento, .steps, .plans, .scale-grid, .layer-layout, .stack-inner { grid-template-columns: 1fr; }
+    .card.wide { grid-column: auto; }
+    .split { flex-direction: column; align-items: start; }
+    footer { padding-left: 20px; padding-right: 20px; }
+    .join { flex-direction: column; }
+  }
+
+  h1, h2, h3, .display, .catalog-num, .price, .word, .gate-title, .signal h4, .stack-copy h4, .step h4, .card h4 {
+    font-family: "Fredoka", sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.035em;
+  }
+  .brand { font-family: "Fredoka", sans-serif; font-size: 18px; letter-spacing: -0.03em; font-weight: 600; color: #ff4e00; text-transform: lowercase; }
+  .nav, .nav-drawer { color: #ff4e00; }
+  .nav-links a, .nav-drawer a { color: rgba(255, 78, 0, 0.72); }
+  .nav-links a:hover, .nav-drawer a:hover { color: #ff4e00; }
+  .nav .btn.ghost { color: #ff4e00; border-color: rgba(255, 78, 0, 0.35); background: transparent; }
+  .btn { background: #fff; color: #ff4e00; }
+  .btn.ghost { background: transparent; color: #fff; border-color: rgba(255,255,255,0.75); }
+  .btn.glass { background: #fff; color: #ff4e00; }
+  .eyebrow { background: rgba(255,255,255,0.18); color: #fff; }
+  .eyebrow i, .mrow i { background: #fff; }
+  .signal, .card, .stack-inner, .float, .step, .table-wrap {
+    background: #fff;
+    color: #ff4e00;
+    border-color: rgba(255,255,255,0.5);
+  }
+  .signal p, .card p, .stack-copy p, .step p, .float small, .note {
+    color: rgba(255, 78, 0, 0.74);
+  }
+  .card.wide p { color: rgba(255,255,255,0.88); }
+  .lede { color: rgba(255,255,255,0.88); }
+  .pill { background: rgba(255, 78, 0, 0.1); color: #ff4e00; }
+  .pair { border-top-color: rgba(255, 78, 0, 0.16); }
+  .pair span, .signal em, .signal .idx { color: rgba(255, 78, 0, 0.55); }
+  .float em { color: #ff4e00; }
+  .sq, .sq.alt { background: rgba(255,255,255,0.2); color: #fff; }
+  .row { color: #fff; }
+  .row em, .row b { color: rgba(255,255,255,0.8); }
+  .row:hover { background: rgba(255,255,255,0.16); }
+  .arr { border-bottom-color: #fff; }
+  .cols i { background: #fff; }
+  .plan { background: rgba(255,255,255,0.16); color: #fff; border-color: rgba(255,255,255,0.45); }
+  .plan .name, .plan .quiet, .plan li { color: rgba(255,255,255,0.86); }
+  .plan .price, .plan h4 { color: #fff; }
+  .plan li::before { background: #fff; }
+  .plan .btn { background: #fff; color: #ff4e00; }
+  .plan.featured { background: #fff; color: #ff4e00; }
+  .plan.featured .name, .plan.featured .quiet, .plan.featured li, .plan.featured .price { color: #ff4e00; }
+  .plan.featured .quiet, .plan.featured li { color: rgba(255, 78, 0, 0.75); }
+  .plan.featured li::before { background: #ff4e00; }
+  .plan.featured .btn { background: #ff4e00; color: #fff; }
+  .table-wrap th { color: rgba(255, 78, 0, 0.5); }
+  .table-wrap td, .table-wrap td.dim { color: #ff4e00; }
+  .integ {
+    background: #ff4e00 url("bg/octave-6.jpg") center / cover no-repeat;
+    border-color: rgba(255,255,255,0.35);
+  }
+  .glass { background: rgba(255,255,255,0.94); color: #ff4e00; border-color: #fff; }
+  .glass p, .glass span, .code { color: rgba(255, 78, 0, 0.8); }
+  .code { background: rgba(255, 78, 0, 0.06); }
+  .code i { color: #ff4e00; }
+  .marquee { background: #ff4e00 url("bg/octave-2.jpg") center / cover no-repeat; }
+  .mrow span { color: #fff; }
+  footer, footer a, .copy { color: rgba(255,255,255,0.82); }
+  footer { background: #ff4e00 url("bg/octave-1.jpg") center / cover no-repeat; border-top-color: rgba(255,255,255,0.28); }
+  footer .brand { color: #fff; }
+  .join input { background: #fff; color: #ff4e00; border-color: #fff; }
+  .join input::placeholder { color: rgba(255, 78, 0, 0.45); }
+  .splashes { opacity: 0.55; }
+  .mark { border-color: rgba(255,78,0,0.2); color: #ff4e00; background: #fff; }
+  .card.wide .mark { background: rgba(255,255,255,0.2); color: #fff; border-color: rgba(255,255,255,0.4); }
+</style>
+</head>
+<body class="locked">
+  <div class="wash" aria-hidden="true"></div>
+
+  <div class="stage" id="stage" role="dialog" aria-label="Pathfinder intro">
+    <svg class="splashes" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="gGreen" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#ffffff" /><stop offset="100%" stop-color="#ffd8c2" />
+        </linearGradient>
+        <linearGradient id="gTeal" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#ffffff" /><stop offset="100%" stop-color="#ffe8dc" />
+        </linearGradient>
+        <linearGradient id="gGreen2" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#fff" /><stop offset="100%" stop-color="#ffc7a8" />
+        </linearGradient>
+      </defs>
+      <g class="shape-a"><path fill="url(#gGreen)" d="M1000,0 L1000,720 L860,790 L760,700 L640,760 L560,640 L430,690 L470,540 L360,470 L510,350 L420,220 L560,150 L520,40 L640,0 Z" /></g>
+      <g class="shape-b"><path fill="url(#gTeal)" d="M1000,560 L1000,1000 L260,1000 L340,880 L460,910 L520,800 L650,830 L700,700 L820,730 L860,610 Z" /></g>
+      <g class="shape-c"><path fill="url(#gGreen2)" d="M0,0 L230,0 L200,90 L260,150 L150,230 L120,140 L0,150 Z" /></g>
+      <g class="shape-d"><path fill="url(#gGreen2)" d="M0,760 L110,700 L160,800 L250,830 L200,940 L260,1000 L0,1000 Z" /></g>
+    </svg>
+    <svg class="grain" aria-hidden="true"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch" /></filter><rect width="100%" height="100%" filter="url(#noise)" /></svg>
+    <button type="button" class="sound-toggle" id="soundBtn" title="Toggle sound" aria-pressed="true">
+      <svg viewBox="0 0 24 24" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5z" /><path d="M15.5 8.5a5 5 0 0 1 0 7" /><path d="M18 6a9 9 0 0 1 0 12" /></svg>
+    </button>
+    <div class="center">
+      <div class="wordwrap"><h1 class="word">pathfinder</h1></div>
+      <div class="subwrap"><div class="sub">intelligence</div></div>
+      <div class="underline"></div>
+    </div>
+    <div class="gate" id="gate">
+      <h2 class="gate-title">pathfinder</h2>
+      <button type="button" class="enter-btn" id="enterBtn" autofocus>Enter</button>
+    </div>
+  </div>
+
+  <div class="nav-wrap">
+    <div style="width:min(920px,100%)">
+      <nav class="nav" aria-label="Primary">
+        <a class="brand" href="#top">pathfinder</a>
+        <div class="nav-links">
+          <a href="#signals">Signals</a>
+          <a href="#platform">Platform</a>
+          <a href="#layers">Layers</a>
+          <a href="#hazard">Hazard</a>
+          <a href="#method">Method</a>
+          <a href="#film">Film</a>
+          <a href="#pricing">Pricing</a>
+        </div>
+        <a class="btn ghost" href="#join">Start a desk</a>
+        <button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu"><span></span><span></span><span></span></button>
+      </nav>
+      <div class="nav-drawer" id="drawer">
+        <a href="#signals">Signals</a>
+        <a href="#platform">Platform</a>
+        <a href="#layers">Layers</a>
+        <a href="#hazard">Hazard</a>
+        <a href="#method">Method</a>
+        <a href="#film">Film</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#join">Start a desk</a>
+      </div>
+    </div>
+  </div>
+
+  <header class="hero bg-1" id="top">
+    <div>
+      <h2>pathfinder</h2>
+      <p>geospatial intelligence<br />co-operate world news<br />business intelligence<br />go to market strategies<br />predictions &amp; simulations</p>
+    </div>
+  </header>
+
+  <section class="section bg-2" id="signals">
+    <div class="wrap">
+      <div class="split">
+        <div>
+          <div class="eyebrow"><i></i> Signals</div>
+          <h3 class="display">Dense inputs.<br />Named leads.</h3>
+        </div>
+        <p class="lede">Swipe the sources Pathfinder reads. Maps, news, strategy, series, and simulations sit on one desk.</p>
+      </div>
+      <div class="scroller" id="scroller">
+        <article class="signal"><div><div class="idx">01</div><h4>Geospatial intelligence</h4><p>Google Maps and dense place data. The lead starts where the city actually is.</p></div><div><b>Maps</b><em>Place</em></div></article>
+        <article class="signal"><div><div class="idx">02</div><h4>Co-operate world news</h4><p>World news read as a source. Headlines become account signals on the same desk.</p></div><div><b>News</b><em>World</em></div></article>
+        <article class="signal"><div><div class="idx">03</div><h4>Business intelligence</h4><p>Filings, shifts, and market language scored into a list a desk can work.</p></div><div><b>Desk</b><em>Intelligence</em></div></article>
+        <article class="signal"><div><div class="idx">04</div><h4>Go to market strategies</h4><p>Who to approach, in which territory, and why now — written from the signal.</p></div><div><b>GTM</b><em>Strategy</em></div></article>
+        <article class="signal"><div><div class="idx">05</div><h4>Predictions &amp; simulations</h4><p>A prediction series beside a simulation, so the lead list can be tested before it is spent.</p></div><div><b>Series</b><em>Runs</em></div></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-5" id="platform">
+    <div class="wrap">
+      <div class="split">
+        <div>
+          <div class="eyebrow">Platform</div>
+          <h3 class="display">Everything the model<br />needs to find a lead.</h3>
+        </div>
+      </div>
+      <div class="bento">
+        <article class="card wide">
+          <div class="wide-art" aria-hidden="true"></div>
+          <div class="wide-copy">
+            <div class="mark" aria-hidden="true">◎</div>
+            <h4>Generate leads from dense information</h4>
+            <p>Pathfinder is an AI startup. Machine learning reads the crowded internet — maps, news, and the trails between them — and returns leads a go-to-market team can use.</p>
+          </div>
+        </article>
+        <article class="card">
+          <div class="mark">⌖</div>
+          <h4>Geospatial intelligence</h4>
+          <p>Google Maps as a source, not a backdrop. Territory, access, and concentration become part of the lead.</p>
+        </article>
+        <article class="card">
+          <div class="mark">☰</div>
+          <h4>Co-operate world news</h4>
+          <p>World news is scored into business intelligence on the same desk, so a headline can move an account up the list.</p>
+        </article>
+        <article class="card">
+          <div class="mark">↗</div>
+          <h4>Go-to-market</h4>
+          <p>Strategies written from the evidence: which market, which motion, which week.</p>
+        </article>
+        <article class="card">
+          <div class="mark">∿</div>
+          <h4>Series and simulations</h4>
+          <p>Prediction series and scenario runs rendered side by side, so the plan can be tested before it is spent.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-4" id="agents">
+    <div class="wrap">
+      <div class="split">
+        <div>
+          <div class="eyebrow">Layers</div>
+          <h3 class="display">Four readers.<br />One lead list.</h3>
+        </div>
+        <p class="lede">Each layer stays on the page as you scroll. Maps, news, strategy, and the series that follows.</p>
+      </div>
+      <div class="stack" id="stack">
+        <article class="stack-card" style="top:96px;z-index:1">
+          <div class="stack-inner">
+            <div class="stack-copy">
+              <span class="pill">Maps</span>
+              <h4>Geospatial intelligence</h4>
+              <p>Read Google Maps as dense information. Place, route, and concentration tell Pathfinder where a lead is physically real.</p>
+              <div class="pair"><div><b>Maps</b><span>Source</span></div><div><b>Live</b><span>Territory</span></div></div>
+            </div>
+            <div class="stack-art"></div>
+          </div>
+        </article>
+        <article class="stack-card" style="top:114px;z-index:2">
+          <div class="stack-inner">
+            <div class="stack-copy">
+              <span class="pill">News</span>
+              <h4>Co-operate world news</h4>
+              <p>Business intelligence from the news that actually moves a company: capital, contracts, openings, and retreats.</p>
+              <div class="pair"><div><b>News</b><span>Source</span></div><div><b>Scored</b><span>Accounts</span></div></div>
+            </div>
+            <div class="stack-art"></div>
+          </div>
+        </article>
+        <article class="stack-card" style="top:132px;z-index:3">
+          <div class="stack-inner">
+            <div class="stack-copy">
+              <span class="pill">GTM</span>
+              <h4>Go-to-market strategies</h4>
+              <p>The model does not stop at a name. It proposes the motion: territory, offer, and the order of approach.</p>
+              <div class="pair"><div><b>GTM</b><span>Strategy</span></div><div><b>Sequenced</b><span>Motion</span></div></div>
+            </div>
+            <div class="stack-art"></div>
+          </div>
+        </article>
+        <article class="stack-card" style="top:150px;z-index:4">
+          <div class="stack-inner">
+            <div class="stack-copy">
+              <span class="pill">Series</span>
+              <h4>Predictions and simulations</h4>
+              <p>Render a prediction series, then a simulation beside it. The lead list changes when the scenario changes.</p>
+              <div class="pair"><div><b>Series</b><span>Forecast</span></div><div><b>Sims</b><span>Scenarios</span></div></div>
+            </div>
+            <div class="stack-art"></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="page bg-5" id="catalogue">
+    <div class="wrap">
+      <div class="eyebrow"><i></i> Hazard catalogue</div>
+      <p class="lede">Pathfinder’s map desk uses the hazard catalogue as a full geospatial instrument. Event depth, return period, and place stay on the page — then on the globe.</p>
+      <div style="margin-top:22px;color:var(--muted);font-size:14px">Event catalog</div>
+      <p class="catalog-num">10,000</p>
+      <p class="note">Synthetic event set. Nairobi depth is susceptibility × 4.0 m. Nzoia is a depth stand-in until nzoia_rp GeoTIFFs are mounted. Return periods 10, 25, 50, 100, 250, 500.</p>
+      <div class="pills">
+        <div class="hpill"><span class="sq">～</span><span><small>Nairobi pluvial</small><b>4.0 m</b></span></div>
+        <div class="hpill"><span class="sq alt">●</span><span><small>Nzoia fluvial</small><b>8.0 m</b></span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page bg-6" id="scales">
+    <div class="wrap" style="width:100%">
+      <div class="split">
+        <div>
+          <div class="eyebrow">Return periods</div>
+          <h3 class="display">Scales on the<br />100-year field.</h3>
+        </div>
+        <p class="lede">The same bars, columns, and depth spark as the hazard desk. RP 500 against the 100-year field. Scales 0.35, 0.55, 0.78, 1, 1.28, 1.55.</p>
+      </div>
+      <div class="scale-grid">
+        <article class="float"><small>100-year field</small><strong>1.00×</strong><em>reference depth</em></article>
+        <article class="float">
+          <small>Return-period scale</small><strong>0.35–0.78</strong>
+          <div class="bars">
+            <p><span>10-year</span><i><b style="width:35%;background:#d4534a"></b></i></p>
+            <p><span>25-year</span><i><b style="width:55%;background:#c6a000"></b></i></p>
+            <p><span>50-year</span><i><b style="width:78%;background:#0e8f62"></b></i></p>
+          </div>
+        </article>
+        <article class="float">
+          <small>Exceedance</small><strong>1 / RP</strong><em>OEP, strictly decreasing</em>
+          <div class="cols" aria-hidden="true">
+            <i style="height:100%"></i><i style="height:40%;opacity:.75"></i><i style="height:20%;opacity:.7"></i>
+            <i style="height:72%"></i><i style="height:10%;opacity:.55"></i><i style="height:86%"></i>
+            <i style="height:28%;opacity:.65"></i><i style="height:54%"></i><i style="height:16%;opacity:.5"></i>
+            <i style="height:64%"></i><i style="height:8%;opacity:.45"></i><i style="height:36%;opacity:.6"></i>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="page bg-2" id="layers">
+    <div class="layer-layout">
+      <div>
+        <div class="eyebrow">Hazard layers</div>
+        <h3 class="display">Switch the globe<br />before you reach it.</h3>
+        <p class="lede">These are the catalogue layers. Toggles here drive the 3D hazard page below — the page that replaced the wireframe.</p>
+        <div class="donuts">
+          <div class="donut">
+            <svg viewBox="0 0 72 72" aria-hidden="true"><circle cx="36" cy="36" r="26" fill="none" stroke="#e8eaed" stroke-width="7"/><circle cx="36" cy="36" r="26" fill="none" stroke="#127a45" stroke-width="7" stroke-linecap="round" stroke-dasharray="65.3 163.4" transform="rotate(-90 36 36)"/><text x="36" y="40" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-size="13" font-weight="600" fill="#0a0a0a">40%</text></svg>
+            <div><b>4.0 m</b><span>Proxy cap of 10 m</span></div>
+          </div>
+          <div class="donut">
+            <svg viewBox="0 0 72 72" aria-hidden="true"><circle cx="36" cy="36" r="26" fill="none" stroke="#e8eaed" stroke-width="7"/><circle cx="36" cy="36" r="26" fill="none" stroke="#1f9d55" stroke-width="7" stroke-linecap="round" stroke-dasharray="127.4 163.4" transform="rotate(-90 36 36)"/><text x="36" y="40" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-size="13" font-weight="600" fill="#0a0a0a">78%</text></svg>
+            <div><b>0.78×</b><span>RP 50 scale</span></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="font-family:var(--display);font-size:18px;margin-bottom:8px">Depth scale <b style="font-size:32px;letter-spacing:-.04em">1.55×</b></div>
+        <div class="rows" id="layerRows">
+          <button class="row" type="button" data-layer="white"><span>White relief</span><b>1</b><em>pale</em><i class="arr"></i></button>
+          <button class="row" type="button" data-layer="blue"><span>Blue water</span><b>2.5</b><em>m WSE</em><i class="arr"></i></button>
+          <button class="row" type="button" data-layer="green"><span>Green land</span><b>3</b><em>cover</em><i class="arr"></i></button>
+          <button class="row" type="button" data-layer="heat"><span>Heat map</span><b>4.0</b><em>m cap</em><i class="arr"></i></button>
+          <button class="row" type="button" data-layer="pluvial"><span>Pluvial</span><b>100</b><em>year</em><i class="arr"></i></button>
+          <button class="row" type="button" data-layer="fluvial"><span>Fluvial</span><b>8.0</b><em>m</em><i class="arr"></i></button>
+          <button class="row" type="button" data-layer="pins"><span>Pins</span><b>6</b><em>marks</em><i class="arr"></i></button>
+          <button class="row" type="button" data-layer="marble"><span>Marble</span><b>earth</b><em>tile</em><i class="arr"></i></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="hazard bg-5" id="hazard" aria-label="3D hazard catalogue">
+    <iframe id="hazardFrame" title="3D hazard catalogue" data-src="hazard.html"></iframe>
+  </section>
+
+  <section class="section bg-6" id="method">
+    <div class="wrap">
+      <div class="split">
+        <div>
+          <div class="eyebrow">Method</div>
+          <h3 class="display">From the internet<br />to a series.</h3>
+        </div>
+      </div>
+      <div class="steps">
+        <article class="step"><span class="n">01</span><h4>Ingest</h4><p>Pull dense place data, including Google Maps, into geospatial intelligence.</p></article>
+        <article class="step"><span class="n">02</span><h4>Read</h4><p>Read co-operate world news until it becomes business intelligence on a named account.</p></article>
+        <article class="step"><span class="n">03</span><h4>Position</h4><p>Write the go-to-market strategy from the evidence, not from a template.</p></article>
+        <article class="step"><span class="n">04</span><h4>Render</h4><p>Render prediction series and simulations the desk can compare.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-1" id="integrations">
+    <div class="wrap">
+      <div class="split">
+        <div>
+          <div class="eyebrow">Desk</div>
+          <h3 class="display">Connect the sources.<br />Keep the lead.</h3>
+        </div>
+        <p class="lede">Maps and news in. Strategy, series, and simulations out.</p>
+      </div>
+      <div class="integ">
+        <div class="glass-stack">
+          <div class="glass">
+            <span class="pill" style="background:rgba(255,255,255,.12);color:rgba(255,255,255,.75)">Model</span>
+            <h4>Lead call</h4>
+            <p>One call carries the dense inputs Pathfinder was built to read.</p>
+            <div class="code">
+              <i>generateLeads</i>({<br />
+              &nbsp;&nbsp;maps: "geospatial",<br />
+              &nbsp;&nbsp;news: "co-operate",<br />
+              &nbsp;&nbsp;out: ["gtm", "series", "simulations"]<br />
+              })
+            </div>
+          </div>
+          <div class="glass">
+            <p><i class="dot" style="background:#c8f542"></i> Series rendering on the open desk.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="marquee bg-3" aria-hidden="true">
+    <div class="mrow left" id="mA"></div>
+    <div class="mrow right" id="mB"></div>
+  </div>
+
+  <section class="section bg-4" id="live">
+    <div class="wrap">
+      <div class="eyebrow"><i></i> Live</div>
+      <h3 class="display">Series running<br />on the desk.</h3>
+      <p class="lede" style="margin:16px 0 28px">Maps, news, go-to-market drafts, and simulations in the same queue.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Desk</th><th>Task</th><th>Layer</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td><i class="dot" style="background:#c8f542"></i>maps-nairobi</td><td class="dim">Reading Westlands density</td><td class="dim">geospatial</td><td>running</td></tr>
+            <tr><td><i class="dot" style="background:#2ee6c8"></i>news-emea</td><td class="dim">Co-operate news cluster</td><td class="dim">intelligence</td><td>running</td></tr>
+            <tr><td><i class="dot" style="background:#0a0a0a"></i>gtm-lagos</td><td class="dim">Sequence draft for the corridor</td><td class="dim">strategy</td><td>queued</td></tr>
+            <tr><td><i class="dot" style="background:#1f9d55"></i>series-q4</td><td class="dim">Prediction series 04</td><td class="dim">forecast</td><td>running</td></tr>
+            <tr><td><i class="dot" style="background:#0f9d8a"></i>sim-port</td><td class="dim">Corridor shock, lead list redrawn</td><td class="dim">simulation</td><td>running</td></tr>
+            <tr><td><i class="dot" style="background:#c8f542"></i>leads-ngong</td><td class="dim">18 accounts scored from the field</td><td class="dim">leads</td><td>complete</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="film bg-6" id="film" aria-label="Video">
+    <div class="film-slot" id="video-slot"></div>
+  </section>
+
+  <section class="section bg-2" id="pricing">
+    <div class="wrap">
+      <div class="split" style="justify-content:center;text-align:center">
+        <div>
+          <div class="eyebrow">Pricing</div>
+          <h3 class="display">Pay as the desk<br />takes more markets.</h3>
+        </div>
+      </div>
+      <div class="plans">
+        <article class="plan">
+          <div class="name">Scout</div>
+          <div class="price">$90<span style="font-size:14px;letter-spacing:0">/mo</span></div>
+          <div class="quiet">One territory</div>
+          <ul><li>Maps for a single city</li><li>News digest</li><li>Weekly lead list</li><li>One prediction series</li></ul>
+          <a class="btn ghost" href="#join">Get started</a>
+        </article>
+        <article class="plan featured">
+          <div class="name">Desk</div>
+          <div class="price">$280<span style="font-size:14px;letter-spacing:0">/mo</span></div>
+          <div class="quiet">Corridors and news, together</div>
+          <ul><li>Geospatial intelligence</li><li>Co-operate world news</li><li>Go-to-market drafts</li><li>Prediction series</li><li>Simulations</li><li>Hazard catalogue</li></ul>
+          <a class="btn" href="#join">Get started</a>
+        </article>
+        <article class="plan">
+          <div class="name">House</div>
+          <div class="price">Custom</div>
+          <div class="quiet">Multi-market models</div>
+          <ul><li>Private lead graph</li><li>Dedicated simulations</li><li>Desk SLA</li><li>Map and news retention</li></ul>
+          <a class="btn ghost" href="#join">Get started</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta bg-1" id="join">
+    <div class="bg" aria-hidden="true"></div>
+    <h3 class="display">Start a desk on dense information.</h3>
+    <p class="lede" style="margin:0 auto">Geospatial intelligence, co-operate world news, business intelligence, go-to-market strategies, and predictions and simulations — one Pathfinder list.</p>
+    <form class="join" id="joinForm">
+      <input type="email" required placeholder="your@email.com" aria-label="Email" />
+      <button class="btn glass" type="submit">Join</button>
+    </form>
+    <p id="joined" class="lede" hidden style="margin:18px auto 0">You’re on the list.</p>
+  </section>
+
+  <footer class="bg-1">
+    <span class="brand">pathfinder</span>
+    <nav>
+      <a href="#signals">Signals</a>
+      <a href="#platform">Platform</a>
+      <a href="#layers">Layers</a>
+      <a href="#hazard">Hazard</a>
+      <a href="#method">Method</a>
+      <a href="#film">Film</a>
+      <a href="#pricing">Pricing</a>
+    </nav>
+    <div class="copy">© 2026 Pathfinder. Leads from dense information.</div>
+  </footer>
+
+<script>
+(function () {
+  const stage = document.getElementById("stage");
+  const gate = document.getElementById("gate");
+  const enterBtn = document.getElementById("enterBtn");
+  const soundBtn = document.getElementById("soundBtn");
+  let entered = false;
+  let soundOn = true;
+  let audio = null;
+
+  function finishGate() {
+    document.body.classList.remove("locked");
+    stage.classList.add("landing-out");
+  }
+
+  if (location.hash && location.hash !== "#" && location.hash !== "#top") {
+    stage.style.display = "none";
+    document.body.classList.remove("locked");
+  }
+
+  function ensureCtx() {
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    if (!Ctx) return null;
+    if (!audio) {
+      const ctx = new Ctx();
+      const master = ctx.createGain();
+      master.gain.value = soundOn ? 1 : 0;
+      master.connect(ctx.destination);
+      audio = { ctx, master };
+    }
+    if (audio.ctx.state === "suspended") audio.ctx.resume();
+    return audio;
+  }
+  function noiseBuffer(kit, duration) {
+    const sr = kit.ctx.sampleRate;
+    const len = Math.max(1, Math.floor(sr * duration));
+    const buf = kit.ctx.createBuffer(1, len, sr);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 1.3);
+    return buf;
+  }
+  function playWhoosh(delay, vol) {
+    if (!audio) return;
+    const t = audio.ctx.currentTime + delay;
+    const src = audio.ctx.createBufferSource();
+    src.buffer = noiseBuffer(audio, 1.2);
+    const bp = audio.ctx.createBiquadFilter();
+    bp.type = "bandpass";
+    bp.frequency.setValueAtTime(260, t);
+    bp.frequency.exponentialRampToValueAtTime(1800, t + 0.8);
+    const g = audio.ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(vol, t + 0.35);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 1.1);
+    src.connect(bp); bp.connect(g); g.connect(audio.master);
+    src.start(t); src.stop(t + 1.2);
+  }
+  function enter() {
+    if (entered) return;
+    entered = true;
+    try { ensureCtx(); } catch (e) {}
+    gate.classList.add("hide");
+    requestAnimationFrame(function () {
+      stage.classList.add("shapes-in");
+      try { playWhoosh(0, 0.22); playWhoosh(0.18, 0.14); } catch (e) {}
+    });
+    setTimeout(function () { stage.classList.add("word-in"); }, 1100);
+    setTimeout(function () { stage.classList.add("sub-in"); }, 1600);
+    setTimeout(function () { stage.classList.add("line-in"); stage.classList.add("text-in"); }, 2000);
+    setTimeout(finishGate, 3600);
+  }
+  enterBtn.addEventListener("click", enter);
+  window.addEventListener("keydown", function (event) {
+    if (stage.classList.contains("landing-out") || stage.style.display === "none") return;
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      enter();
+    }
+  });
+  soundBtn.addEventListener("click", function () {
+    soundOn = !soundOn;
+    soundBtn.setAttribute("aria-pressed", soundOn ? "true" : "false");
+    if (audio) audio.master.gain.setTargetAtTime(soundOn ? 1 : 0, audio.ctx.currentTime, 0.05);
+  });
+
+  const menuBtn = document.getElementById("menuBtn");
+  const drawer = document.getElementById("drawer");
+  menuBtn.addEventListener("click", function () { drawer.classList.toggle("open"); });
+  drawer.querySelectorAll("a").forEach(function (a) {
+    a.addEventListener("click", function () { drawer.classList.remove("open"); });
+  });
+
+  const scroller = document.getElementById("scroller");
+  let dragging = false, startX = 0, startLeft = 0;
+  scroller.addEventListener("pointerdown", function (e) {
+    dragging = true; startX = e.clientX; startLeft = scroller.scrollLeft;
+    scroller.setPointerCapture(e.pointerId);
+  });
+  scroller.addEventListener("pointermove", function (e) {
+    if (!dragging) return;
+    scroller.scrollLeft = startLeft - (e.clientX - startX);
+  });
+  scroller.addEventListener("pointerup", function () { dragging = false; });
+  scroller.addEventListener("pointercancel", function () { dragging = false; });
+
+  const cards = Array.prototype.slice.call(document.querySelectorAll(".stack-inner"));
+  const stickies = Array.prototype.slice.call(document.querySelectorAll(".stack-card"));
+  function measure() {
+    cards.forEach(function (inner, index) {
+      const next = stickies[index + 1];
+      if (!next) { inner.style.transform = "scale(1)"; return; }
+      const topTarget = 96 + (index + 1) * 18;
+      const delta = topTarget + 120 - next.getBoundingClientRect().top;
+      const t = Math.min(1, Math.max(0, delta / 280));
+      inner.style.transform = "scale(" + (1 - t * 0.045) + ")";
+    });
+  }
+  window.addEventListener("scroll", measure, { passive: true });
+  measure();
+
+  const frame = document.getElementById("hazardFrame");
+  const hazard = document.getElementById("hazard");
+  const layerState = {};
+  document.querySelectorAll("#layerRows .row").forEach(function (row) {
+    layerState[row.dataset.layer] = true;
+    row.classList.add("on");
+  });
+  function pushLayer(key) {
+    try {
+      frame.contentWindow.postMessage({ type: "hazard-layer", key: key, on: layerState[key] }, "*");
+    } catch (e) {}
+  }
+  document.getElementById("layerRows").addEventListener("click", function (e) {
+    const row = e.target.closest(".row");
+    if (!row) return;
+    const key = row.dataset.layer;
+    layerState[key] = !layerState[key];
+    row.classList.toggle("off", !layerState[key]);
+    pushLayer(key);
+  });
+  frame.addEventListener("load", function () {
+    Object.keys(layerState).forEach(pushLayer);
+    frame.contentWindow.postMessage("hazard-resume", "*");
+  });
+
+  const io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        if (!frame.getAttribute("src")) frame.src = frame.dataset.src;
+        else {
+          try { frame.contentWindow.postMessage("hazard-resume", "*"); } catch (e) {}
+        }
+      } else {
+        try { frame.contentWindow.postMessage("hazard-pause", "*"); } catch (e) {}
+      }
+    });
+  }, { rootMargin: "180px 0px", threshold: 0.05 });
+  io.observe(hazard);
+
+  const rowA = ["Google Maps", "Geospatial intelligence", "Co-operate world news", "Business intelligence", "Go to market strategies", "Predictions", "Simulations", "Generated leads", "Hazard catalogue", "Return periods"];
+  const rowB = ["Nairobi pluvial", "Nzoia fluvial", "Dense information", "Lead list", "Territory", "Account scoring", "Scenario runs", "100-year field", "Event catalog", "Desk"];
+  function fillRow(id, items) {
+    const node = document.getElementById(id);
+    const twice = items.concat(items);
+    node.innerHTML = twice.map(function (item) {
+      return "<span><i></i>" + item + "</span>";
+    }).join("");
+  }
+  fillRow("mA", rowA);
+  fillRow("mB", rowB);
+
+  document.getElementById("joinForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    e.currentTarget.hidden = true;
+    document.getElementById("joined").hidden = false;
+  });
+})();
+</script>
+</body>
+</html>
