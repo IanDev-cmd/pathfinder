@@ -1392,9 +1392,12 @@
   .mk-marker span::after {
     content: ""; position: absolute; inset: 4px; border-radius: 50%; background: #1f8a4c;
   }
-  /* Flow — the pages scroll again, the landing stays an overlay until Enter. */
+  /* Flow — every page, including the poster, is in the document scroll. */
   body.flow, html:has(body.flow) { height: auto; overflow-x: hidden; overflow-y: auto; }
   body.flow.locked { overflow: hidden; }
+  body.flow #gate,
+  body.flow #gate.is-on,
+  body.flow #gate.scene,
   body.flow #board,
   body.flow #live,
   body.flow #layers,
@@ -1423,6 +1426,16 @@
     overflow: visible;
     display: block;
   }
+  body.flow #gate.scene {
+    position: relative;
+    z-index: auto;
+    height: 100svh;
+    min-height: 100svh;
+    padding: 0;
+    display: block;
+    place-items: stretch;
+    overflow: hidden;
+  }
   body.flow #board.scene {
     position: relative;
     z-index: 1;
@@ -1449,7 +1462,7 @@
   }
 </style>
 </head>
-<body class="deck flow locked" data-card="gate">
+<body class="deck flow" data-card="gate">
 <div class="card-wipe" id="cardWipe" aria-hidden="true"></div>
 <p class="remote-badge" id="remoteBadge" hidden>Remote</p>
   <div class="wash" aria-hidden="true"></div>
@@ -1464,7 +1477,7 @@
     <p class="grad-sub">FORECAST</p>
     <div class="grad-enter">
       <button type="button" class="enter" id="gateEnter">Enter</button>
-      <span class="grad-hint">or press space</span>
+      <span class="grad-hint">or scroll</span>
     </div>
   </section>
 
@@ -1528,7 +1541,7 @@
     <div class="wrap">
       <div class="eyebrow"><i></i> Live</div>
       <h3 class="display">Series running<br />on the desk.</h3>
-      <p class="lede" style="margin:16px 0 28px">Maps, news, go-to-market drafts, and simulations in the same queue.</p>
+      <p class="lede" style="margin:16px 0 28px">Six jobs on the queue. Each row is running, queued, or complete.</p>
       <div class="table-wrap">
         <table>
           <thead><tr><th>Desk</th><th>Task</th><th>Layer</th><th>Status</th></tr></thead>
@@ -1538,7 +1551,7 @@
             <tr><td><i class="dot" style="background:#0a0a0a"></i>gtm</td><td class="dim">Go to market strategy</td><td class="dim">strategy</td><td>queued</td></tr>
             <tr><td><i class="dot" style="background:#1f9d55"></i>series</td><td class="dim">Prediction series</td><td class="dim">forecast</td><td>running</td></tr>
             <tr><td><i class="dot" style="background:#0f9d8a"></i>sim</td><td class="dim">Simulation beside the series</td><td class="dim">simulation</td><td>running</td></tr>
-            <tr><td><i class="dot" style="background:#c8f542"></i>leads</td><td class="dim">Leads from dense information</td><td class="dim">leads</td><td>complete</td></tr>
+            <tr><td><i class="dot" style="background:#c8f542"></i>leads</td><td class="dim">Public email and phone, ready to call</td><td class="dim">leads</td><td>complete</td></tr>
           </tbody>
         </table>
       </div>
@@ -1553,7 +1566,7 @@
           <div class="eyebrow">Layers</div>
           <h3 class="display">Four readers.<br />One lead list.</h3>
         </div>
-        <p class="lede">Each layer stays on the page as you scroll. Maps, news, strategy, and the series that follows.</p>
+        <p class="lede">Scroll the stack. Four readers stay pinned: map, wire, strategy, then forecast.</p>
       </div>
       <div class="stack" id="stack">
         <article class="stack-card" style="top:96px;z-index:1">
@@ -1561,7 +1574,7 @@
             <div class="stack-copy">
               <span class="pill">Maps</span>
               <h4>Geospatial intelligence</h4>
-              <p>Read Google Maps as dense information. Place, route, and concentration tell Pathfinder where a lead is physically real.</p>
+              <p>The map reader looks for a real address, a route that reaches it, and other leads packed into the same block.</p>
               <div class="pair"><div><b>Maps</b><span>Source</span></div><div><b>Live</b><span>Territory</span></div></div>
             </div>
             <div class="stack-art"></div>
@@ -1572,7 +1585,7 @@
             <div class="stack-copy">
               <span class="pill">News</span>
               <h4>Co-operate world news</h4>
-              <p>Business intelligence from the news that actually moves a company: capital, contracts, openings, and retreats.</p>
+              <p>The wire reader keeps co-operate world news. It watches capital, contracts, openings, and retreats.</p>
               <div class="pair"><div><b>News</b><span>Source</span></div><div><b>Scored</b><span>Accounts</span></div></div>
             </div>
             <div class="stack-art"></div>
@@ -1583,7 +1596,7 @@
             <div class="stack-copy">
               <span class="pill">GTM</span>
               <h4>Go-to-market strategies</h4>
-              <p>The model does not stop at a name. It proposes the motion: territory, offer, and the order of approach.</p>
+              <p>The strategy reader writes the motion once a name is known: territory, offer, then who is approached first.</p>
               <div class="pair"><div><b>GTM</b><span>Strategy</span></div><div><b>Sequenced</b><span>Motion</span></div></div>
             </div>
             <div class="stack-art"></div>
@@ -1594,7 +1607,7 @@
             <div class="stack-copy">
               <span class="pill">Series</span>
               <h4>Predictions and simulations</h4>
-              <p>Render a prediction series, then a simulation beside it. The lead list changes when the scenario changes.</p>
+              <p>The forecast reader draws a prediction series and a simulation beside it. Move the scenario and the list moves.</p>
               <div class="pair"><div><b>Series</b><span>Forecast</span></div><div><b>Sims</b><span>Scenarios</span></div></div>
             </div>
             <div class="stack-art"></div>
@@ -1612,7 +1625,7 @@
       <div class="beach-links">
         <a href="#live">Live</a>
         <a href="#markets">Leads</a>
-        <button type="button" data-deck="route" aria-label="Search">
+        <button type="button" data-deck="markets" aria-label="Search">
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M16 16l4 4"/></svg>
         </button>
       </div>
@@ -1633,10 +1646,10 @@
     </div>
     <div class="beach-copy">
       <h2>PATHFINDER</h2>
-      <p>Pathfinder is an AI startup that uses machine learning algorithms to generate leads from dense information on the internet, such as Google Maps for geospatial intelligence and co-operate world news, to create business intelligence, go to market strategies, and render prediction series and simulations.</p>
+      <p>The curve is the desk. Geospatial, news, and strategies sit on one line, so a lead is a place, a wire, and a motion.</p>
       <button type="button" class="beach-go deck-next">Enter</button>
     </div>
-    <p class="beach-place">Dense information</p>
+    <p class="beach-place">Geospatial · News · Strategies</p>
   </section>
 
   <section class="section bg-6 ship-page" id="method" aria-label="Method">
@@ -1649,7 +1662,7 @@
       <div class="ship-copy">
         <p class="kicker">We read dense information<br>for every lead as if it were</p>
         <h2>our only source.</h2>
-        <p>From the internet to a series. Google Maps becomes geospatial intelligence, co-operate world news becomes business intelligence, and the desk renders go-to-market strategies, prediction series, and simulations.</p>
+        <p>Four steps and nothing else. Ingest what is public, read it, position the lead, then render the series.</p>
       </div>
       <nav class="ship-steps" aria-label="Steps">
         <b>STEPS</b>
@@ -1660,45 +1673,11 @@
       </nav>
       <nav class="ship-links" aria-label="Sources">
         <b>SOURCES</b>
-        <button type="button" data-deck="route">Maps</button>
+        <button type="button" data-deck="markets">Maps</button>
         <button type="button" data-deck="live">News</button>
         <button type="button" data-deck="platform">Strategies</button>
       </nav>
-      <p class="ship-legal">Pathfinder · leads from dense information</p>
-    </div>
-  </section>
-
-  <section class="section bg-2" id="pricing">
-    <div class="wrap">
-      <div class="split" style="justify-content:center;text-align:center">
-        <div>
-          <div class="eyebrow">Pricing</div>
-          <h3 class="display">Pay as the desk<br />takes more markets.</h3>
-        </div>
-      </div>
-      <div class="plans">
-        <article class="plan">
-          <div class="name">Scout</div>
-          <div class="price">$90<span style="font-size:14px;letter-spacing:0">/mo</span></div>
-          <div class="quiet">One territory</div>
-          <ul><li>Maps for a single city</li><li>News digest</li><li>Weekly lead list</li><li>One prediction series</li></ul>
-          <a class="btn ghost" href="#join">Get started</a>
-        </article>
-        <article class="plan featured">
-          <div class="name">Desk</div>
-          <div class="price">$280<span style="font-size:14px;letter-spacing:0">/mo</span></div>
-          <div class="quiet">Corridors and news, together</div>
-          <ul><li>Geospatial intelligence</li><li>Co-operate world news</li><li>Business intelligence</li><li>Go to market strategies</li><li>Prediction series</li><li>Simulations</li></ul>
-          <a class="btn" href="#join">Get started</a>
-        </article>
-        <article class="plan">
-          <div class="name">House</div>
-          <div class="price">Custom</div>
-          <div class="quiet">Multi-market models</div>
-          <ul><li>Private lead graph</li><li>Dedicated simulations</li><li>Desk SLA</li><li>Map and news retention</li></ul>
-          <a class="btn ghost" href="#join">Get started</a>
-        </article>
-      </div>
+      <p class="ship-legal">Ingest · Read · Position · Render</p>
     </div>
   </section>
 
@@ -1746,10 +1725,44 @@
     </div>
   </section>
 
+  <section class="section bg-2" id="pricing">
+    <div class="wrap">
+      <div class="split" style="justify-content:center;text-align:center">
+        <div>
+          <div class="eyebrow">Pricing</div>
+          <h3 class="display">Pay as the desk<br />takes more markets.</h3>
+        </div>
+      </div>
+      <div class="plans">
+        <article class="plan">
+          <div class="name">Scout</div>
+          <div class="price">$90<span style="font-size:14px;letter-spacing:0">/mo</span></div>
+          <div class="quiet">One territory</div>
+          <ul><li>Maps for a single city</li><li>News digest</li><li>Weekly lead list</li><li>One prediction series</li></ul>
+          <a class="btn ghost" href="#join">Get started</a>
+        </article>
+        <article class="plan featured">
+          <div class="name">Desk</div>
+          <div class="price">$280<span style="font-size:14px;letter-spacing:0">/mo</span></div>
+          <div class="quiet">Corridors and news, together</div>
+          <ul><li>Every city on the desk, not one</li><li>News tied to those places</li><li>A strategy written per lead</li><li>A forecast and a simulation</li></ul>
+          <a class="btn" href="#join">Get started</a>
+        </article>
+        <article class="plan">
+          <div class="name">House</div>
+          <div class="price">Custom</div>
+          <div class="quiet">Multi-market models</div>
+          <ul><li>Private lead graph</li><li>Dedicated simulations</li><li>Desk SLA</li><li>Map and news retention</li></ul>
+          <a class="btn ghost" href="#join">Get started</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
   <section class="cta bg-1" id="join">
     <div class="bg" aria-hidden="true"></div>
-    <h3 class="display">Start a desk on dense information.</h3>
-    <p class="lede" style="margin:0 auto">Geospatial intelligence, co-operate world news, business intelligence, go-to-market strategies, and predictions and simulations — one Pathfinder list.</p>
+    <h3 class="display">Start the list.</h3>
+    <p class="lede" style="margin:0 auto">Leave an email. Pathfinder opens a desk on the market you name.</p>
     <form class="join" id="joinForm">
       <input type="email" required placeholder="your@email.com" aria-label="Email" />
       <button class="btn glass" type="submit">Join</button>
@@ -1768,7 +1781,7 @@
       <a href="#method">Method</a>
       <a href="#pricing">Pricing</a>
     </nav>
-    <div class="copy">© 2026 Pathfinder. Leads from dense information.</div>
+    <div class="copy">© 2026 Pathfinder.</div>
   </footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -1818,25 +1831,15 @@
     });
   }
 
-  function showGate() {
-    const gate = document.getElementById("gate");
-    gate.hidden = false;
-    document.body.classList.add("locked");
-    document.body.dataset.card = "gate";
-    deckIndex = 0;
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    if (location.hash !== "#gate") history.replaceState(null, "", "#gate");
-  }
   function openFlow(index) {
     const id = CARDS[index];
-    const gate = document.getElementById("gate");
-    if (gate) gate.hidden = true;
     document.body.classList.remove("locked");
     deckIndex = index;
     document.body.dataset.card = id;
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-    if (location.hash !== "#" + id) history.replaceState(null, "", "#" + id);
+    const hash = "#" + id;
+    if (location.hash !== hash) history.replaceState(null, "", hash);
     if (id === "markets" && window.__pfMarket) {
       setTimeout(function () { window.__pfMarket.invalidateSize(); }, 450);
     }
@@ -1844,15 +1847,13 @@
   }
   function deckGo(next) {
     if (deckBusy || next < 0 || next >= CARDS.length) return;
-    if (next === deckIndex && next !== 0) return;
-    if (next === 0) { showGate(); return; }
+    if (next === deckIndex) return;
     openFlow(next);
   }
   window.deckGo = deckGo;
   window.pathfinderRemote = function (msg) {
     if (!msg || typeof msg !== "object") return;
     if (msg.t === "scroll") {
-      if (!document.getElementById("gate").hidden) openFlow(1);
       const dy = Math.max(-1400, Math.min(1400, Number(msg.dy) || 0));
       window.scrollBy({ top: dy, behavior: "smooth" });
     } else if (msg.t === "page" && CARDS.indexOf(msg.id) >= 0) {
@@ -1889,8 +1890,8 @@
   (function bootDeck() {
     const hash = (location.hash || "").replace("#", "");
     const found = CARDS.indexOf(hash);
-    if (found > 0) openFlow(found);
-    else showGate();
+    document.body.classList.remove("locked");
+    if (found >= 0) openFlow(found);
   })();
 
   document.addEventListener("click", function (event) {
@@ -1925,16 +1926,10 @@
   window.addEventListener("keydown", function (event) {
     if (event.target.closest("input, textarea, select")) return;
     if ((event.key === "Enter" || event.code === "Space") && event.target.closest("button, a")) return;
-    const gateOpen = !document.getElementById("gate").hidden;
-    if (gateOpen && (event.key === "Enter" || event.code === "Space")) {
-      event.preventDefault();
-      deckGo(1);
-      return;
-    }
-    if (!gateOpen && event.key === "Enter") {
+    if (event.key === "Enter") {
       event.preventDefault();
       deckGo(Math.min(CARDS.length - 1, deckIndex + 1));
-    } else if (!gateOpen && (event.key === "ArrowLeft" || event.key === "Backspace")) {
+    } else if (event.key === "ArrowLeft" || event.key === "Backspace") {
       event.preventDefault();
       deckGo(Math.max(0, deckIndex - 1));
     }
@@ -2197,6 +2192,25 @@
   routeWatch.observe(routeSection);
   }
 
+  function escapeHtml(value) {
+    return String(value).replace(/[&<>"']/g, function (ch) {
+      return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[ch];
+    });
+  }
+  async function geocode(query) {
+    const data = await fetch("https://photon.komoot.io/api/?q=" + encodeURIComponent(query) + "&limit=1").then(function (res) { return res.json(); });
+    const feature = data.features && data.features[0];
+    if (!feature) return null;
+    const coords = feature.geometry.coordinates;
+    const props = feature.properties || {};
+    return {
+      lat: coords[1],
+      lon: coords[0],
+      country: props.country || "—",
+      place: props.city || props.state || props.name || query
+    };
+  }
+
   const MK = [
     { id: "agritech", name: "Agritech", lat: 51.97, lon: 5.67, icon: "M12 21V11M12 11c2-4 6-4 6-8-4 0-6 2-6 8zM12 11c-2-4-6-4-6-8 4 0 6 2 6 8z" },
     { id: "cleantech", name: "CleanTech & Renewable Energy", lat: 55.676, lon: 12.568, icon: "M12 3v2M12 19v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M3 12h2M19 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z" },
@@ -2380,6 +2394,35 @@
         }).filter(Boolean).slice(0, 8);
       } catch (err2) {}
     }
+    if (points.length < 2) {
+      try {
+        const word = ({
+          agritech: "farm",
+          cleantech: "solar",
+          fintech: "bank",
+          logistics: "warehouse",
+          edtech: "school",
+          healthtech: "clinic",
+          commerce: "shop",
+          proptech: "estate agent"
+        })[cat.id] || cat.name;
+        const biased = await fetch("https://photon.komoot.io/api/?q=" + encodeURIComponent(word) + "&lat=" + mkCenter.lat + "&lon=" + mkCenter.lon + "&limit=8").then(function (res) { return res.json(); });
+        const named = (biased.features || []).map(function (feature) {
+          const coords = feature.geometry && feature.geometry.coordinates;
+          const props = feature.properties || {};
+          if (!props.name || !coords) return null;
+          return {
+            name: props.name,
+            lat: coords[1],
+            lon: coords[0],
+            email: "",
+            phone: "",
+            web: props.website || ""
+          };
+        }).filter(Boolean);
+        if (named.length > points.length) points = named.slice(0, 8);
+      } catch (err3) {}
+    }
     if (token !== mkToken) return;
     mkPoints = points;
     paintMarketList();
@@ -2393,11 +2436,11 @@
   });
   mkLeads.addEventListener("click", function (event) {
     const btn = event.target.closest(".mk-lead");
-    if (!btn || !mkMap) return;
+    if (!btn) return;
     const point = mkPoints[Number(btn.dataset.i)];
     if (!point) return;
     setMarketView(mkView === "photo" ? "sat" : mkView);
-    mkMap.flyTo([point.lat, point.lon], 16, { duration: 0.6 });
+    if (mkMap) mkMap.flyTo([point.lat, point.lon], 16, { duration: 0.6 });
   });
   document.getElementById("mkToggle").addEventListener("click", function (event) {
     const btn = event.target.closest("button");
@@ -2430,11 +2473,11 @@
 
   const BOARD_SLIDES = [
     { title: "PATHFINDER", text: "Pathfinder is an AI startup that uses machine learning algorithms to generate leads from dense information on the internet, such as Google Maps for geospatial intelligence and co-operate world news, to create business intelligence, go to market strategies, and render prediction series and simulations." },
-    { title: "GEOSPATIAL", text: "Google Maps for geospatial intelligence. Dense place information is where a lead starts." },
-    { title: "NEWS", text: "Co-operate world news, read from the internet and turned into the lead list." },
-    { title: "INTELLIGENCE", text: "Business intelligence built from Google Maps and co-operate world news." },
-    { title: "STRATEGIES", text: "Go to market strategies written from that business intelligence." },
-    { title: "SERIES", text: "Prediction series and simulations rendered from the same dense information." }
+    { title: "GEOSPATIAL", text: "Google Maps is the ground. A lead starts as a place you can stand on, with a route and a cluster around it." },
+    { title: "NEWS", text: "Co-operate world news is the wire. Capital, contracts, openings, and retreats are scored onto the accounts in that place." },
+    { title: "INTELLIGENCE", text: "Business intelligence is the join. The map says where. The wire says why the company is moving now." },
+    { title: "STRATEGIES", text: "A go-to-market strategy is the order of approach: which territory, which offer, and who is called first." },
+    { title: "SERIES", text: "A prediction series is the forecast. The simulation is the same list after that forecast shifts." }
   ];
   const BOARD_HOMES = [
     { pos: "18% 42%", alt: "Geospatial intelligence", slide: 1 },
@@ -2498,12 +2541,12 @@
   paintMarketPhoto(MK[0]);
   loadMarket(MK[0]);
 
-  CARDS.slice(1).forEach(function (id) {
+  CARDS.forEach(function (id) {
     const el = document.getElementById(id);
     if (!el) return;
     new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
-        if (document.getElementById("gate").hidden && entry.isIntersecting && entry.intersectionRatio >= 0.45) {
+        if (entry.isIntersecting && entry.intersectionRatio >= 0.45) {
           deckIndex = CARDS.indexOf(id);
           document.body.dataset.card = id;
         }
