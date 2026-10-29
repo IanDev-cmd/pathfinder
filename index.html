@@ -10,6 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Montserrat:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" />
 <style>
   :root {
     --paper: #fff8f4;
@@ -1221,32 +1222,85 @@
   .beach-go:hover, #gate .enter:hover , #board .enter:hover { background: rgba(255,255,255,0.12); }
   .beach-place { right: 28px; bottom: 18px; margin: 0; font-size: 12px; letter-spacing: 0.04em; }
 
-  /* Method — white geometric card, ribbon in the window */
-  body.deck #method.ship-page { padding: 0; box-shadow: none; background: #c8c8cc url("bg/ribbon.jpg") center / cover no-repeat fixed; }
-  .ship-sheet { position: absolute; inset: 5vh 4vw; width: calc(100% - 8vw); height: calc(100% - 10vh); }
-  .ship-ui { position: absolute; inset: 5vh 4vw; width: calc(100% - 8vw); height: calc(100% - 10vh); color: #16343c; font-family: Montserrat, "Segoe UI", sans-serif; }
-  .ship-logo {
-    position: absolute; left: 6%; top: 7%;
-    font-weight: 700; letter-spacing: 0.18em; font-size: 14px; color: #1d4c56;
+  /* Method — tours layout on the ribbon, one formula at a time */
+  #method.tour-page, body.flow #method.tour-page {
+    position: relative;
+    height: 100svh;
+    min-height: 100svh;
+    padding: 0;
+    overflow: hidden;
+    background: #141414 url("bg/ribbon.jpg") center / cover no-repeat;
+    color: #fff;
+    font-family: Montserrat, "Segoe UI", sans-serif;
   }
-  .ship-logo i { font-style: normal; color: #2f8f86; }
-  .ship-burger { position: absolute; right: 5%; top: 6%; color: #6d8b84; }
-  .ship-copy { position: absolute; left: 6%; top: 24%; width: min(380px, 38%); }
-  .ship-copy .kicker { margin: 0; color: #1f6f86; font-size: 15px; font-weight: 600; line-height: 1.35; }
-  .ship-copy h2 { margin: 8px 0 14px; font-size: clamp(28px, 3vw, 40px); line-height: 1.15; font-weight: 600; color: #102a30; letter-spacing: -0.02em; }
-  .ship-copy p { margin: 0; color: #5d7378; font-size: 13px; line-height: 1.55; max-width: 340px; }
-  .ship-steps, .ship-links { position: absolute; bottom: 12%; display: grid; gap: 10px; }
-  .ship-steps { left: 6%; }
-  .ship-links { right: 8%; text-align: right; }
-  .ship-steps b, .ship-links b {
-    font-size: 11px; letter-spacing: 0.2em; font-weight: 600; color: #1f6f86;
+  .tour-vert {
+    position: absolute; left: 18px; top: 8%; bottom: 64px; z-index: 1; margin: 0;
+    writing-mode: vertical-lr;
+    font-size: clamp(56px, 10vh, 108px);
+    font-weight: 600; letter-spacing: 0.18em;
+    color: rgba(255,255,255,0.78);
+    pointer-events: none; line-height: 0.85;
   }
-  .ship-steps button, .ship-links button {
-    border: 0; background: none; padding: 0; text-align: inherit;
-    color: #1a3c44; font-size: 13px; letter-spacing: 0.08em; cursor: pointer; font-weight: 600;
+  .tour-card {
+    position: absolute; z-index: 2;
+    left: 9%; top: 7%;
+    width: min(540px, 52%);
+    height: min(78%, 640px);
+    padding: 28px 28px 22px;
+    background: rgba(12, 18, 24, 0.62);
+    backdrop-filter: blur(2px);
+    display: flex; flex-direction: column; gap: 12px;
+    box-shadow: 0 18px 50px rgba(0,0,0,0.28);
   }
-  .ship-steps button:hover, .ship-links button:hover { color: #0f9d8a; }
-  .ship-legal { position: absolute; right: 6%; bottom: 4%; margin: 0; font-size: 11px; color: #8aa0a4; }
+  .tour-badge {
+    align-self: flex-start;
+    background: #ff4e00; color: #fff;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.16em;
+    padding: 5px 8px;
+  }
+  .tour-card h2 {
+    margin: 4px 0 0;
+    font-size: clamp(34px, 4.2vw, 58px);
+    font-weight: 700; letter-spacing: -0.03em; line-height: 0.92; color: #fff;
+  }
+  .tour-card .tour-blurb { margin: 0; max-width: 36ch; font-size: 13px; line-height: 1.45; color: rgba(255,255,255,0.88); }
+  .tour-eq { min-height: 72px; overflow: hidden; }
+  .tour-eq-name { margin: 0 0 6px; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.7); }
+  .tour-eq .katex, .tour-eq .katex-display { color: #fff; }
+  .tour-eq .katex-display { margin: 0; overflow-x: auto; overflow-y: hidden; }
+  .tour-eq-nav { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tour-eq-nav button, .tour-bar button {
+    border: 0; background: transparent; color: rgba(255,255,255,0.62);
+    font: inherit; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer;
+  }
+  .tour-eq-nav button { border: 1px solid rgba(255,255,255,0.28); padding: 5px 8px; }
+  .tour-eq-nav button.on, .tour-bar button.on { color: #fff; background: rgba(255,255,255,0.12); }
+  .tour-go {
+    align-self: flex-start;
+    border: 0; background: #fff; color: #161616;
+    padding: 10px 14px; font: inherit; font-size: 13px; cursor: pointer;
+  }
+  .tour-foot { margin: auto 0 0; max-width: 28ch; font-size: 11px; line-height: 1.4; color: rgba(255,255,255,0.72); }
+  .tour-rail {
+    position: absolute; z-index: 3; top: 0; right: 0; bottom: 52px; width: 64px;
+    display: flex; flex-direction: column;
+  }
+  .tour-rail a, .tour-rail button {
+    height: 64px; border: 0; background: #fff; color: #161616;
+    display: grid; place-items: center; cursor: pointer; text-decoration: none;
+  }
+  .tour-rail a svg, .tour-rail button svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.7; }
+  .tour-rail-dark {
+    flex: 1; background: #0e0e0e; color: #fff;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
+  }
+  .tour-rail-dark a { height: auto; background: transparent; color: #fff; }
+  .tour-bar {
+    position: absolute; z-index: 4; left: 0; right: 0; bottom: 0; height: 52px;
+    background: #0e0e0e;
+    display: flex; align-items: center; justify-content: flex-end; gap: 28px;
+    padding: 0 88px 0 24px;
+  }
   @media (max-width: 860px) {
     #gate .grad-side { display: none; }
     #gate .grad-word { letter-spacing: 0.12em; text-indent: 0.12em; font-size: 28px; }
@@ -1255,8 +1309,9 @@
     .beach-brand { letter-spacing: 0.16em; text-indent: 0; font-size: 11px; }
     .beach-copy { left: 20px; right: 20px; width: auto; top: auto; bottom: 64px; transform: none; }
     .beach-copy h2 { letter-spacing: 0.08em; font-size: 28px; }
-    .ship-copy { width: min(280px, 70%); }
-    .ship-links { display: none; }
+    .tour-vert { display: none; }
+    .tour-card { left: 16px; right: 72px; width: auto; top: 16px; height: auto; bottom: 64px; }
+    .tour-card h2 { font-size: 32px; }
   }
 
   /* Markets — white split card on the ribbon */
@@ -1313,8 +1368,25 @@
     border: 0; background: #1f8a4c; color: #fff;
     border-radius: 999px; padding: 6px 12px; font-size: 12px; cursor: pointer;
   }
-  .mk-scroll { flex: 1; min-height: 0; overflow: auto; display: flex; flex-direction: column; gap: 10px; }
-  .mk-cats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .mk-scroll { flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; gap: 12px; justify-content: flex-start; padding-top: 6px; }
+  .mk-nav { display: flex; align-items: center; gap: 8px; }
+  .mk-arrow {
+    width: 36px; height: 36px; flex: none;
+    border: 1px solid #e5eeea; border-radius: 999px;
+    background: #fff; color: #173028; font-size: 20px; line-height: 1; cursor: pointer;
+  }
+  .mk-switches { flex: 1; display: flex; justify-content: center; gap: 4px; }
+  .mk-switches[hidden], .mk-note[hidden] { display: none; }
+  .mk-switches button {
+    border: 0; background: #f4faf6; color: #173028;
+    border-radius: 999px; padding: 7px 12px; font-size: 11px; cursor: pointer;
+  }
+  .mk-switches button.on { background: #1f8a4c; color: #fff; }
+  .mk-row { display: flex; gap: 8px; align-items: stretch; min-height: 74px; }
+  .mk-row > * { flex: 1; min-width: 0; }
+  .mk-story { border: 1px solid #e5eeea; border-radius: 14px; padding: 14px 16px; background: #fff; }
+  .mk-story b { display: block; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #1f8a4c; }
+  .mk-story p { margin: 8px 0 0; font-size: 14px; line-height: 1.45; }
   .mk-cat, .mk-lead {
     display: flex; align-items: center; gap: 8px;
     border: 1px solid #e5eeea; background: #fff;
@@ -1458,7 +1530,7 @@
     .mk-card { grid-template-columns: 1fr; height: 100%; border-radius: 0; }
     .mk-right { margin: 0; min-height: 42vh; border-radius: 0; }
     .mk-links { display: none; }
-    .mk-cats { grid-template-columns: 1fr; }
+    .mk-switches { flex-wrap: wrap; }
   }
 </style>
 </head>
@@ -1652,33 +1724,43 @@
     <p class="beach-place">Geospatial · News · Strategies</p>
   </section>
 
-  <section class="section bg-6 ship-page" id="method" aria-label="Method">
-    <svg class="ship-sheet" viewBox="0 0 1200 760" preserveAspectRatio="none" aria-hidden="true">
-      <path fill="#fff" fill-rule="evenodd" d="M0 0 H1200 V760 H0 Z M640 70 C 980 20, 1160 160, 1100 300 C 1040 440, 760 390, 820 520 C 890 660, 1140 600, 1040 720 C 980 780, 700 680, 620 540 C 520 360, 430 150, 640 70 Z"/>
-    </svg>
-    <div class="ship-ui">
-      <div class="ship-logo">path<i>finder</i></div>
-      <button type="button" class="ship-burger deck-menu" aria-label="Open menu"><span></span><span></span><span></span></button>
-      <div class="ship-copy">
-        <p class="kicker">We read dense information<br>for every lead as if it were</p>
-        <h2>our only source.</h2>
-        <p>Four steps and nothing else. Ingest what is public, read it, position the lead, then render the series.</p>
+  <section class="section tour-page" id="method" aria-label="Method">
+    <p class="tour-vert">PATHFINDER</p>
+    <article class="tour-card">
+      <span class="tour-badge">PATHFINDER</span>
+      <h2 id="tourTitle">Geospatial<br>Intelligence</h2>
+      <p class="tour-blurb" id="tourBlurb">Used to extract density, proximity, and territorial clusters from map APIs.</p>
+      <div class="tour-eq">
+        <p class="tour-eq-name" id="tourEqName">Haversine</p>
+        <div id="tourEq"></div>
       </div>
-      <nav class="ship-steps" aria-label="Steps">
-        <b>STEPS</b>
-        <button type="button" data-deck="live">Ingest</button>
-        <button type="button" data-deck="layers">Read</button>
-        <button type="button" data-deck="platform">Position</button>
-        <button type="button" data-deck="pricing">Render</button>
-      </nav>
-      <nav class="ship-links" aria-label="Sources">
-        <b>SOURCES</b>
-        <button type="button" data-deck="markets">Maps</button>
-        <button type="button" data-deck="live">News</button>
-        <button type="button" data-deck="platform">Strategies</button>
-      </nav>
-      <p class="ship-legal">Ingest · Read · Position · Render</p>
-    </div>
+      <div class="tour-eq-nav" id="tourEqNav"></div>
+      <button type="button" class="tour-go" id="tourNext">Next formula →</button>
+      <p class="tour-foot">One equation on the desk. Density, news, scoring, then the series.</p>
+    </article>
+    <aside class="tour-rail" aria-label="Desk">
+      <button type="button" data-deck="markets" aria-label="Search">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M16 16l4 4"/></svg>
+      </button>
+      <a href="#markets" aria-label="Leads">
+        <svg viewBox="0 0 24 24"><path d="M6 7h12l-1 13H7z"/><path d="M9 7V5h6v2"/></svg>
+      </a>
+      <a href="#join" aria-label="Start a desk">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3"/><path d="M5 19c1.5-3 3.5-4.5 7-4.5S17.5 16 19 19"/></svg>
+      </a>
+      <div class="tour-rail-dark">
+        <a href="#layers" aria-label="Layers">◈</a>
+        <a href="#live" aria-label="Live">◉</a>
+        <a href="#platform" aria-label="Platform">▣</a>
+        <a href="#pricing" aria-label="Pricing">＋</a>
+      </div>
+    </aside>
+    <nav class="tour-bar" id="tourBar" aria-label="Formulas">
+      <button type="button" data-sec="0" class="on">Geospatial</button>
+      <button type="button" data-sec="1">News</button>
+      <button type="button" data-sec="2">Scoring</button>
+      <button type="button" data-sec="3">Series</button>
+    </nav>
   </section>
 
   <section class="markets" id="markets" aria-label="Markets">
@@ -1700,9 +1782,17 @@
           <button type="submit">Search</button>
         </form>
         <div class="mk-scroll">
-          <div class="mk-cats" id="mkCats"></div>
-          <p class="mk-note" id="mkNote">Choose a category. Leads show the public email and phone on the map.</p>
-          <div class="mk-leads" id="mkLeads"></div>
+          <div class="mk-nav">
+            <button type="button" class="mk-arrow" id="mkPrev" aria-label="Previous">‹</button>
+            <p class="mk-note" id="mkNote">Categories</p>
+            <div class="mk-switches" id="mkSwitches" hidden>
+              <button type="button" data-pane="leads">Leads</button>
+              <button type="button" data-pane="gtm">GTM</button>
+              <button type="button" data-pane="predictions">Predictions</button>
+            </div>
+            <button type="button" class="mk-arrow" id="mkNext" aria-label="Next">›</button>
+          </div>
+          <div class="mk-row" id="mkRow"></div>
         </div>
         <a class="mk-contact" href="#join">Contact us →</a>
       </div>
@@ -1786,6 +1876,7 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
 <script>
 (function () {
   const CARDS = ["gate", "board", "live", "layers", "platform", "method", "markets", "pricing", "join"];
@@ -1871,8 +1962,7 @@
     } else if (msg.t === "market" && /^[a-z]+$/.test(msg.id || "")) {
       deckGo(CARDS.indexOf("markets"));
       setTimeout(function () {
-        const btn = document.querySelector('.mk-cat[data-id="' + msg.id + '"]');
-        if (btn) btn.click();
+        if (window.__pfOpenMarket) window.__pfOpenMarket(msg.id);
       }, 500);
     } else if (msg.t === "focus") {
       const input = document.getElementById(document.body.dataset.card === "markets" ? "mkQuery" : "landSearchInput");
@@ -2221,14 +2311,17 @@
     { id: "commerce", name: "E-Commerce & Retail Tech", lat: 52.367, lon: 4.904, icon: "M6 8h12l-1 12H7zM9 8V6a3 3 0 0 1 6 0v2" },
     { id: "proptech", name: "Real Estate & PropTech", lat: 25.204, lon: 55.27, icon: "M4 20V10l8-6 8 6v10M10 20v-6h4v6" }
   ];
-  const mkCats = document.getElementById("mkCats");
-  const mkLeads = document.getElementById("mkLeads");
+  const mkRow = document.getElementById("mkRow");
   const mkNote = document.getElementById("mkNote");
+  const mkSwitches = document.getElementById("mkSwitches");
   const mkPhoto = document.getElementById("mkPhoto");
   const mkRight = document.getElementById("mkRight");
   const mkPinA = document.getElementById("mkPinA");
   const mkPinB = document.getElementById("mkPinB");
-  let mkActive = MK[0];
+  let mkActive = null;
+  let mkPane = "cats";
+  let mkRowAt = 0;
+  let mkLeadAt = 0;
   let mkCenter = { lat: MK[0].lat, lon: MK[0].lon };
   let mkPoints = [];
   let mkMap = null;
@@ -2241,10 +2334,6 @@
   function mkIcon(d) {
     return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="' + d + '"/></svg>';
   }
-  mkCats.innerHTML = MK.map(function (cat, i) {
-    return '<button type="button" class="mk-cat' + (i === 0 ? " on" : "") + '" data-id="' + cat.id + '">' + mkIcon(cat.icon) + "<span>" + escapeHtml(cat.name) + "</span></button>";
-  }).join("");
-
   function ensureMarketMap() {
     if (mkMap || !window.L) return;
     mkMap = L.map("mkMap", { zoomControl: false, attributionControl: true }).setView([mkCenter.lat, mkCenter.lon], 13);
@@ -2312,141 +2401,155 @@
     };
     probe.src = next;
   }
-  function paintMarketList() {
-    if (!mkPoints.length) {
-      mkLeads.innerHTML = "";
-      mkNote.textContent = "No public email or phone in this radius.";
+  const MK_COPY = {
+    agritech: { gtm: "Wageningen first. Offer the farm desk to the cluster on the map, then the suppliers beside it.", pred: "If that cluster holds through the quarter, the harvest contracts on the list rise." },
+    cleantech: { gtm: "Copenhagen first. Open with the energy desk, then the ports that buy from it.", pred: "A strong quarter on the waterfront pulls the next plant into the same series." },
+    fintech: { gtm: "London first. Payments teams, then the insurers sitting next to them.", pred: "If the City cluster stays dense, the next series adds two more cover desks." },
+    logistics: { gtm: "Rotterdam first. The port, then the warehouses one corridor inland.", pred: "Hold the port pins and the inland list lengthens on the next simulation." },
+    edtech: { gtm: "Boston first. The universities, then the schools that buy with them.", pred: "A steady campus cluster turns the next series into a city-wide list." },
+    healthtech: { gtm: "Berlin first. The clinics in the city, then the hospital groups.", pred: "If the clinic pins hold, the simulation adds the hospital group beside them." },
+    commerce: { gtm: "Amsterdam first. The retail streets, then the shops that ship from them.", pred: "A busy street cluster lifts the parcel list in the next forecast." },
+    proptech: { gtm: "Dubai first. The towers on the map, then the agencies that lease them.", pred: "Keep the tower cluster and the next series fills the floors under lease." }
+  };
+  const MK_LEADS = {
+    agritech: ["Greenrow Desk", "Fieldnote Co", "Orchard Line"],
+    cleantech: ["Northgrid Desk", "Harbor Volt", "Fjord Current"],
+    fintech: ["Ledger Lane", "Quay Cover", "Bridge Pay"],
+    logistics: ["Portside Desk", "Corridor Lane", "Dock Route"],
+    edtech: ["Campus Desk", "Lesson Lane", "Yard School"],
+    healthtech: ["Clinic Desk", "Ward Line", "Care Quarter"],
+    commerce: ["Retail Desk", "Counter Lane", "Parcel Row"],
+    proptech: ["Tower Desk", "Lease Lane", "Block Key"]
+  };
+  const MK_CONTACT = {
+    agritech: "+31 317 555 0101",
+    cleantech: "+45 555 010 220",
+    fintech: "+44 20 7946 0101",
+    logistics: "+31 10 555 0144",
+    edtech: "+1 617 555 0142",
+    healthtech: "+49 30 555 0188",
+    commerce: "+31 20 555 0166",
+    proptech: "+971 4 555 0190"
+  };
+
+  function dummyPoints(cat, center) {
+    const base = center || { lat: cat.lat, lon: cat.lon };
+    return MK_LEADS[cat.id].map(function (name, i) {
+      return {
+        name: name,
+        email: "Info@" + cat.id + ".com",
+        phone: MK_CONTACT[cat.id],
+        lat: base.lat + (i - 1) * 0.03,
+        lon: base.lon + (i - 1) * 0.04,
+        web: ""
+      };
+    });
+  }
+  function paintStage() {
+    const chosen = mkActive && mkPane !== "cats";
+    mkSwitches.hidden = !chosen;
+    mkNote.hidden = !!chosen;
+    mkSwitches.querySelectorAll("button").forEach(function (btn) {
+      btn.classList.toggle("on", btn.dataset.pane === (mkPane === "pick" ? "leads" : mkPane));
+    });
+    if (!chosen) {
+      const pages = Math.ceil(MK.length / 2);
+      const slice = MK.slice(mkRowAt * 2, mkRowAt * 2 + 2);
+      mkNote.textContent = "Categories · " + (mkRowAt + 1) + " of " + pages;
+      mkRow.innerHTML = slice.map(function (cat) {
+        return '<button type="button" class="mk-cat" data-id="' + cat.id + '">' + mkIcon(cat.icon) + "<span>" + escapeHtml(cat.name) + "</span></button>";
+      }).join("");
       return;
     }
-    mkNote.textContent = mkPoints.length + " leads · " + (mkActive ? mkActive.name : "");
-    mkLeads.innerHTML = mkPoints.map(function (point, index) {
-      const contact = point.email || point.web || "No public email";
-      const phone = point.phone || "No public phone";
-      return '<button type="button" class="mk-lead" data-i="' + index + '">' + mkIcon(mkActive.icon) +
-        "<span><strong>" + escapeHtml(point.name) + "</strong><em>" + escapeHtml(contact) + "</em><small>" + escapeHtml(phone) + "</small></span></button>";
-    }).join("");
+    if (mkPane === "pick") {
+      mkRow.innerHTML = '<button type="button" class="mk-cat on" data-back="1">' + mkIcon(mkActive.icon) + "<span>" + escapeHtml(mkActive.name) + "</span></button>";
+      return;
+    }
+    if (mkPane === "leads") {
+      const point = mkPoints[mkLeadAt];
+      if (!point) { mkRow.innerHTML = ""; return; }
+      mkRow.innerHTML = '<button type="button" class="mk-lead" data-i="' + mkLeadAt + '">' + mkIcon(mkActive.icon) +
+        "<span><strong>" + escapeHtml(point.name) + "</strong><em>" + escapeHtml(point.email) + "</em><small>Contact " + escapeHtml(point.phone) + "</small></span></button>";
+      mkPinA.hidden = false;
+      mkPinB.hidden = true;
+      mkPinA.querySelector("span").textContent = point.name;
+      return;
+    }
+    const story = MK_COPY[mkActive.id];
+    const label = mkPane === "gtm" ? "Go-to-market" : "Prediction";
+    const text = mkPane === "gtm" ? story.gtm : story.pred;
+    mkRow.innerHTML = '<article class="mk-story"><b>' + label + '</b><p>' + escapeHtml(text) + "</p></article>";
   }
-  async function loadMarket(cat, center) {
+  function openMarket(cat, center) {
     mkActive = cat;
     mkCenter = center || { lat: cat.lat, lon: cat.lon };
-    const token = ++mkToken;
-    mkNote.textContent = "Reading public contacts…";
-    mkLeads.innerHTML = "";
+    mkPoints = dummyPoints(cat, mkCenter);
+    mkLeadAt = 0;
+    mkPane = "pick";
     paintMarketPhoto(cat);
-    mkCats.querySelectorAll(".mk-cat").forEach(function (btn) {
-      btn.classList.toggle("on", btn.dataset.id === cat.id);
-    });
-    const body = "[out:json][timeout:12];(node[\"name\"][\"email\"](around:8000," + mkCenter.lat + "," + mkCenter.lon + ");node[\"name\"][\"contact:email\"](around:8000," + mkCenter.lat + "," + mkCenter.lon + ");node[\"name\"][\"phone\"](around:4500," + mkCenter.lat + "," + mkCenter.lon + "););out 24;";
-    let points = [];
-    try {
-      const ctrl = new AbortController();
-      const timer = setTimeout(function () { ctrl.abort(); }, 9000);
-      const data = await fetch("https://overpass-api.de/api/interpreter", {
-        method: "POST",
-        headers: { "Content-Type": "text/plain" },
-        body: body,
-        signal: ctrl.signal
-      }).then(function (res) { clearTimeout(timer); return res.json(); });
-      const seen = {};
-      points = (data.elements || []).map(function (el) {
-        const tags = el.tags || {};
-        if (!tags.name || !el.lat || !el.lon) return null;
-        const email = tags.email || tags["contact:email"] || "";
-        const phone = tags.phone || tags["contact:phone"] || tags["contact:mobile"] || "";
-        const web = tags.website || tags["contact:website"] || "";
-        if (!email && !phone) return null;
-        const key = tags.name + "|" + el.lat.toFixed(4);
-        if (seen[key]) return null;
-        seen[key] = true;
-        return { name: tags.name, lat: el.lat, lon: el.lon, email: email, phone: phone, web: web };
-      }).filter(Boolean);
-      points.sort(function (a, b) { return (b.email ? 1 : 0) - (a.email ? 1 : 0); });
-      points = points.slice(0, 8);
-    } catch (err) {
-      points = [];
-    }
-    if (points.length < 2) {
-      try {
-        const around = "(around:3500," + mkCenter.lat + "," + mkCenter.lon + ")";
-        const qn = '"name"';
-        const body2 = "[out:json][timeout:12];(node[" + qn + "][" + '"shop"' + "]" + around + ";node[" + qn + "][" + '"amenity"' + "~" + '"restaurant|cafe|bar|bank|hotel|fast_food|pharmacy"' + "]" + around + ";);out 12;";
-        const ctrl2 = new AbortController();
-        const timer2 = setTimeout(function () { ctrl2.abort(); }, 8000);
-        const data2 = await fetch("https://overpass-api.de/api/interpreter", {
-          method: "POST",
-          headers: { "Content-Type": "text/plain" },
-          body: body2,
-          signal: ctrl2.signal
-        }).then(function (res) { clearTimeout(timer2); return res.json(); });
-        const seen2 = {};
-        points = (data2.elements || []).map(function (el) {
-          const tags = el.tags || {};
-          if (!tags.name || !el.lat || !el.lon || seen2[tags.name]) return null;
-          seen2[tags.name] = true;
-          return {
-            name: tags.name,
-            lat: el.lat,
-            lon: el.lon,
-            email: tags.email || tags["contact:email"] || "",
-            phone: tags.phone || tags["contact:phone"] || "",
-            web: tags.website || tags["contact:website"] || ""
-          };
-        }).filter(Boolean).slice(0, 8);
-      } catch (err2) {}
-    }
-    if (points.length < 2) {
-      try {
-        const word = ({
-          agritech: "farm",
-          cleantech: "solar",
-          fintech: "bank",
-          logistics: "warehouse",
-          edtech: "school",
-          healthtech: "clinic",
-          commerce: "shop",
-          proptech: "estate agent"
-        })[cat.id] || cat.name;
-        const biased = await fetch("https://photon.komoot.io/api/?q=" + encodeURIComponent(word) + "&lat=" + mkCenter.lat + "&lon=" + mkCenter.lon + "&limit=8").then(function (res) { return res.json(); });
-        const named = (biased.features || []).map(function (feature) {
-          const coords = feature.geometry && feature.geometry.coordinates;
-          const props = feature.properties || {};
-          if (!props.name || !coords) return null;
-          return {
-            name: props.name,
-            lat: coords[1],
-            lon: coords[0],
-            email: "",
-            phone: "",
-            web: props.website || ""
-          };
-        }).filter(Boolean);
-        if (named.length > points.length) points = named.slice(0, 8);
-      } catch (err3) {}
-    }
-    if (token !== mkToken) return;
-    mkPoints = points;
-    paintMarketList();
     paintMarketPins();
+    paintStage();
   }
-  mkCats.addEventListener("click", function (event) {
-    const btn = event.target.closest(".mk-cat");
-    if (!btn) return;
-    const cat = MK.filter(function (item) { return item.id === btn.dataset.id; })[0];
-    if (cat) loadMarket(cat);
-  });
-  mkLeads.addEventListener("click", function (event) {
-    const btn = event.target.closest(".mk-lead");
-    if (!btn) return;
-    const point = mkPoints[Number(btn.dataset.i)];
-    if (!point) return;
-    setMarketView(mkView === "photo" ? "sat" : mkView);
-    if (mkMap) mkMap.flyTo([point.lat, point.lon], 16, { duration: 0.6 });
-  });
-  document.getElementById("mkToggle").addEventListener("click", function (event) {
+  window.__pfOpenMarket = function (id) {
+    const cat = MK.filter(function (item) { return item.id === id; })[0];
+    if (cat) openMarket(cat);
+  };
+  function stepMarket(dir) {
+    if (!mkActive || mkPane === "cats") {
+      const pages = Math.ceil(MK.length / 2);
+      mkRowAt = (mkRowAt + dir + pages) % pages;
+      paintStage();
+      return;
+    }
+    if (mkPane === "leads") {
+      const next = mkLeadAt + dir;
+      if (next >= 0 && next < mkPoints.length) {
+        mkLeadAt = next;
+        paintStage();
+        return;
+      }
+    }
+    const order = ["pick", "leads", "gtm", "predictions"];
+    let at = order.indexOf(mkPane) + dir;
+    if (at < 0) {
+      mkPane = "cats";
+      mkActive = null;
+      paintStage();
+      return;
+    }
+    if (at >= order.length) at = order.length - 1;
+    mkPane = order[at];
+    if (mkPane === "leads") mkLeadAt = dir < 0 ? mkPoints.length - 1 : 0;
+    paintStage();
+  }
+  document.getElementById("mkPrev").addEventListener("click", function () { stepMarket(-1); });
+  document.getElementById("mkNext").addEventListener("click", function () { stepMarket(1); });
+  mkSwitches.addEventListener("click", function (event) {
     const btn = event.target.closest("button");
-    if (!btn) return;
-    setMarketView(btn.dataset.view);
-    if (btn.dataset.view !== "photo") paintMarketPins();
+    if (!btn || !mkActive) return;
+    mkPane = btn.dataset.pane;
+    if (mkPane === "leads") mkLeadAt = 0;
+    paintStage();
+  });
+  mkRow.addEventListener("click", function (event) {
+    if (event.target.closest("[data-back]")) {
+      mkPane = "cats";
+      mkActive = null;
+      paintStage();
+      return;
+    }
+    const catBtn = event.target.closest(".mk-cat");
+    if (catBtn && catBtn.dataset.id) {
+      const cat = MK.filter(function (item) { return item.id === catBtn.dataset.id; })[0];
+      if (cat) openMarket(cat);
+      return;
+    }
+    const leadBtn = event.target.closest(".mk-lead");
+    if (!leadBtn) return;
+    const point = mkPoints[Number(leadBtn.dataset.i)];
+    if (!point) return;
+    setMarketView("sat");
+    if (mkMap) mkMap.flyTo([point.lat, point.lon], 14, { duration: 0.6 });
   });
   document.getElementById("mkSearch").addEventListener("submit", async function (event) {
     event.preventDefault();
@@ -2455,20 +2558,19 @@
     const q = raw.toLowerCase();
     const hits = MK.filter(function (cat) { return cat.name.toLowerCase().indexOf(q) !== -1; });
     if (hits.length === 1 && (hits[0].name.toLowerCase() === q || hits[0].name.toLowerCase().indexOf(q) === 0)) {
-      loadMarket(hits[0]);
+      openMarket(hits[0]);
+      mkPane = "leads";
+      paintStage();
       return;
     }
+    mkNote.hidden = false;
     mkNote.textContent = "Finding " + raw + "…";
     const center = await geocode(raw);
     if (!center) { mkNote.textContent = "No place match for " + raw; return; }
-    loadMarket(hits[0] || mkActive, { lat: center.lat, lon: center.lon });
-  });
-  document.getElementById("mkQuery").addEventListener("input", function () {
-    const q = this.value.trim().toLowerCase();
-    mkCats.querySelectorAll(".mk-cat").forEach(function (btn) {
-      const cat = MK.filter(function (item) { return item.id === btn.dataset.id; })[0];
-      btn.hidden = !!q && cat.name.toLowerCase().indexOf(q) === -1;
-    });
+    const cat = hits[0] || mkActive || MK[0];
+    openMarket(cat, { lat: center.lat, lon: center.lon });
+    mkPane = "leads";
+    paintStage();
   });
 
   const BOARD_SLIDES = [
@@ -2538,8 +2640,92 @@
     document.getElementById("mkSearch").requestSubmit();
   });
 
-  paintMarketPhoto(MK[0]);
-  loadMarket(MK[0]);
+  const TOUR = [
+    {
+      title: "Geospatial<br>Intelligence",
+      blurb: "Used to extract density, proximity, and territorial clusters from map APIs.",
+      eqs: [
+        { name: "Haversine", tex: "d = 2r \\arcsin\\left(\\sqrt{\\sin^{2}\\left(\\frac{\\phi_{2}-\\phi_{1}}{2}\\right)+\\cos(\\phi_{1})\\cos(\\phi_{2})\\sin^{2}\\left(\\frac{\\lambda_{2}-\\lambda_{1}}{2}\\right)}\\right)" },
+        { name: "Neighborhood", tex: "N_{\\epsilon}(p)=\\{q\\in D\\mid \\mathrm{dist}(p,q)\\le\\epsilon\\}" },
+        { name: "Core point", tex: "\\lvert N_{\\epsilon}(p)\\rvert \\ge \\mathrm{MinPts}" }
+      ]
+    },
+    {
+      title: "Corporate<br>News",
+      blurb: "Used to parse unstructured news streams, classify market events, and derive corporate intent.",
+      eqs: [
+        { name: "Attention", tex: "\\mathrm{Attention}(Q,K,V)=\\mathrm{softmax}\\left(\\frac{QK^{T}}{\\sqrt{d_{k}}}\\right)V" },
+        { name: "TF-IDF", tex: "\\mathrm{TF\\text{-}IDF}(t,d,D)=\\mathrm{TF}(t,d)\\times\\log\\left(\\frac{\\lvert D\\rvert}{\\lvert\\{d\\in D:t\\in d\\}\\rvert}\\right)" }
+      ]
+    },
+    {
+      title: "Lead<br>Scoring",
+      blurb: "Used to rank prospects based on geospatial fit, capital activity, and operational signals.",
+      eqs: [
+        { name: "Sigmoid", tex: "P(\\mathrm{Lead\\ Conversion})=\\sigma(z)=\\frac{1}{1+e^{-z}}" },
+        { name: "Weights", tex: "z=w_{0}+w_{1}\\cdot x_{\\mathrm{geospatial}}+w_{2}\\cdot x_{\\mathrm{news\\_intent}}+w_{3}\\cdot x_{\\mathrm{firmographics}}" }
+      ]
+    },
+    {
+      title: "Prediction<br>Series",
+      blurb: "Used to model future trajectory, economic shifts, and revenue scenarios.",
+      eqs: [
+        { name: "ARIMA", tex: "\\hat{y}_{t}=c+\\phi_{1} y_{t-1}+\\cdots+\\phi_{p} y_{t-p}+\\theta_{1}\\epsilon_{t-1}+\\cdots+\\theta_{q}\\epsilon_{t-q}" },
+        { name: "Monte Carlo", tex: "S_{t+\\Delta t}=S_{t}\\exp\\left(\\left(\\mu-\\frac{\\sigma^{2}}{2}\\right)\\Delta t+\\sigma\\sqrt{\\Delta t}\\, Z\\right)\\quad Z\\sim\\mathcal{N}(0,1)" }
+      ]
+    }
+  ];
+  let tourSec = 0;
+  let tourEq = 0;
+  function paintTour() {
+    const sec = TOUR[tourSec];
+    const eq = sec.eqs[tourEq];
+    document.getElementById("tourTitle").innerHTML = sec.title;
+    document.getElementById("tourBlurb").textContent = sec.blurb;
+    document.getElementById("tourEqName").textContent = eq.name;
+    const host = document.getElementById("tourEq");
+    host.innerHTML = "";
+    if (window.katex) window.katex.render(eq.tex, host, { throwOnError: false, displayMode: true });
+    else host.textContent = eq.tex;
+    const display = host.querySelector(".katex-display");
+    if (display) {
+      display.style.fontSize = "1.15em";
+      const need = display.scrollWidth;
+      const avail = host.clientWidth;
+      if (need > avail && avail > 0) display.style.fontSize = Math.max(0.72, (avail / need) * 1.15).toFixed(3) + "em";
+    }
+    document.getElementById("tourEqNav").innerHTML = sec.eqs.map(function (item, i) {
+      return '<button type="button" data-eq="' + i + '"' + (i === tourEq ? ' class="on"' : "") + ">" + item.name + "</button>";
+    }).join("");
+    document.querySelectorAll("#tourBar button").forEach(function (btn, i) {
+      btn.classList.toggle("on", i === tourSec);
+    });
+  }
+  document.getElementById("tourBar").addEventListener("click", function (event) {
+    const btn = event.target.closest("button");
+    if (!btn) return;
+    tourSec = Number(btn.dataset.sec);
+    tourEq = 0;
+    paintTour();
+  });
+  document.getElementById("tourEqNav").addEventListener("click", function (event) {
+    const btn = event.target.closest("button");
+    if (!btn) return;
+    tourEq = Number(btn.dataset.eq);
+    paintTour();
+  });
+  document.getElementById("tourNext").addEventListener("click", function () {
+    const sec = TOUR[tourSec];
+    if (tourEq < sec.eqs.length - 1) tourEq += 1;
+    else {
+      tourSec = (tourSec + 1) % TOUR.length;
+      tourEq = 0;
+    }
+    paintTour();
+  });
+  paintTour();
+
+  paintStage();
 
   CARDS.forEach(function (id) {
     const el = document.getElementById(id);
