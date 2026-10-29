@@ -760,16 +760,17 @@
     border: 0; padding: 0; background: rgba(255,255,255,0.55);
   }
   #gate .rail button.on { width: 12px; height: 12px; background: #fff; box-shadow: 0 0 0 4px rgba(255,255,255,0.18); }
-  #gate .copy { left: 108px; top: 46%; transform: translateY(-50%); width: min(340px, 36%); }
+  #gate .copy { left: 108px; top: 46%; transform: translateY(-50%); width: min(440px, 48%); }
   #gate .copy h1 {
     margin: 0 0 12px; font-family: Montserrat, "Segoe UI", sans-serif;
     font-size: clamp(32px, 4vw, 44px); font-weight: 700;
     letter-spacing: 0.04em; line-height: 1; text-transform: none; color: #fff;
   }
   #gate .copy p {
-    margin: 0 0 26px; max-width: 300px; font-size: 11px; line-height: 1.55;
-    font-weight: 500; color: rgba(255,255,255,0.88);
+    margin: 0 0 26px; max-width: 420px; font-size: 13px; line-height: 1.45;
+    font-weight: 500; color: rgba(255,255,255,0.92);
   }
+  #gate .int-ico span { font-size: 9px; font-weight: 700; letter-spacing: 0.02em; color: #123; text-align: center; line-height: 1.1; }
   #gate .enter {
     display: inline-grid; place-items: center; min-width: 118px; height: 36px;
     padding: 0 22px; border-radius: 999px; border: 1.5px solid rgba(255,255,255,0.9);
@@ -983,55 +984,55 @@
 <body class="locked">
   <div class="wash" aria-hidden="true"></div>
 
-  <section id="gate" class="scene" aria-label="Sequel Support">
-    <section class="card" id="landCard" aria-label="Sequel Support">
+  <section id="gate" class="scene" aria-label="Pathfinder">
+    <section class="card" id="landCard" aria-label="Pathfinder">
       <div class="shade" aria-hidden="true"></div>
       <header class="nav">
-        <div class="brand">Sequel</div>
+        <div class="brand">pathfinder</div>
         <nav class="links" aria-label="Primary">
-          <button type="button" data-slide="0" class="on">Home</button>
-          <button type="button" data-slide="1">Homes</button>
-          <button type="button" data-slide="2">Fernleigh</button>
-          <button type="button" id="gateExplore">Desk</button>
+          <button type="button" data-slide="1" class="on">Geospatial</button>
+          <button type="button" data-slide="2">News</button>
+          <button type="button" data-slide="4">Strategies</button>
+          <button type="button" id="gateExplore">Leads</button>
         </nav>
         <div class="tools">
           <button class="icon-btn" id="landSearchBtn" type="button" aria-label="Search" aria-expanded="false">
             <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M16 16l4 4"/></svg>
           </button>
-          <span class="avatar" aria-hidden="true">SQ</span>
+          <span class="avatar" aria-hidden="true">PF</span>
         </div>
       </header>
       <form class="search-pop" id="landSearchPop" hidden>
-        <input id="landSearchInput" type="search" placeholder="Search the desk" aria-label="Search the desk">
+        <input id="landSearchInput" type="search" placeholder="Search Pathfinder" aria-label="Search Pathfinder">
       </form>
       <div class="rail" id="landRail" aria-label="Slides"></div>
       <div class="copy">
-        <h1 id="landTitle">MAYFIELD</h1>
+        <h1 id="landTitle">PATHFINDER</h1>
         <p id="landBlurb"></p>
         <button type="button" class="enter" id="gateEnter">Enter</button>
       </div>
-      <section class="popular" aria-label="Homes">
+      <section class="popular" aria-label="Sources">
         <div class="integrations">
-          <p>Enjoy custom integrations</p>
+          <p>Dense information</p>
           <div class="int-row">
-            <span class="int-ico" title="Indeed" aria-label="Indeed"><svg class="int-ring" viewBox="0 0 46 46" aria-hidden="true"><circle cx="23" cy="23" r="19"/></svg><img class="int-logo" src="photos/indeed.svg" alt=""></span>
-            <span class="int-ico" title="Microsoft Teams" aria-label="Microsoft Teams"><svg class="int-ring" viewBox="0 0 46 46" aria-hidden="true"><circle cx="23" cy="23" r="19"/></svg><img class="int-logo" src="photos/microsoftteams.svg" alt=""></span>
-            <span class="int-ico" title="Microsoft Outlook" aria-label="Microsoft Outlook"><svg class="int-ring" viewBox="0 0 46 46" aria-hidden="true"><circle cx="23" cy="23" r="19"/></svg><img class="int-logo" src="photos/microsoftoutlook.svg" alt=""></span>
-            <span class="int-ico" title="Microsoft SharePoint" aria-label="Microsoft SharePoint"><svg class="int-ring" viewBox="0 0 46 46" aria-hidden="true"><circle cx="23" cy="23" r="19"/></svg><img class="int-logo" src="photos/microsoftsharepoint.svg" alt=""></span>
+            <span class="int-ico" title="Google Maps" aria-label="Google Maps"><svg class="int-ring" viewBox="0 0 46 46" aria-hidden="true"><circle cx="23" cy="23" r="19"/></svg><span>Maps</span></span>
+            <span class="int-ico" title="Co-operate world news" aria-label="Co-operate world news"><svg class="int-ring" viewBox="0 0 46 46" aria-hidden="true"><circle cx="23" cy="23" r="19"/></svg><span>News</span></span>
+            <span class="int-ico" title="Go to market strategies" aria-label="Go to market strategies"><svg class="int-ring" viewBox="0 0 46 46" aria-hidden="true"><circle cx="23" cy="23" r="19"/></svg><span>GTM</span></span>
+            <span class="int-ico" title="Predictions and simulations" aria-label="Predictions and simulations"><svg class="int-ring" viewBox="0 0 46 46" aria-hidden="true"><circle cx="23" cy="23" r="19"/></svg><span>Series</span></span>
           </div>
         </div>
-        <p class="pop-label">Homes <i></i></p>
+        <p class="pop-label">Sources <i></i></p>
         <div class="thumbs" id="landThumbs"></div>
         <div class="pager" id="landPager"></div>
       </section>
       <div class="social">
-        <a href="https://www.sequelsupport.co.uk" aria-label="Facebook" target="_blank" rel="noreferrer">
+        <a href="#join" aria-label="Pathfinder">
           <svg viewBox="0 0 24 24"><path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H8v3h2v7h3v-7h2.6l.4-3H13v-2c0-.6.4-1 1-1z"/></svg>
         </a>
-        <a href="https://www.sequelsupport.co.uk" aria-label="Twitter" target="_blank" rel="noreferrer">
+        <a href="#join" aria-label="Leads">
           <svg viewBox="0 0 24 24"><path d="M19 7.3c-.6.3-1.2.4-1.9.5.7-.4 1.2-1 1.4-1.8-.6.4-1.3.7-2.1.8A3.2 3.2 0 0 0 12 9.8c0 .3 0 .5.1.8-2.7-.1-5.1-1.4-6.7-3.4-.3.5-.4 1-.4 1.6 0 1.1.6 2.1 1.4 2.7-.5 0-1-.2-1.5-.4v.1c0 1.6 1.1 2.9 2.6 3.2-.3.1-.6.1-.9.1-.2 0-.4 0-.6-.1.4 1.3 1.6 2.2 3 2.3A6.5 6.5 0 0 1 5 17.6 9.1 9.1 0 0 0 10 19c6 0 9.3-5 9.3-9.3v-.4c.6-.5 1.2-1.1 1.7-1.8z"/></svg>
         </a>
-        <a href="https://www.sequelsupport.co.uk" aria-label="Instagram" target="_blank" rel="noreferrer">
+        <a href="#join" aria-label="Pricing">
           <svg viewBox="0 0 24 24"><path d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4zm5 4.5A4.5 4.5 0 1 0 16.5 12 4.5 4.5 0 0 0 12 7.5zm6.2-.9a1.1 1.1 0 1 0 1.1 1.1 1.1 1.1 0 0 0-1.1-1.1zM12 9.2A2.8 2.8 0 1 1 9.2 12 2.8 2.8 0 0 1 12 9.2z"/></svg>
         </a>
       </div>
@@ -1041,59 +1042,29 @@
   <div class="nav-wrap">
     <div style="width:min(920px,100%)">
       <nav class="nav" aria-label="Primary">
-        <a class="brand" href="#top">pathfinder</a>
+        <a class="brand" href="#live">pathfinder</a>
         <div class="nav-links">
-          <a href="#signals">Signals</a>
+          <a href="#live">Live</a>
           <a href="#route">Leads</a>
-          <a href="#platform">Platform</a>
           <a href="#layers">Layers</a>
-          <a href="#hazard">Hazard</a>
+          <a href="#platform">Platform</a>
           <a href="#method">Method</a>
-          <a href="#film">Film</a>
           <a href="#pricing">Pricing</a>
         </div>
         <a class="btn ghost" href="#join">Start a desk</a>
         <button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu"><span></span><span></span><span></span></button>
       </nav>
       <div class="nav-drawer" id="drawer">
-        <a href="#signals">Signals</a>
+        <a href="#live">Live</a>
         <a href="#route">Leads</a>
-        <a href="#platform">Platform</a>
         <a href="#layers">Layers</a>
-        <a href="#hazard">Hazard</a>
+        <a href="#platform">Platform</a>
         <a href="#method">Method</a>
-        <a href="#film">Film</a>
         <a href="#pricing">Pricing</a>
         <a href="#join">Start a desk</a>
       </div>
     </div>
   </div>
-
-  <header class="hero bg-1" id="top">
-    <div>
-      <h2>pathfinder</h2>
-      <p>geospatial intelligence<br />co-operate world news<br />business intelligence<br />go to market strategies<br />predictions &amp; simulations</p>
-    </div>
-  </header>
-
-  <section class="section bg-2" id="signals">
-    <div class="wrap">
-      <div class="split">
-        <div>
-          <div class="eyebrow"><i></i> Signals</div>
-          <h3 class="display">Dense inputs.<br />Named leads.</h3>
-        </div>
-        <p class="lede">Swipe the sources Pathfinder reads. Maps, news, strategy, series, and simulations sit on one desk.</p>
-      </div>
-      <div class="scroller" id="scroller">
-        <article class="signal"><div><div class="idx">01</div><h4>Geospatial intelligence</h4><p>Google Maps and dense place data. The lead starts where the city actually is.</p></div><div><b>Maps</b><em>Place</em></div></article>
-        <article class="signal"><div><div class="idx">02</div><h4>Co-operate world news</h4><p>World news read as a source. Headlines become account signals on the same desk.</p></div><div><b>News</b><em>World</em></div></article>
-        <article class="signal"><div><div class="idx">03</div><h4>Business intelligence</h4><p>Filings, shifts, and market language scored into a list a desk can work.</p></div><div><b>Desk</b><em>Intelligence</em></div></article>
-        <article class="signal"><div><div class="idx">04</div><h4>Go to market strategies</h4><p>Who to approach, in which territory, and why now — written from the signal.</p></div><div><b>GTM</b><em>Strategy</em></div></article>
-        <article class="signal"><div><div class="idx">05</div><h4>Predictions &amp; simulations</h4><p>A prediction series beside a simulation, so the lead list can be tested before it is spent.</p></div><div><b>Series</b><em>Runs</em></div></article>
-      </div>
-    </div>
-  </section>
 
   <section class="route" id="route" aria-label="Lead route">
     <div class="route-board">
@@ -1133,48 +1104,29 @@
     </div>
   </section>
 
-  <section class="section bg-5" id="platform">
+  <section class="section bg-4" id="live">
     <div class="wrap">
-      <div class="split">
-        <div>
-          <div class="eyebrow">Platform</div>
-          <h3 class="display">Everything the model<br />needs to find a lead.</h3>
-        </div>
-      </div>
-      <div class="bento">
-        <article class="card wide">
-          <div class="wide-art" aria-hidden="true"></div>
-          <div class="wide-copy">
-            <div class="mark" aria-hidden="true">◎</div>
-            <h4>Generate leads from dense information</h4>
-            <p>Pathfinder is an AI startup. Machine learning reads the crowded internet — maps, news, and the trails between them — and returns leads a go-to-market team can use.</p>
-          </div>
-        </article>
-        <article class="card">
-          <div class="mark">⌖</div>
-          <h4>Geospatial intelligence</h4>
-          <p>Google Maps as a source, not a backdrop. Territory, access, and concentration become part of the lead.</p>
-        </article>
-        <article class="card">
-          <div class="mark">☰</div>
-          <h4>Co-operate world news</h4>
-          <p>World news is scored into business intelligence on the same desk, so a headline can move an account up the list.</p>
-        </article>
-        <article class="card">
-          <div class="mark">↗</div>
-          <h4>Go-to-market</h4>
-          <p>Strategies written from the evidence: which market, which motion, which week.</p>
-        </article>
-        <article class="card">
-          <div class="mark">∿</div>
-          <h4>Series and simulations</h4>
-          <p>Prediction series and scenario runs rendered side by side, so the plan can be tested before it is spent.</p>
-        </article>
+      <div class="eyebrow"><i></i> Live</div>
+      <h3 class="display">Series running<br />on the desk.</h3>
+      <p class="lede" style="margin:16px 0 28px">Maps, news, go-to-market drafts, and simulations in the same queue.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Desk</th><th>Task</th><th>Layer</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td><i class="dot" style="background:#c8f542"></i>maps</td><td class="dim">Reading Google Maps</td><td class="dim">geospatial</td><td>running</td></tr>
+            <tr><td><i class="dot" style="background:#2ee6c8"></i>news</td><td class="dim">Co-operate world news</td><td class="dim">intelligence</td><td>running</td></tr>
+            <tr><td><i class="dot" style="background:#0a0a0a"></i>gtm</td><td class="dim">Go to market strategy</td><td class="dim">strategy</td><td>queued</td></tr>
+            <tr><td><i class="dot" style="background:#1f9d55"></i>series</td><td class="dim">Prediction series</td><td class="dim">forecast</td><td>running</td></tr>
+            <tr><td><i class="dot" style="background:#0f9d8a"></i>sim</td><td class="dim">Simulation beside the series</td><td class="dim">simulation</td><td>running</td></tr>
+            <tr><td><i class="dot" style="background:#c8f542"></i>leads</td><td class="dim">Leads from dense information</td><td class="dim">leads</td><td>complete</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </section>
 
-  <section class="section bg-4" id="agents">
+
+  <section class="section bg-4" id="layers">
     <div class="wrap">
       <div class="split">
         <div>
@@ -1232,87 +1184,45 @@
     </div>
   </section>
 
-  <section class="page bg-5" id="catalogue">
+  <section class="section bg-5" id="platform">
     <div class="wrap">
-      <div class="eyebrow"><i></i> Hazard catalogue</div>
-      <p class="lede">Pathfinder’s map desk uses the hazard catalogue as a full geospatial instrument. Event depth, return period, and place stay on the page — then on the globe.</p>
-      <div style="margin-top:22px;color:var(--muted);font-size:14px">Event catalog</div>
-      <p class="catalog-num">10,000</p>
-      <p class="note">Synthetic event set. Nairobi depth is susceptibility × 4.0 m. Nzoia is a depth stand-in until nzoia_rp GeoTIFFs are mounted. Return periods 10, 25, 50, 100, 250, 500.</p>
-      <div class="pills">
-        <div class="hpill"><span class="sq">～</span><span><small>Nairobi pluvial</small><b>4.0 m</b></span></div>
-        <div class="hpill"><span class="sq alt">●</span><span><small>Nzoia fluvial</small><b>8.0 m</b></span></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="page bg-6" id="scales">
-    <div class="wrap" style="width:100%">
       <div class="split">
         <div>
-          <div class="eyebrow">Return periods</div>
-          <h3 class="display">Scales on the<br />100-year field.</h3>
+          <div class="eyebrow">Platform</div>
+          <h3 class="display">Everything the model<br />needs to find a lead.</h3>
         </div>
-        <p class="lede">The same bars, columns, and depth spark as the hazard desk. RP 500 against the 100-year field. Scales 0.35, 0.55, 0.78, 1, 1.28, 1.55.</p>
       </div>
-      <div class="scale-grid">
-        <article class="float"><small>100-year field</small><strong>1.00×</strong><em>reference depth</em></article>
-        <article class="float">
-          <small>Return-period scale</small><strong>0.35–0.78</strong>
-          <div class="bars">
-            <p><span>10-year</span><i><b style="width:35%;background:#d4534a"></b></i></p>
-            <p><span>25-year</span><i><b style="width:55%;background:#c6a000"></b></i></p>
-            <p><span>50-year</span><i><b style="width:78%;background:#0e8f62"></b></i></p>
+      <div class="bento">
+        <article class="card wide">
+          <div class="wide-art" aria-hidden="true"></div>
+          <div class="wide-copy">
+            <div class="mark" aria-hidden="true">◎</div>
+            <h4>Generate leads from dense information</h4>
+            <p>Pathfinder is an AI startup. Machine learning reads the crowded internet — maps, news, and the trails between them — and returns leads a go-to-market team can use.</p>
           </div>
         </article>
-        <article class="float">
-          <small>Exceedance</small><strong>1 / RP</strong><em>OEP, strictly decreasing</em>
-          <div class="cols" aria-hidden="true">
-            <i style="height:100%"></i><i style="height:40%;opacity:.75"></i><i style="height:20%;opacity:.7"></i>
-            <i style="height:72%"></i><i style="height:10%;opacity:.55"></i><i style="height:86%"></i>
-            <i style="height:28%;opacity:.65"></i><i style="height:54%"></i><i style="height:16%;opacity:.5"></i>
-            <i style="height:64%"></i><i style="height:8%;opacity:.45"></i><i style="height:36%;opacity:.6"></i>
-          </div>
+        <article class="card">
+          <div class="mark">⌖</div>
+          <h4>Geospatial intelligence</h4>
+          <p>Google Maps as a source, not a backdrop. Territory, access, and concentration become part of the lead.</p>
+        </article>
+        <article class="card">
+          <div class="mark">☰</div>
+          <h4>Co-operate world news</h4>
+          <p>World news is scored into business intelligence on the same desk, so a headline can move an account up the list.</p>
+        </article>
+        <article class="card">
+          <div class="mark">↗</div>
+          <h4>Go-to-market</h4>
+          <p>Strategies written from the evidence: which market, which motion, which week.</p>
+        </article>
+        <article class="card">
+          <div class="mark">∿</div>
+          <h4>Series and simulations</h4>
+          <p>Prediction series and scenario runs rendered side by side, so the plan can be tested before it is spent.</p>
         </article>
       </div>
     </div>
-  </section>
-
-  <section class="page bg-2" id="layers">
-    <div class="layer-layout">
-      <div>
-        <div class="eyebrow">Hazard layers</div>
-        <h3 class="display">Switch the globe<br />before you reach it.</h3>
-        <p class="lede">These are the catalogue layers. Toggles here drive the 3D hazard page below — the page that replaced the wireframe.</p>
-        <div class="donuts">
-          <div class="donut">
-            <svg viewBox="0 0 72 72" aria-hidden="true"><circle cx="36" cy="36" r="26" fill="none" stroke="#e8eaed" stroke-width="7"/><circle cx="36" cy="36" r="26" fill="none" stroke="#127a45" stroke-width="7" stroke-linecap="round" stroke-dasharray="65.3 163.4" transform="rotate(-90 36 36)"/><text x="36" y="40" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-size="13" font-weight="600" fill="#0a0a0a">40%</text></svg>
-            <div><b>4.0 m</b><span>Proxy cap of 10 m</span></div>
-          </div>
-          <div class="donut">
-            <svg viewBox="0 0 72 72" aria-hidden="true"><circle cx="36" cy="36" r="26" fill="none" stroke="#e8eaed" stroke-width="7"/><circle cx="36" cy="36" r="26" fill="none" stroke="#1f9d55" stroke-width="7" stroke-linecap="round" stroke-dasharray="127.4 163.4" transform="rotate(-90 36 36)"/><text x="36" y="40" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-size="13" font-weight="600" fill="#0a0a0a">78%</text></svg>
-            <div><b>0.78×</b><span>RP 50 scale</span></div>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div style="font-family:var(--display);font-size:18px;margin-bottom:8px">Depth scale <b style="font-size:32px;letter-spacing:-.04em">1.55×</b></div>
-        <div class="rows" id="layerRows">
-          <button class="row" type="button" data-layer="white"><span>White relief</span><b>1</b><em>pale</em><i class="arr"></i></button>
-          <button class="row" type="button" data-layer="blue"><span>Blue water</span><b>2.5</b><em>m WSE</em><i class="arr"></i></button>
-          <button class="row" type="button" data-layer="green"><span>Green land</span><b>3</b><em>cover</em><i class="arr"></i></button>
-          <button class="row" type="button" data-layer="heat"><span>Heat map</span><b>4.0</b><em>m cap</em><i class="arr"></i></button>
-          <button class="row" type="button" data-layer="pluvial"><span>Pluvial</span><b>100</b><em>year</em><i class="arr"></i></button>
-          <button class="row" type="button" data-layer="fluvial"><span>Fluvial</span><b>8.0</b><em>m</em><i class="arr"></i></button>
-          <button class="row" type="button" data-layer="pins"><span>Pins</span><b>6</b><em>marks</em><i class="arr"></i></button>
-          <button class="row" type="button" data-layer="marble"><span>Marble</span><b>earth</b><em>tile</em><i class="arr"></i></button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="hazard bg-5" id="hazard" aria-label="3D hazard catalogue">
-    <iframe id="hazardFrame" title="3D hazard catalogue" data-src="hazard.html"></iframe>
   </section>
 
   <section class="section bg-6" id="method">
@@ -1332,66 +1242,6 @@
     </div>
   </section>
 
-  <section class="section bg-1" id="integrations">
-    <div class="wrap">
-      <div class="split">
-        <div>
-          <div class="eyebrow">Desk</div>
-          <h3 class="display">Connect the sources.<br />Keep the lead.</h3>
-        </div>
-        <p class="lede">Maps and news in. Strategy, series, and simulations out.</p>
-      </div>
-      <div class="integ">
-        <div class="glass-stack">
-          <div class="glass">
-            <span class="pill" style="background:rgba(255,255,255,.12);color:rgba(255,255,255,.75)">Model</span>
-            <h4>Lead call</h4>
-            <p>One call carries the dense inputs Pathfinder was built to read.</p>
-            <div class="code">
-              <i>generateLeads</i>({<br />
-              &nbsp;&nbsp;maps: "geospatial",<br />
-              &nbsp;&nbsp;news: "co-operate",<br />
-              &nbsp;&nbsp;out: ["gtm", "series", "simulations"]<br />
-              })
-            </div>
-          </div>
-          <div class="glass">
-            <p><i class="dot" style="background:#c8f542"></i> Series rendering on the open desk.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="marquee bg-3" aria-hidden="true">
-    <div class="mrow left" id="mA"></div>
-    <div class="mrow right" id="mB"></div>
-  </div>
-
-  <section class="section bg-4" id="live">
-    <div class="wrap">
-      <div class="eyebrow"><i></i> Live</div>
-      <h3 class="display">Series running<br />on the desk.</h3>
-      <p class="lede" style="margin:16px 0 28px">Maps, news, go-to-market drafts, and simulations in the same queue.</p>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Desk</th><th>Task</th><th>Layer</th><th>Status</th></tr></thead>
-          <tbody>
-            <tr><td><i class="dot" style="background:#c8f542"></i>maps-nairobi</td><td class="dim">Reading Westlands density</td><td class="dim">geospatial</td><td>running</td></tr>
-            <tr><td><i class="dot" style="background:#2ee6c8"></i>news-emea</td><td class="dim">Co-operate news cluster</td><td class="dim">intelligence</td><td>running</td></tr>
-            <tr><td><i class="dot" style="background:#0a0a0a"></i>gtm-lagos</td><td class="dim">Sequence draft for the corridor</td><td class="dim">strategy</td><td>queued</td></tr>
-            <tr><td><i class="dot" style="background:#1f9d55"></i>series-q4</td><td class="dim">Prediction series 04</td><td class="dim">forecast</td><td>running</td></tr>
-            <tr><td><i class="dot" style="background:#0f9d8a"></i>sim-port</td><td class="dim">Corridor shock, lead list redrawn</td><td class="dim">simulation</td><td>running</td></tr>
-            <tr><td><i class="dot" style="background:#c8f542"></i>leads-ngong</td><td class="dim">18 accounts scored from the field</td><td class="dim">leads</td><td>complete</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </section>
-
-  <section class="film bg-6" id="film" aria-label="Video">
-    <div class="film-slot" id="video-slot"></div>
-  </section>
 
   <section class="section bg-2" id="pricing">
     <div class="wrap">
@@ -1413,7 +1263,7 @@
           <div class="name">Desk</div>
           <div class="price">$280<span style="font-size:14px;letter-spacing:0">/mo</span></div>
           <div class="quiet">Corridors and news, together</div>
-          <ul><li>Geospatial intelligence</li><li>Co-operate world news</li><li>Go-to-market drafts</li><li>Prediction series</li><li>Simulations</li><li>Hazard catalogue</li></ul>
+          <ul><li>Geospatial intelligence</li><li>Co-operate world news</li><li>Business intelligence</li><li>Go to market strategies</li><li>Prediction series</li><li>Simulations</li></ul>
           <a class="btn" href="#join">Get started</a>
         </article>
         <article class="plan">
@@ -1441,13 +1291,11 @@
   <footer class="bg-1">
     <span class="brand">pathfinder</span>
     <nav>
-      <a href="#signals">Signals</a>
+      <a href="#live">Live</a>
       <a href="#route">Leads</a>
-      <a href="#platform">Platform</a>
       <a href="#layers">Layers</a>
-      <a href="#hazard">Hazard</a>
+      <a href="#platform">Platform</a>
       <a href="#method">Method</a>
-      <a href="#film">Film</a>
       <a href="#pricing">Pricing</a>
     </nav>
     <div class="copy">© 2026 Pathfinder. Leads from dense information.</div>
@@ -1457,17 +1305,17 @@
 <script>
 (function () {
   const GATE_SLIDES = [
-    { title: "MAYFIELD", text: "Mayfield Lodge in Bournemouth. Safer recruitment for the children's home, from Indeed intake through DBS, references, and the manager sign-off." },
-    { title: "RAINBOW", text: "Rainbow Lodge shares the Bournemouth sleep-in. The desk holds the candidate queue, the pre-screen call, and the interview panel in one place." },
-    { title: "FERNLEIGH", text: "Fernleigh House in Cornwall. Sleep-ins are the Cornwall rate. A home manager sees only this house. HR admin sees all three." },
-    { title: "VETTING", text: "Passport, driving licence, proof of address, Level 3, and the DBS Update Service sit in the locker. Every employment gap needs a written explanation." },
-    { title: "PANEL", text: "Two interviewers score 28 scenarios. A safeguarding gap over 2 points, or a panel gap over 10, holds the offer until they agree." },
-    { title: "OFFER", text: "The conditional offer uses the annual base plus the home's sleep-in rate. Bank details are stored as the last four digits only." }
+    { title: "PATHFINDER", text: "Pathfinder is an AI startup that uses machine learning algorithms to generate leads from dense information on the internet, such as Google Maps for geospatial intelligence and co-operate world news, to create business intelligence, go to market strategies, and render prediction series and simulations." },
+    { title: "GEOSPATIAL", text: "Google Maps for geospatial intelligence. Dense place information is where a lead starts." },
+    { title: "NEWS", text: "Co-operate world news, read from the internet and turned into the lead list." },
+    { title: "INTELLIGENCE", text: "Business intelligence built from Google Maps and co-operate world news." },
+    { title: "STRATEGIES", text: "Go to market strategies written from that business intelligence." },
+    { title: "SERIES", text: "Prediction series and simulations rendered from the same dense information." }
   ];
   const GATE_HOMES = [
-    { pos: "18% 42%", alt: "Mayfield Lodge", slide: 0 },
-    { pos: "72% 36%", alt: "Rainbow Lodge", slide: 1 },
-    { pos: "46% 70%", alt: "Fernleigh House", slide: 2 }
+    { pos: "18% 42%", alt: "Geospatial intelligence", slide: 1 },
+    { pos: "72% 36%", alt: "Co-operate world news", slide: 2 },
+    { pos: "46% 70%", alt: "Go to market strategies", slide: 4 }
   ];
   let gateIndex = 0;
   const gate = document.getElementById("gate");
@@ -1490,8 +1338,8 @@
     document.querySelectorAll("#gate .links button[data-slide]").forEach(function (btn) {
       btn.classList.toggle("on", Number(btn.dataset.slide) === gateIndex);
     });
-    landThumbs.querySelectorAll("button").forEach(function (btn, i) { btn.classList.toggle("on", i === gateIndex); });
-    landPager.querySelectorAll("button").forEach(function (btn, i) { btn.classList.toggle("on", i === gateIndex); });
+    landThumbs.querySelectorAll("button").forEach(function (btn) { btn.classList.toggle("on", Number(btn.dataset.slide) === gateIndex); });
+    landPager.querySelectorAll("button").forEach(function (btn) { btn.classList.toggle("on", Number(btn.dataset.pop) === gateIndex); });
   }
 
   if (location.hash && location.hash !== "#" && location.hash !== "#top") openSite();
@@ -1502,8 +1350,8 @@
   landThumbs.innerHTML = GATE_HOMES.map(function (item) {
     return '<button type="button" data-slide="' + item.slide + '"><img src="bg/ribbon.jpg" alt="' + item.alt + '" style="object-position:' + item.pos + '"></button>';
   }).join("");
-  landPager.innerHTML = GATE_HOMES.map(function (_, i) {
-    return '<button type="button" data-pop="' + i + '" aria-label="Home ' + (i + 1) + '"></button>';
+  landPager.innerHTML = GATE_HOMES.map(function (item, i) {
+    return '<button type="button" data-pop="' + item.slide + '" aria-label="Source ' + (i + 1) + '"></button>';
   }).join("");
   paintGate(0);
 
@@ -1516,7 +1364,7 @@
     if (dot) { paintGate(Number(dot.dataset.pop)); return; }
     const nav = event.target.closest("#gate .links button[data-slide]");
     if (nav) { paintGate(Number(nav.dataset.slide)); return; }
-    if (event.target.closest("#gateEnter") || event.target.closest("#gateExplore")) openSite();
+    if (event.target.closest("#gateEnter") || event.target.closest("#gateExplore") || event.target.closest("#gate .social a")) openSite();
   });
   document.getElementById("landSearchBtn").addEventListener("click", function () {
     const pop = document.getElementById("landSearchPop");
@@ -1546,18 +1394,6 @@
     a.addEventListener("click", function () { drawer.classList.remove("open"); });
   });
 
-  const scroller = document.getElementById("scroller");
-  let dragging = false, startX = 0, startLeft = 0;
-  scroller.addEventListener("pointerdown", function (e) {
-    dragging = true; startX = e.clientX; startLeft = scroller.scrollLeft;
-    scroller.setPointerCapture(e.pointerId);
-  });
-  scroller.addEventListener("pointermove", function (e) {
-    if (!dragging) return;
-    scroller.scrollLeft = startLeft - (e.clientX - startX);
-  });
-  scroller.addEventListener("pointerup", function () { dragging = false; });
-  scroller.addEventListener("pointercancel", function () { dragging = false; });
 
   const cards = Array.prototype.slice.call(document.querySelectorAll(".stack-inner"));
   const stickies = Array.prototype.slice.call(document.querySelectorAll(".stack-card"));
@@ -1574,56 +1410,6 @@
   window.addEventListener("scroll", measure, { passive: true });
   measure();
 
-  const frame = document.getElementById("hazardFrame");
-  const hazard = document.getElementById("hazard");
-  const layerState = {};
-  document.querySelectorAll("#layerRows .row").forEach(function (row) {
-    layerState[row.dataset.layer] = true;
-    row.classList.add("on");
-  });
-  function pushLayer(key) {
-    try {
-      frame.contentWindow.postMessage({ type: "hazard-layer", key: key, on: layerState[key] }, "*");
-    } catch (e) {}
-  }
-  document.getElementById("layerRows").addEventListener("click", function (e) {
-    const row = e.target.closest(".row");
-    if (!row) return;
-    const key = row.dataset.layer;
-    layerState[key] = !layerState[key];
-    row.classList.toggle("off", !layerState[key]);
-    pushLayer(key);
-  });
-  frame.addEventListener("load", function () {
-    Object.keys(layerState).forEach(pushLayer);
-    frame.contentWindow.postMessage("hazard-resume", "*");
-  });
-
-  const io = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (entry.isIntersecting) {
-        if (!frame.getAttribute("src")) frame.src = frame.dataset.src;
-        else {
-          try { frame.contentWindow.postMessage("hazard-resume", "*"); } catch (e) {}
-        }
-      } else {
-        try { frame.contentWindow.postMessage("hazard-pause", "*"); } catch (e) {}
-      }
-    });
-  }, { rootMargin: "180px 0px", threshold: 0.05 });
-  io.observe(hazard);
-
-  const rowA = ["Google Maps", "Geospatial intelligence", "Co-operate world news", "Business intelligence", "Go to market strategies", "Predictions", "Simulations", "Generated leads", "Hazard catalogue", "Return periods"];
-  const rowB = ["Nairobi pluvial", "Nzoia fluvial", "Dense information", "Lead list", "Territory", "Account scoring", "Scenario runs", "100-year field", "Event catalog", "Desk"];
-  function fillRow(id, items) {
-    const node = document.getElementById(id);
-    const twice = items.concat(items);
-    node.innerHTML = twice.map(function (item) {
-      return "<span><i></i>" + item + "</span>";
-    }).join("");
-  }
-  fillRow("mA", rowA);
-  fillRow("mB", rowB);
 
   document.getElementById("joinForm").addEventListener("submit", function (e) {
     e.preventDefault();
