@@ -1338,7 +1338,16 @@
     display: flex; flex-direction: column; min-height: 0;
     padding: 22px 26px 18px;
   }
-  .mk-top { display: flex; align-items: center; gap: 14px; }
+  .mk-top { display: flex; align-items: center; gap: 14px; position: relative; }
+  .mk-menu {
+    position: absolute; right: 0; top: 40px; z-index: 6;
+    display: flex; flex-direction: column; min-width: 148px;
+    background: #fff; border: 1px solid #e5eeea; border-radius: 12px;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.12); padding: 6px;
+  }
+  .mk-menu[hidden] { display: none; }
+  .mk-menu a { padding: 10px 12px; text-decoration: none; color: #173028; font-size: 13px; border-radius: 8px; }
+  .mk-menu a:hover { background: #eef8f1; }
   .mk-brand {
     display: flex; align-items: center; gap: 8px;
     font-size: 13px; font-weight: 700; letter-spacing: 0.14em;
@@ -1774,7 +1783,15 @@
             <a href="#platform">Platform</a>
             <a href="#method">Method</a>
           </nav>
-          <button type="button" class="beach-burger mk-burger deck-menu" aria-label="Open menu"><span></span><span></span><span></span></button>
+          <button type="button" class="beach-burger mk-burger deck-menu" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+          <div class="mk-menu" id="mkMenu" hidden>
+            <a href="#live">Live</a>
+            <a href="#layers">Layers</a>
+            <a href="#platform">Platform</a>
+            <a href="#method">Method</a>
+            <a href="#pricing">Pricing</a>
+            <a href="#join">Start</a>
+          </div>
         </header>
         <form class="mk-search" id="mkSearch">
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6"/><path d="M16 16l4 4"/></svg>
@@ -1807,8 +1824,8 @@
         <div class="mk-float a" id="mkPinA" hidden><b></b><span></span></div>
         <div class="mk-float b" id="mkPinB" hidden><b></b><span></span></div>
         <div class="mk-social">
-          <a href="#join" aria-label="Pathfinder"><svg viewBox="0 0 24 24"><path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H8v3h2v7h3v-7h2.6l.4-3H13v-2c0-.6.4-1 1-1z"/></svg></a>
-          <a href="#join" aria-label="Leads"><svg viewBox="0 0 24 24"><path d="M4 4h16v12H5.2L4 17.2z"/></svg></a>
+          <a href="#board" aria-label="Pathfinder"><svg viewBox="0 0 24 24"><path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H8v3h2v7h3v-7h2.6l.4-3H13v-2c0-.6.4-1 1-1z"/></svg></a>
+          <a href="#markets" aria-label="Leads"><svg viewBox="0 0 24 24"><path d="M4 4h16v12H5.2L4 17.2z"/></svg></a>
           <a href="#join" aria-label="Desk"><svg viewBox="0 0 24 24"><path d="M6 9h12v10H6zM9 9V6h6v3"/></svg></a>
         </div>
       </div>
@@ -1985,11 +2002,17 @@
   })();
 
   document.addEventListener("click", function (event) {
-    if (event.target.closest(".deck-menu")) {
+    if (event.target.closest(".mk-burger")) {
       event.preventDefault();
-      const drawer = document.getElementById("drawer");
-      if (drawer) drawer.classList.toggle("open");
+      const menu = document.getElementById("mkMenu");
+      const open = menu.hidden;
+      menu.hidden = !open;
+      event.target.closest(".mk-burger").setAttribute("aria-expanded", open ? "true" : "false");
       return;
+    }
+    if (!event.target.closest("#mkMenu")) {
+      const menu = document.getElementById("mkMenu");
+      if (menu) menu.hidden = true;
     }
     if (event.target.closest("#gateEnter, .deck-next")) {
       event.preventDefault();
@@ -2005,6 +2028,19 @@
     const link = event.target.closest("a[href^='#']");
     if (!link) return;
     const id = link.getAttribute("href").slice(1);
+    const menu = document.getElementById("mkMenu");
+    if (menu) menu.hidden = true;
+    if (id === "markets") {
+      event.preventDefault();
+      const atMarkets = CARDS.indexOf("markets");
+      if (document.body.dataset.card !== "markets") deckGo(atMarkets);
+      if (mkActive) {
+        mkPane = "leads";
+        mkLeadAt = 0;
+        paintStage();
+      }
+      return;
+    }
     const at = CARDS.indexOf(id);
     if (at < 0) return;
     event.preventDefault();
@@ -2412,14 +2448,14 @@
     proptech: { gtm: "Dubai first. The towers on the map, then the agencies that lease them.", pred: "Keep the tower cluster and the next series fills the floors under lease." }
   };
   const MK_LEADS = {
-    agritech: ["Greenrow Desk", "Fieldnote Co", "Orchard Line"],
-    cleantech: ["Northgrid Desk", "Harbor Volt", "Fjord Current"],
-    fintech: ["Ledger Lane", "Quay Cover", "Bridge Pay"],
-    logistics: ["Portside Desk", "Corridor Lane", "Dock Route"],
-    edtech: ["Campus Desk", "Lesson Lane", "Yard School"],
-    healthtech: ["Clinic Desk", "Ward Line", "Care Quarter"],
-    commerce: ["Retail Desk", "Counter Lane", "Parcel Row"],
-    proptech: ["Tower Desk", "Lease Lane", "Block Key"]
+    agritech: ["Greenrow Desk", "Fieldnote Co", "Orchard Line", "Soil Lane", "Harvest Row", "Plot North", "Grain Desk", "Furrow Co", "Acre Line", "Barn South"],
+    cleantech: ["Northgrid Desk", "Harbor Volt", "Fjord Current", "Turbine Row", "Watt Lane", "Grid East", "Panel Co", "Current Desk", "Shore Volt", "Kiln Power"],
+    fintech: ["Ledger Lane", "Quay Cover", "Bridge Pay", "Mint Desk", "Clear Row", "Vault Line", "Bond Lane", "Till Co", "Rate Desk", "Coin North"],
+    logistics: ["Portside Desk", "Corridor Lane", "Dock Route", "Berth Co", "Freight Row", "Yard Line", "Gate Desk", "Hull Lane", "Crane Co", "Slip North"],
+    edtech: ["Campus Desk", "Lesson Lane", "Yard School", "Primer Co", "Term Row", "Desk Hall", "Quiz Line", "Cohort Co", "Study North", "Bell Lane"],
+    healthtech: ["Clinic Desk", "Ward Line", "Care Quarter", "Pulse Co", "Chart Row", "Dose Lane", "Triage Desk", "Lab North", "Nurse Co", "Bay Line"],
+    commerce: ["Retail Desk", "Counter Lane", "Parcel Row", "Shelf Co", "Aisle Desk", "Cart Line", "Store North", "Pack Co", "Till Row", "Front Lane"],
+    proptech: ["Tower Desk", "Lease Lane", "Block Key", "Floor Co", "Lot Row", "Deed Desk", "Unit Line", "Key North", "Site Co", "Plot Lane"]
   };
   const MK_CONTACT = {
     agritech: "+31 317 555 0101",
@@ -2438,9 +2474,9 @@
       return {
         name: name,
         email: "Info@" + cat.id + ".com",
-        phone: MK_CONTACT[cat.id],
-        lat: base.lat + (i - 1) * 0.03,
-        lon: base.lon + (i - 1) * 0.04,
+        phone: MK_CONTACT[cat.id].replace(/\d\d$/, String(i + 1).padStart(2, "0")),
+        lat: base.lat + (i - 4.5) * 0.012,
+        lon: base.lon + ((i % 5) - 2) * 0.014,
         web: ""
       };
     });
@@ -2469,7 +2505,7 @@
       const point = mkPoints[mkLeadAt];
       if (!point) { mkRow.innerHTML = ""; return; }
       mkRow.innerHTML = '<button type="button" class="mk-lead" data-i="' + mkLeadAt + '">' + mkIcon(mkActive.icon) +
-        "<span><strong>" + escapeHtml(point.name) + "</strong><em>" + escapeHtml(point.email) + "</em><small>Contact " + escapeHtml(point.phone) + "</small></span></button>";
+        "<span><strong>" + escapeHtml(point.name) + "</strong><em>" + escapeHtml(point.email) + "</em><small>" + (mkLeadAt + 1) + " of " + mkPoints.length + " · Contact " + escapeHtml(point.phone) + "</small></span></button>";
       mkPinA.hidden = false;
       mkPinB.hidden = true;
       mkPinA.querySelector("span").textContent = point.name;
@@ -2524,6 +2560,11 @@
   }
   document.getElementById("mkPrev").addEventListener("click", function () { stepMarket(-1); });
   document.getElementById("mkNext").addEventListener("click", function () { stepMarket(1); });
+  document.getElementById("mkToggle").addEventListener("click", function (event) {
+    const btn = event.target.closest("button");
+    if (!btn || !btn.dataset.view) return;
+    setMarketView(btn.dataset.view);
+  });
   mkSwitches.addEventListener("click", function (event) {
     const btn = event.target.closest("button");
     if (!btn || !mkActive) return;
